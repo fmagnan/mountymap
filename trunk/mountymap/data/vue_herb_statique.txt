@@ -1,0 +1,105 @@
+#DEBUT TROLLS
+96143;-75;-25;-13
+96751;-75;-25;-13
+11419;-71;-23;-14
+4955;-71;-21;-12
+36539;-69;-32;-2
+94598;-68;-24;-2
+15040;-67;-30;-14
+69334;-67;-23;-7
+37247;-66;-35;-2
+99030;-66;-27;-3
+78627;-65;-20;-4
+56455;-64;-41;-2
+87550;-64;-39;-2
+37279;-63;-32;-2
+90167;-62;-26;-2
+35120;-59;-34;-6
+21168;-58;-28;-2
+85841;-57;-21;-5
+56622;-56;-20;-3
+85834;-54;-36;-13
+12084;-54;-31;-4
+30214;-54;-31;-4
+94776;-53;-22;-9
+#FIN TROLLS
+#DEBUT MONSTRES
+531012;Gowap Apprivoisé [Ancêtre];-65;-40;-14
+2408432;Monstre Rouilleur [Nouveau];-75;-25;-13
+2412554;Hurleur [Nouveau];-75;-25;-13
+2405409;Gremlins [Nouveau];-75;-25;-13
+2299268;Gowap Apprivoisé [Adulte];-74;-36;-13
+2405031;Fungus Géant Colossal [Nouveau];-54;-36;-13
+2400825;Gremlins [Nouveau];-72;-21;-12
+2408571;Lézard Géant [Nouveau];-71;-21;-12
+2378086;Strige [Immature];-71;-21;-12
+2412555;Hurleur [Nouveau];-71;-21;-12
+2397119;Gremlins Effrayé [Nouveau];-71;-21;-12
+2405408;Gremlins [Nouveau];-71;-21;-12
+2404523;Gremlins [Nouveau];-71;-21;-12
+2400855;Goule [Naissante];-53;-31;-12
+962593;Gowap Apprivoisé [Ancien] du grands Kärnäge;-67;-20;-11
+2413044;Harpie Gargantuesque [Nouvelle];-65;-33;-10
+2413046;Mouch'oo Majestueux Sauvage [Nouveau];-65;-31;-10
+797789;Gowap Apprivoisé [Ancien];-74;-35;-9
+2413043;Esprit-Follet [Nouveau];-64;-32;-9
+2413041;Trancheur [Nouveau];-64;-30;-9
+2413053;Cube Gélatineux [Nouveau];-63;-32;-9
+2413047;Amibe Géante [Nouvelle];-63;-31;-9
+2413045;Crasc Médius Colossal [Nouveau];-63;-31;-9
+2385344;Worg [Jeune];-62;-20;-9
+2413051;Crasc Cracheur [Nouveau];-61;-32;-9
+2413052;Crasc [Nouveau];-61;-30;-9
+2413048;Crasc [Nouveau];-61;-30;-9
+2405036;Nuage d'Insectes [Larve];-60;-40;-9
+2403685;Lézard Géant [Nouveau];-57;-38;-9
+2380112;Goblours Malade [Jeune];-55;-21;-9
+2376214;Erinyes de Premier Cercle [Novice];-54;-22;-9
+2413042;Tertre Errant [Nouveau];-65;-30;-8
+2413050;Crasc Fustigateur [Nouveau];-64;-31;-8
+2413056;Bouj'Dla Malade [Nouveau];-64;-31;-8
+2413054;Bouj'Dla [Nouveau];-64;-31;-8
+2413055;Bouj'Dla Coriace [Nouveau];-64;-31;-8
+2413049;Crasc [Nouveau];-62;-32;-8
+2393829;Plante Carnivore [Jeune];-61;-33;-8
+2412560;Plante Carnivore [Nouvelle];-53;-30;-8
+2408009;Goblin [Nouveau];-59;-34;-6
+2396377;Orque [Nouveau];-57;-29;-6
+2322474;Pseudo-Dragon [Favori];-70;-39;-5
+520136;Gowap Apprivoisé [Ancêtre] Fariboll;-69;-30;-5
+445156;Gowap Apprivoisé [Ancêtre] Ferdinand;-69;-30;-5
+811488;Gowap Apprivoisé [Ancien] Faust;-69;-30;-5
+1577097;Gowap Apprivoisé [Ancien];-69;-30;-5
+2412764;Tutoki Fustigateur [Nouveau];-65;-23;-5
+2396361;Orque [Nouveau];-60;-29;-5
+2396362;Orque [Nouveau];-59;-27;-5
+2412781;Guerrier Gnoll [Nouveau];-69;-36;-4
+2407564;Kobold [Nouveau];-65;-20;-4
+2407867;Familier [Jeune];-64;-20;-4
+2408544;Nuage d'Insectes [Larve];-54;-31;-4
+2395154;Fungus Violet [Jeune];-54;-31;-4
+452344;Gowap Apprivoisé [Ancêtre] Fip le Fien;-69;-32;-3
+441298;Gowap Apprivoisé [Ancêtre] Fée Mauricette;-69;-32;-3
+445914;Gowap Apprivoisé [Ancêtre] FogFileas;-69;-32;-3
+478627;Gowap Apprivoisé [Ancêtre] F\'murr;-69;-32;-3
+518610;Gowap Apprivoisé [Ancêtre] Fédégor;-69;-32;-3
+533867;Gowap Apprivoisé [Ancêtre] Félix;-69;-32;-3
+590375;Gowap Apprivoisé [Ancêtre] Fédergorh;-69;-32;-3
+1324431;Gowap Apprivoisé [Ancien] Fitz;-69;-32;-3
+454256;Gowap Apprivoisé [Ancêtre] Marvellous;-66;-35;-3
+456094;Gowap Apprivoisé [Ancêtre] Mystique;-66;-35;-3
+2412780;Gnoll [Nouveau];-65;-36;-3
+2408860;Lutin [Nouveau];-64;-25;-3
+2407563;Kobold [Nouveau];-64;-20;-3
+564316;Gowap Apprivoisé [Ancêtre] Eskrim;-63;-32;-3
+827773;Gowap Apprivoisé [Ancien];-60;-42;-3
+2410832;Goblin [Nouveau];-56;-28;-3
+2407320;Tutoki [Nouveau];-63;-32;-2
+1087325;Gowap Apprivoisé [Ancien];-54;-40;-2
+721923;Gowap Apprivoisé [Ancien];-54;-32;-2
+2410834;Goblin [Nouveau];-53;-25;-2
+2410835;Goblin [Nouveau];-53;-24;-2
+#FIN MONSTRES
+#DEBUT ORIGINE
+11;-64;-31;-8
+#FIN ORIGINE
