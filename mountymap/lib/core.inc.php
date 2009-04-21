@@ -1,13 +1,13 @@
 <?php
 
 require_once 'database.inc.php';
+require_once 'Parser.class.php';
 
 function debugArray($array, $type='') {
 	$debugArray = print_r($array, true);
 	if ('log' == $type) {
 		error_log($debugArray);
-	}
-	else {
+	} else {
 		echo '<pre>'.$debugArray.'</pre>';
 	}
 }
@@ -31,43 +31,25 @@ function updateView($membre) {
 		$viewFilePath = VIEW_FILE_PATH . '?Numero='.intval($membre).'&Motdepasse='.$restrictedPassword.'&Tresors=1&Lieux=1&Champignons=1';
 	*/
 	$viewFilePath = dirname(__FILE__).'/../data/vue_'.intval($membre).'.txt';
-	$viewData = array();	
-	$viewHandle = fopen($viewFilePath, "r");
-	if ($viewHandle) {
-		$debutChampignons = false; $debutLieux = false; $debutMonstres = false;
-		$debutOrigine = false; $debutTresors = false; $debutTrolls = false;
-		
-		$finChampignons = true; $finLieux = true; $finMonstres = true;
-		$finOrigine = true;	$finTresors = true;	$finTrolls = true;
-		
-		while (!feof($viewHandle)) {
-   			$line = trim(fgets($viewHandle));
-   			if ('#DEBUT TROLLS' == $line) {
-   				$debutTrolls = true;
-   			} elseif('#FIN TROLLS' == $line) {
-   				$finTrolls = false;
-   			} elseif($debutTrolls && $finTrolls) {
-   				$trollData = explode(';', $line);
-   				insertOrUpdateTrollPosition($trollData[0], $trollData[1], $trollData[2], $trollData[3]);
-   			} elseif('#DEBUT ORIGINE' == $line) {
-   				$debutOrigine = true;
-   			} elseif('#FIN ORIGINE' == $line) {
-   				$finOrigine = false;
-   			} elseif($debutOrigine && $finOrigine) {
-   				$origineData = explode(';', $line);
-   				updateMember($membre);
-   				insertOrUpdateTrollPosition($membre, $origineData[1], $origineData[2], $origineData[3]);
-   			}
+	
+	$parser = new Parser($viewFilePath);
+	$parser->parseFile($membre);
+	$trollsData = $parser->getTrollsData();
+	$origineData = $parser->getOrigineData();
+	
+	if (!$parser->isInErrorStatus() && !empty($trollsData) && !empty($origineData)) {
+		foreach($trollsData as $trollData) {
+			insertOrUpdateTrollPosition($trollData);
 		}
+		updateMember($membre);
 	}
-	fclose($viewHandle);
 }
 
-function insertOrUpdateTrollPosition($numeroTroll, $positionEnX, $positionEnY, $positionEnN) {
-	if (isTrollAlreadyExists($numeroTroll)) {
-		updateTrollPosition($numeroTroll, $positionEnX, $positionEnY, $positionEnN);
+function insertOrUpdateTrollPosition($trollData) {
+	if (isTrollAlreadyExists($trollData['id'])) {
+		updateTrollPosition($trollData);
 	} else {
-		insertTrollPosition($numeroTroll, $positionEnX, $positionEnY, $positionEnN);
+		insertTrollPosition($trollData);
 	}
 }
 
