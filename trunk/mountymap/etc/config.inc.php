@@ -1,9 +1,9 @@
 <?php
 
 define('_HOST_', 'localhost');
-define('_USER_', 'mh_vue_globale');
+define('_USER_', 'mountymap');
 define('_PWD_', 'password');
-define ('_DB_', 'mh_vue_globale');
+define ('_DB_', 'mountymap');
 
 define('SERVER_ROOT_PATH', 'http://local.mountymap.org');
 

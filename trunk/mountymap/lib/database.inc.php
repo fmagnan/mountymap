@@ -110,18 +110,34 @@ function getRestrictedPasswordFrom($membre) {
 	}
 }
 
-function insertTrollPosition($numeroTroll, $positionEnX, $positionEnY, $positionEnN) {
+function insertTrollPosition($data) {
 	$query = "	INSERT INTO ".TROLLS_TABLE_NAME."
-				VALUES (".intval($numeroTroll).", NOW(), ".intval($positionEnX).", ".intval($positionEnY).", ".intval($positionEnN).")";
+				VALUES (".intval($data['id']).", NOW(), ".intval($data['position_x']).", ".intval($data['position_y']).", ".intval($data['position_n']).")";
 	executeRequeteSansDonneesDeRetour($query, 'insertTrollPosition');
 }
 
-function updateTrollPosition($numeroTroll, $positionEnX, $positionEnY, $positionEnN) {
+function updateTrollPosition($data) {
 	$query = "	UPDATE ".TROLLS_TABLE_NAME."
-				SET `mise_a_jour`=NOW(), `position_x`=".intval($positionEnX).", `position_y`=".intval($positionEnY).", `position_n`=".intval($positionEnN)."
-				WHERE `id`=".intval($numeroTroll);
+				SET `mise_a_jour`=NOW(), `position_x`=".intval($data['position_x']).", `position_y`=".intval($data['position_y']).", `position_n`=".intval($data['position_n'])."
+				WHERE `id`=".intval($data['id']);
 	executeRequeteSansDonneesDeRetour($query, 'updateTrollPosition');
 }
+
+/*function deleteTrolls($origineData) {
+	$origineEnX = intval($origineData['position_x']);
+	$origineEnY = intval($origineData['position_y']);
+	$origineEnN = intval($origineData['position_n']);
+	$nombreCasesVuesEnHorizontal = intval($origineData['nombre_cases_vues_horizontales']);
+	$nombreCasesVuesEnVertical = intval($origineData['nombre_cases_vues_verticales']);
+	
+	$query = "	DELETE FROM `".TROLLS_TABLE_NAME."`
+				WHERE (`position_x` BETWEEN ".($origineEnX - $nombreCasesVuesEnHorizontal) ." AND " .($origineEnX + $nombreCasesVuesEnHorizontal).")
+				AND (`position_y` BETWEEN " .($origineEnY - $nombreCasesVuesEnHorizontal) ." AND " .($origineEnY + $nombreCasesVuesEnHorizontal).")
+				AND (`position_n` BETWEEN " .($origineEnN - $nombreCasesVuesEnVertical) ." AND " .($origineEnN + $nombreCasesVuesEnVertical).")";
+	executeRequeteSansDonneesDeRetour($query, 'deleteTrolls');
+}*/
+
+
 
 function updateMember($numeroTroll) {
 	$query = "UPDATE ".MEMBERS_TABLE_NAME." SET `mise_a_jour`=NOW() WHERE `id`=".intval($numeroTroll);

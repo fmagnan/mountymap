@@ -5,7 +5,7 @@
 	$smarty = instantiateSmartyTemplate(dirname(__FILE__));
 	$membre = $_GET['membre'];
 	updateView($membre);	
-	$membres = getMembres();
-	$smarty->assign('membres', $membres);
-	$smarty->display('liste_membres.tpl');
+	
+	header('Location: index.php');
+	
 ?>
