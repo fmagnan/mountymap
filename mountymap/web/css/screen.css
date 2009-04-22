@@ -13,5 +13,31 @@ table td, table th {
 }
 
 .odd {
-	background-color:lightgrey;
+	background-color:#EFEBE7;
+}
+
+.even {
+	background-color:#E0DDD9;
+}
+
+#debug {
+	margin-top:40px;
+	font-size:0.8em;
+	border:1px dotted black;
+	padding:4px;
+}
+
+#debug-header {
+	font-weight:bold;
+	text-decoration:underline;
+}
+
+#debug div {
+	padding:2px;
+}
+
+#debug div:hover {
+	color:lightgrey;
+	background-color:black;
+	border-color:lightgrey;
 }
