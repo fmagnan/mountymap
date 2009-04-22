@@ -3,10 +3,10 @@
 	<head>
 		<title>Vue globale</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<link rel="shortcut icon" type="image/png" href="images/favicon.ico" />
-		<link rel="stylesheet" type="text/css" href="css/screen.css" media="screen" title="Normal" />
+		<link rel="shortcut icon" type="image/png" href="/images/favicon.gif" />
+		<link rel="stylesheet" type="text/css" href="/css/screen.css" media="screen" title="Normal" />
 		<base href="{$server_root_path}" />
-		<script type="text/javascript" src="js/functions_MH.js"></script>
+		<script type="text/javascript" src="/js/functions_MH.js"></script>
 	</head>
 <body>
 	
