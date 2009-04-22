@@ -1,127 +1,7 @@
 <?
 require_once dirname(__FILE__).'/../etc/config.inc.php';
 
-define ('MEMBERS_TABLE_NAME', 'membre');
-define ('TROLLS_TABLE_NAME', 'troll');
 
-function connectToDB($host='', $user='', $password='', $database='') {
-	if ($host == '') { $host = _HOST_; }
-	if ($user == '') { $user = _USER_; }
-	if ($password == '') { $password = _PWD_; }
-	if ($database == '') { $database = _DB_; }
-	
-	$link = mysql_connect($host, $user, $password) or trigger_error('error[connectToDB()]: unable to connect to database');
- 	@mysql_select_db($database) or trigger_error('error[connectToDB()]: unable to select a database');
- 	return $link;
-}
-
-function disconnectFromDB() {
-	@mysql_close();
-}
-
-function addMysqlError($functionName) {
-	global $databaseError;
-	$mysqlError = mysql_errno();
-	$databaseError .= '<span>fonction ' . $functionName;
-	if (1022 == $mysqlError || 1062 == $mysqlError) {
-		$databaseError .= ' : clef primaire dupliquée, l\'enregistrement a déjà été soumis.';
-	}
-	elseif (1146 == $mysqlError) {
-		$databaseError .= ' : le nom d\'une table est incorrect.';
-	}
-	elseif (1064 == $mysqlError) {
-		$databaseError .= ' : erreur de syntaxe.';
-	}
-	elseif (1065 == $mysqlError) {
-		$databaseError .= ' : la requête est vide.';
-	}
-	else {
-		$databaseError .= ' : erreur MySQL n°'.$mysqlError.'.'; 
-	}
-	$databaseError .= '</span><br/>';
-	$databaseError .= '<span>'.mysql_error().'</span><br/>';
-}
-
-function executeRequeteSansDonneesDeRetour($query, $functionName) {
-	connectToDB();
-	$result = mysql_query($query) or addMysqlError($functionName);
-	disconnectFromDB();
-	return $result;
-}
-
-function executeRequeteAvecDonneeDeRetourUnique($query, $functionName, $dataName='') {
-	$donneesDeRetour = array();
-	connectToDB();
-	$result = mysql_query($query) or addMysqlError($functionName);
-	if ($result) {
-		$donneesDeRetour = mysql_fetch_assoc($result);
-	}
-	disconnectFromDB();
-	if ($dataName != '') {
-		return $donneesDeRetour[$dataName];
-	} else {
-		return $donneesDeRetour;
-	}		
-}
-
-function executeRequeteAvecDonneesDeRetourMultiples($query, $functionName) {
-	$donneesDeRetour = array();
-	connectToDB();
-	$result = mysql_query($query) or addMysqlError($functionName);
-	if ($result) {
-		while ($row = mysql_fetch_assoc($result)) {
-			$donneesDeRetour[] = $row;	
-		}
-	}
-	disconnectFromDB();
-	return $donneesDeRetour;
-}
-
-function executeRequeteEtTransformeDates($query, $functionName, $champsDate) {
-	$donneesDeRetour = array();
-	connectToDB();
-	$result = mysql_query($query) or addMysqlError($functionName);
-	if ($result) {
-		while ($row = mysql_fetch_assoc($result)) {
-			foreach($champsDate AS $champ) {
-				if (array_key_exists($champ, $row)) {
-					$row[$champ] = getDateEnFrancais($row[$champ]);
-				}
-			}
-			$donneesDeRetour[] = $row;
-		}
-	}
-	disconnectFromDB();
-	return $donneesDeRetour;
-}
-
-function getMembres() {
-	$requete = "SELECT `id`, `mise_a_jour` FROM `".MEMBERS_TABLE_NAME."` WHERE `password` <> '' ORDER BY `mise_a_jour` DESC";
-	return executeRequeteAvecDonneesDeRetourMultiples($requete, 'getMembres');
-}
-
-function getRestrictedPasswordFrom($membre) {
-	if (is_numeric($membre)) {
-		$query = "SELECT `password` FROM ".MEMBERS_TABLE_NAME." WHERE `id`=".intval($membre)." LIMIT 1";
-		$password = executeRequeteAvecDonneeDeRetourUnique($query, 'getRestrictedPasswordFrom', 'password');
-		return md5($password);
-	} else {
-		return '';
-	}
-}
-
-function insertTrollPosition($data) {
-	$query = "	INSERT INTO ".TROLLS_TABLE_NAME."
-				VALUES (".intval($data['id']).", NOW(), ".intval($data['position_x']).", ".intval($data['position_y']).", ".intval($data['position_n']).")";
-	executeRequeteSansDonneesDeRetour($query, 'insertTrollPosition');
-}
-
-function updateTrollPosition($data) {
-	$query = "	UPDATE ".TROLLS_TABLE_NAME."
-				SET `mise_a_jour`=NOW(), `position_x`=".intval($data['position_x']).", `position_y`=".intval($data['position_y']).", `position_n`=".intval($data['position_n'])."
-				WHERE `id`=".intval($data['id']);
-	executeRequeteSansDonneesDeRetour($query, 'updateTrollPosition');
-}
 
 /*function deleteTrolls($origineData) {
 	$origineEnX = intval($origineData['position_x']);
@@ -139,16 +19,7 @@ function updateTrollPosition($data) {
 
 
 
-function updateMember($numeroTroll) {
-	$query = "UPDATE ".MEMBERS_TABLE_NAME." SET `mise_a_jour`=NOW() WHERE `id`=".intval($numeroTroll);
-	executeRequeteSansDonneesDeRetour($query, 'updateMember');
-}
 
-function isTrollAlreadyExists($numeroTroll) {
-	$query = 'SELECT `id` FROM `'.TROLLS_TABLE_NAME.'` WHERE `id` = '.intval($numeroTroll);
-	$id = executeRequeteAvecDonneeDeRetourUnique($query, 'isTrollAlreadyExists', 'id');
-	return is_numeric($id);
-}
 
 /*
 

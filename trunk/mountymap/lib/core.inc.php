@@ -1,7 +1,9 @@
 <?php
 
-require_once 'database.inc.php';
+require_once dirname(__FILE__).'/../etc/config.inc.php';
 require_once 'Parser.class.php';
+require_once 'Troll.class.php';
+require_once 'Member.class.php';
 
 function debugArray($array, $type='') {
 	$debugArray = print_r($array, true);
@@ -26,7 +28,8 @@ function getTimeStampFromTrollDate($dateCompilation) {
 }
 
 function updateView($membre) {
-	$restrictedPassword = getRestrictedPasswordFrom($membre);
+	$membersFactory = getFactory('Member');
+	$restrictedPassword = $membersFactory->getRestrictedPasswordFrom($membre);
 	/* 	TODO utiliser le bon chemin
 		$viewFilePath = VIEW_FILE_PATH . '?Numero='.intval($membre).'&Motdepasse='.$restrictedPassword.'&Tresors=1&Lieux=1&Champignons=1';
 	*/
@@ -38,18 +41,11 @@ function updateView($membre) {
 	$origineData = $parser->getOrigineData();
 	
 	if (!$parser->isInErrorStatus() && !empty($trollsData) && !empty($origineData)) {
+		$trollsFactory = getFactory('Troll');
 		foreach($trollsData as $trollData) {
-			insertOrUpdateTrollPosition($trollData);
+			$trollsFactory->insertOrUpdateTroll($trollData);
 		}
-		updateMember($membre);
-	}
-}
-
-function insertOrUpdateTrollPosition($trollData) {
-	if (isTrollAlreadyExists($trollData['id'])) {
-		updateTrollPosition($trollData);
-	} else {
-		insertTrollPosition($trollData);
+		$membersFactory->updateMember($membre);
 	}
 }
 
@@ -70,6 +66,7 @@ function instantiateSmartyTemplate($path) {
 	$smarty->caching = 0;
 	
 	$smarty->assign('server_root_path', SERVER_ROOT_PATH);
+	$smarty->assign('debug_mode', DEBUG_MODE);
 	return $smarty;
 }
 
@@ -96,6 +93,19 @@ function replaceWordsBySymbol($inputString) {
 		'', '', '-', '>', '<',
 	);
 	return preg_replace($patternsToReplace, $replacements, $inputString);
+}
+
+function getFactory($name) {
+	$className = $name . 'Factory';
+ 	require_once $className . '.class.php';
+	
+	if(isset($GLOBALS['singletonFactory::'.$className])) {
+		$factory = $GLOBALS['singletonFactory::'.$className];
+	} else {
+		$factory = new $className;
+		$GLOBALS['singletonFactory::'.$className] = $factory;
+	}
+	return $factory;
 }
 
 ?>
