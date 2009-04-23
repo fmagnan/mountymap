@@ -3,50 +3,44 @@
 require_once 'BaseObject.class.php';
 require_once 'DatabaseConnector.class.php';
 
-class DatabaseObjectFactory extends BaseObject {
-	var $db, $flag;
+abstract class DatabaseObjectFactory extends BaseObject {
+	
+	var $db;
+	private static $instance;
+	
+	public static function getInstance() {
+		if ( !isset(self::$instance) ) {
+			$className = __CLASS__;
+			self::$instance = new $className();
+    	}
+	    return self::$instance;
+	}
 	
 	function DatabaseObjectFactory() {
 		$this->db = DatabaseConnector::getInstance();
-	}
-	
-	function setFlag($flag) {
-		if (false != $flag) {
-			$this->flag = $flag;
-		}
 	}
 	
 	function getAllColumnsDescr() {
 		return array_merge($this->getPrimaryKeyDescr(), $this->getDataColumnsDescr());
 	}
 	
-	function getDataColumnsDescr() {
-		return array();
-	}
+	abstract function getDataColumnsDescr();
 	
 	function getDataColumnsList() {
 		return array_keys($this->getDataColumnsDescr());
 	}
 
-	function getPrimaryKeyDescr() {
-		return array();
-	}
+	abstract function getPrimaryKeyDescr();
 	
 	function getPrimaryKeyList() {
 		return array_keys($this->getPrimaryKeyDescr());
 	}
 	
-	function getTableName() {
-		return '';
-	}
-	
-	function getCompleteTableName() {
-		return $this->getTableName() . $this->flag;
-	}
+	abstract function getTableName();
 	
 	function create($data) {
 		$this->resetErrors();
-		$tableName = $this->getCompleteTableName();
+		$tableName = $this->getTableName();
 		$primaryKeyDescr = $this->getPrimaryKeyDescr();
 		
 		$data = $this->filterOnCreate($data);
@@ -58,13 +52,13 @@ class DatabaseObjectFactory extends BaseObject {
 			$autoIncrement = false;
 			$id = $this->extractIdArray($data);
 			if(count($id) != count($primaryKeyDescr)) {
-				$this->addError('Cl� primaire incompl�te');
+				$this->addError('Clef primaire incomplete');
 				return false;
 			}
 		}
 		$data = $this->formatInputData($data);
 		
-		if($this->db->insert($this->getCompleteTableName(), $data)) {
+		if($this->db->create($this->getTableName(), $data)) {
 			if($autoIncrement) {
 				return array($keyName => mysql_insert_id());
 			} else {
@@ -88,12 +82,12 @@ class DatabaseObjectFactory extends BaseObject {
 	}
 	
 	function getSelectQuery() {
-		return 'SELECT * FROM '.$this->getCompleteTableName();
+		return 'SELECT * FROM '.$this->getTableName();
 	}
 				
 	function getCountQuery($tableName='') {
 		if ($tableName == '') {
-			$tableName = $this->getCompleteTableName();
+			$tableName = $this->getTableName();
 		}
 		return 'SELECT count(*) AS count FROM ' . $tableName;
 	}
@@ -108,16 +102,12 @@ class DatabaseObjectFactory extends BaseObject {
 	}
 	
 	function emptyTable($whereClause = '') {
-		return mysql_query('DELETE FROM '.$this->getCompleteTableName().' '.$whereClause);
+		return mysql_query('DELETE FROM `'.$this->getTableName().'` '.$whereClause);
 	}
 	
 	function getInstanceClassName() {
 		return str_replace('factory', '', strtolower(get_class($this)));
 	}
-	
-/*	function getInstanceType() {
-		return str_replace('tx_asecore_', '', $this->getInstanceClassName());
-	}*/
 	
 	function formatInputData($dataArray) {
 		$dataFields = $this->getAllColumnsDescr();
@@ -188,7 +178,7 @@ class DatabaseObjectFactory extends BaseObject {
 	}
 	
 	function getInstanceWithQuery($query) {
-		return $this->db->executeRequeteAvecDonneeDeRetourUnique($query, 'TODO');
+		return $this->db->executeRequeteAvecDonneeDeRetourUnique($query);
 	}
 	
 	function getInstancesWithWhereClause($whereClause='') {
@@ -197,21 +187,7 @@ class DatabaseObjectFactory extends BaseObject {
 	}
 	
 	function getInstancesWithQuery($query) {
-		return $this->db->executeRequeteAvecDonneesDeRetourMultiples($query, 'TODO');
-		/*$res = $this->db->mysql_query($query);
-		if ($res) {
-			$instances = array();
-			while($data = mysql_fetch_assoc($res)) {
-				array_push($instances, $this->getInstanceFromArray($data)); 
-			}
-			return $instances;
-		} else {
-			return false;
-		}*/
-	}
-
-	function escape($sqlField) {
-		return $this->db->quoteStr($sqlField, $this->getCompleteTableName());
+		return $this->db->executeRequeteAvecDonneesDeRetourMultiples($query);
 	}
 	
 }

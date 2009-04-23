@@ -5,9 +5,6 @@
 	$smarty = instantiateSmartyTemplate(dirname(__FILE__));
 	$membre = $_GET['membre'];
 	updateView($membre);	
-	/*$smarty->assign('all_queries', $GLOBALS['all_queries']);
-	$smarty->assign('nb_queries', count($GLOBALS['all_queries']));
-	$smarty->display('liste_membres.tpl');*/
-	header('Location: index.php');
-	
+	setDebugTrace($smarty);
+	redirectTo('index.php', $smarty);
 ?>

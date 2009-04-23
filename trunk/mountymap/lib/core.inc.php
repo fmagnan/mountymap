@@ -14,7 +14,7 @@ function debugArray($array, $type='') {
 	}
 }
 
-function array_add_if_not_present($value, $array) {
+/*function array_add_if_not_present($value, $array) {
 	if (!in_array($value, $array)) {
 		$array[] = $value;
 	}
@@ -25,11 +25,11 @@ function getTimeStampFromTrollDate($dateCompilation) {
 	$date = explode('-', trim(substr($dateCompilation, 0, 10)));
     $time = explode(':', trim(substr($dateCompilation,11,strlen($dateCompilation))));
     return mktime($time[0], $time[1], $time[2], $date[1], $date[2], $date[0]);
-}
+}*/
 
 function updateView($membre) {
-	$membersFactory = getFactory('Member');
-	$restrictedPassword = $membersFactory->getRestrictedPasswordFrom($membre);
+	$memberFactory = MemberFactory::getInstance();
+	$restrictedPassword = $memberFactory->getRestrictedPasswordFrom($membre);
 	/* 	TODO utiliser le bon chemin
 		$viewFilePath = VIEW_FILE_PATH . '?Numero='.intval($membre).'&Motdepasse='.$restrictedPassword.'&Tresors=1&Lieux=1&Champignons=1';
 	*/
@@ -41,21 +41,23 @@ function updateView($membre) {
 	$origineData = $parser->getOrigineData();
 	
 	if (!$parser->isInErrorStatus() && !empty($trollsData) && !empty($origineData)) {
-		$trollsFactory = getFactory('Troll');
+		$trollsFactory = TrollFactory::getInstance();
 		foreach($trollsData as $trollData) {
 			$trollsFactory->insertOrUpdateTroll($trollData);
 		}
-		$membersFactory->updateMember($membre);
+		$memberData = array('id' => $membre, 'mise_a_jour' => 'NOW()');
+		$member = $memberFactory->getInstanceFromArray($memberData);
+		$member->update($memberData);
 	}
 }
 
-function getDateEnFrancais($dateEnAnglais) {
+/*function getDateEnFrancais($dateEnAnglais) {
 	$dateEtHeure = explode(' ', $dateEnAnglais);
 	$date = explode('-', $dateEtHeure[0]);
 	$heure = explode(':', $dateEtHeure[1]);
 	$dateEnFrancais = $date[2] . '/' . $date[1] . '/' . $date[0] . ' à ' . $heure[0] . 'h' . $heure[1];
 	return $dateEnFrancais;
-}
+}*/
 
 function instantiateSmartyTemplate($path) {
 	$smarty = new Smarty();
@@ -70,7 +72,24 @@ function instantiateSmartyTemplate($path) {
 	return $smarty;
 }
 
-function setFiltres($parameters, &$smarty) {
+function setDebugTrace($smartyTemplate) {
+	if (DEBUG_MODE) {
+		$databaseConnector = DatabaseConnector::getInstance();
+		$smartyTemplate->assign('all_sql_queries', $databaseConnector->getAllSqlQueries());
+		$smartyTemplate->assign('nb_queries', count($databaseConnector->getAllSqlQueries()));
+	}
+}
+
+function redirectTo($page, $smartyTemplate) {
+	if (DEBUG_MODE) {
+		$smartyTemplate->assign('page', $page);
+		$smartyTemplate->display('empty.tpl');
+	} else {
+		header('Location: '. $page);
+	}
+}
+
+/*function setFiltres($parameters, &$smarty) {
 	$filtres = array();
 	$params='';
 	foreach ($parameters AS $parameter) {
@@ -93,19 +112,6 @@ function replaceWordsBySymbol($inputString) {
 		'', '', '-', '>', '<',
 	);
 	return preg_replace($patternsToReplace, $replacements, $inputString);
-}
-
-function getFactory($name) {
-	$className = $name . 'Factory';
- 	require_once $className . '.class.php';
-	
-	if(isset($GLOBALS['singletonFactory::'.$className])) {
-		$factory = $GLOBALS['singletonFactory::'.$className];
-	} else {
-		$factory = new $className;
-		$GLOBALS['singletonFactory::'.$className] = $factory;
-	}
-	return $factory;
-}
+}*/
 
 ?>

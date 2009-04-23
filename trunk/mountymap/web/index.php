@@ -4,11 +4,9 @@
 	require_once dirname(__FILE__).'/../Smarty/Smarty.class.php';
 	
 	$smarty = instantiateSmartyTemplate(dirname(__FILE__));
-	$membersFactory = getFactory('Member');
-	$membres = $membersFactory->getMembres();
+	$memberFactory = MemberFactory::getInstance();
+	$membres = $memberFactory->getMembres();
 	$smarty->assign('membres', $membres);
-	$allQueries = DatabaseConnector::$allQueries;
-	$smarty->assign('all_queries', $allQueries);
-	$smarty->assign('nb_queries', count($allQueries));
+	setDebugTrace($smarty);
 	$smarty->display('liste_membres.tpl');
 ?>
