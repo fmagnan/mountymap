@@ -6,15 +6,17 @@ function add_backquotes($string) {
 
 class DatabaseConnector {
 
-	static $allQueries;
 	private static $instance;
-	var $link;
+	var $link, $all_sql_queries;
 	
-	function __construct() {}
+	function __construct() {
+		$this->all_sql_queries = array();
+	}
 	
 	public static function getInstance() {
 		if ( !isset(self::$instance) ) {
-			self::$instance = new DatabaseConnector();
+			$className = __CLASS__;
+			self::$instance = new $className();
     	}
 	    return self::$instance;
 	}
@@ -24,11 +26,11 @@ class DatabaseConnector {
 	}
 	
 	function addQuery($query) {
-		if (is_array(DatabaseConnector::$allQueries)) {
-			DatabaseConnector::$allQueries[] = $query; 
-		} else {
-			DatabaseConnector::$allQueries = array($query);
-		}
+		$this->all_sql_queries[] = $query; 
+	}
+	
+	function getAllSqlQueries() {
+		return $this->all_sql_queries;
 	}
 	
 	function connectToDB($host='', $user='', $password='', $database='') {
@@ -45,38 +47,37 @@ class DatabaseConnector {
 		@mysql_close();
 	}
 	
-	function addMysqlError($functionName) {
-		global $databaseError;
+	function addMysqlError($query) {
 		$mysqlError = mysql_errno();
-		$databaseError .= 'fonction ' . $functionName;
+		$error .= 'requête ' . $query;
 		if (1022 == $mysqlError || 1062 == $mysqlError) {
-			$databaseError .= ' : clef primaire dupliquée, l\'enregistrement a déjà été soumis.';
+			$error .= ' : clef primaire dupliquée, l\'enregistrement a déjà été soumis.';
 		} elseif (1146 == $mysqlError) {
-			$databaseError .= ' : le nom d\'une table est incorrect.';
+			$error .= ' : le nom d\'une table est incorrect.';
 		} elseif (1064 == $mysqlError) {
-			$databaseError .= ' : erreur de syntaxe.';
+			$error .= ' : erreur de syntaxe.';
 		} elseif (1065 == $mysqlError) {
-			$databaseError .= ' : la requête est vide.';
+			$error .= ' : la requête est vide.';
 		} else {
-			$databaseError .= ' : erreur MySQL n°'.$mysqlError.'.'; 
+			$error .= ' : erreur MySQL n°'.$mysqlError.'.'; 
 		}
-		$databaseError .= mysql_error();
-		$this->addError($databaseError);
+		$error .= mysql_error();
+		$this->addError($error);
 	}
 	
-	function executeRequeteSansDonneesDeRetour($query, $functionName) {
+	function executeRequeteSansDonneesDeRetour($query) {
 		$this->addQuery($query);
 		$this->connectToDB();
-		$result = mysql_query($query) or $this->addMysqlError($functionName);
+		$result = mysql_query($query) or $this->addMysqlError($query);
 		$this->disconnectFromDB();
 		return $result;
 	}
 	
-	function executeRequeteAvecDonneeDeRetourUnique($query, $functionName, $dataName='') {
+	function executeRequeteAvecDonneeDeRetourUnique($query, $dataName='') {
 		$this->addQuery($query);
 		$donneesDeRetour = array();
 		$this->connectToDB();
-		$result = mysql_query($query) or $this->addMysqlError($functionName);
+		$result = mysql_query($query) or $this->addMysqlError($query);
 		if ($result) {
 			$donneesDeRetour = mysql_fetch_assoc($result);
 		}
@@ -84,11 +85,11 @@ class DatabaseConnector {
 		return $dataName != '' ? $donneesDeRetour[$dataName] :  $donneesDeRetour;
 	}
 	
-	function executeRequeteAvecDonneesDeRetourMultiples($query, $functionName) {
+	function executeRequeteAvecDonneesDeRetourMultiples($query) {
 		$this->addQuery($query);
 		$donneesDeRetour = array();
 		$this->connectToDB();
-		$result = mysql_query($query) or $this->addMysqlError($functionName);
+		$result = mysql_query($query) or $this->addMysqlError($query);
 		if ($result) {
 			while ($row = mysql_fetch_assoc($result)) {
 				$donneesDeRetour[] = $row;	
@@ -98,11 +99,11 @@ class DatabaseConnector {
 		return $donneesDeRetour;
 	}
 	
-	function executeRequeteEtTransformeDates($query, $functionName, $champsDate) {
+	function executeRequeteEtTransformeDates($query, $champsDate) {
 		$this->addQuery($query);
 		$donneesDeRetour = array();
 		$this->connectToDB();
-		$result = mysql_query($query) or $this->addMysqlError($functionName);
+		$result = mysql_query($query) or $this->addMysqlError($query);
 		if ($result) {
 			while ($row = mysql_fetch_assoc($result)) {
 				foreach($champsDate AS $champ) {
@@ -124,37 +125,44 @@ class DatabaseConnector {
 			$orderBy = add_backquotes($keyFields[0]);
 		}
 		$requete = "SELECT ".$fieldsToRetrieve." FROM `".$this->tableName."` WHERE " . $whereClause . " ORDER BY " . $orderBy . " " . $sort;
-		return $this->executeRequeteAvecDonneesDeRetourMultiples($requete, 'TODO');
+		return $this->executeRequeteAvecDonneesDeRetourMultiples($requete);
 	}
 	
 	function select($orderBy='', $sort='ASC') {
 		return $this->selectWithWhereClause('1', $orderBy, $sort);
 	}
 	
-	function update($tableName, $whereClause, $updatedData) {
-		//TODO;
+	function getValueByType($value, $type) {
+		if ($type == 'string') {
+			return '\'' . mysql_real_escape_string($value, $this->link) . '\'';
+		} elseif ($type == 'int') {
+			return intval($value);
+		} else {
+			return $value;
+		}
+	}
+	
+	function update($tableName, $whereClause, $data, $datatypes) {
+		$setClauseArray = array();
+		foreach ($data as $key => $value) {
+			if (array_key_exists($key, $datatypes)) {
+				$setClauseArray[] = "`".$key."`=".$this->getValueByType($value, $datatypes[$key]);
+			}
+		}
+		
+		$query = 'UPDATE `'.$tableName.'` SET '. implode(', ', $setClauseArray) . ' WHERE ' . $whereClause;
+		return $this->executeRequeteSansDonneesDeRetour($query);
 	}
 	
 	function delete($tableName, $whereClause) {
-		//TODO;
+		$query = 'DELETE FROM `'.$tableName.'` WHERE ' . $whereClause;
 	}
 	
-	function quoteStr($sqlField, $tableName) {
-		return $sqlField;
-		//TODO
-	}
-	
-	function insert($tableName, $data) {
-		$keys = array_keys($data);
+	function create($tableName, $data) {
+		$keys = array_map('add_backquotes', array_keys($data));
 		$values = array_values($data);
 		$query = 'INSERT INTO `'.$tableName.'` ('.implode(',',$keys).') VALUES ('.implode(',', $values).')';
-		$this->executeRequeteSansDonneesDeRetour($query, 'TODO');
-		
-		
-		/*$query = "	INSERT INTO ".$this->getTableName()."
-					VALUES (".intval($data['id']).", NOW(), ".intval($data['position_x']).", ".intval($data['position_y']).", ".intval($data['position_n']).")";
-		$this->executeRequeteSansDonneesDeRetour($query, 'insertTroll');*/
-		//TODO
+		$this->executeRequeteSansDonneesDeRetour($query);
 	}
 	
 	function sql_query($query) {

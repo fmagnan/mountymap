@@ -18,37 +18,24 @@ class DatabaseObject extends BaseObject {
 				$this->fetchData();
 			}
 		} else {
-			$this->addError('Impossible de cr�er l\'objet de type : '.get_class($this));
+			$this->addError('Impossible de créer l\'objet de type : '.get_class($this));
 		}
 	}
 	
-	function update($updatedData, $applyFilters = true) {
-		if(!$this->exists()) {
-			trigger_error('Mise à jour d\'un élément non existant', E_USER_ERROR);
-			return false;
-		}
-		$factory = $this->getFactory();
-		if (true == $applyFilters) {
-			$updatedData = $this->filterOnUpdate($updatedData);
-		}
-		$updatedData = $factory->formatInputData($updatedData);
-		if(!empty($updatedData)) {
-			if($this->db->update($this->getTableName(), $this->getIdWhere(), $updatedData)) {
-				$this->fetchData();
-				return true;
-			} else {
-				return false;
+	function concatenateFields($keys, $separator) {
+		$stringArray = array();
+		foreach($keys AS $key) {
+			$value = $this->getData($key);
+			if ($value) {
+				$stringArray[] = $value;
 			}
 		}
-	}
-	
-	function filterOnUpdate($data) {
-		return $data;
+		return implode($stringArray, $separator);
 	}
 	
 	function delete() {
 		if(!$this->exists()) {
-			trigger_error('Suppression d\'un �l�ment non existant', E_USER_ERROR);
+			trigger_error('Suppression d\'un élément non existant', E_USER_ERROR);
 			return false;
 		}
 		if($this->db->delete($this->getTableName(), $this->getIdWhere())) {
@@ -67,7 +54,35 @@ class DatabaseObject extends BaseObject {
 		echo '</table>'."\n";
 	}
 	
-	function  getAllData() {
+	function exists() {
+		return !empty($this->data) && !empty($this->idArray);
+	}
+	
+	function fetchData() {
+		$this->db->connectToDB();
+		$query = $this->getSelectQuery().' WHERE '.$this->getIdWhere();
+		$result = $this->db->sql_query($query);
+		if($this->db->sql_num_rows($result) == 1) {
+			$this->data = $this->db->sql_fetch_assoc($result);
+		} elseif($this->db->sql_num_rows($result) == 0) {
+			$this->data = array();
+			$this->addError('L\'objet demandé n\'existe pas.');
+		} else {
+			$this->data = array();
+			$this->addError('La clef primaire ne semble pas être unique.');
+		}
+		$this->db->disconnectFromDB();
+	}
+	
+	function filterOnUpdate($data) {
+		return $data;
+	}
+	
+	function getAllColumnsDescr() {
+		return $this->getFactory()->getAllColumnsDescr();
+	}
+	
+	function getAllData() {
 		$data = array();
 		foreach($this->data AS $key => $value) {
 			$data[$key] = $this->getData($key);
@@ -99,68 +114,36 @@ class DatabaseObject extends BaseObject {
 		return false;
 	}
 	
-	function getIdArray() {
-		return $this->idArray;
+	function getDataColumnsDescr() {
+		return $this->getFactory()->getDataColumnsDescr();
+	}
+	
+	function getDataColumnsList() {
+		return $this->getFactory()->getDataColumnsList();
 	}
 	
 	function getFactory() {
 		if(!isset($this->factory)) {
-			$factoryName = strtolower(get_class($this)).'Factory';
-			//TODO $this->factory = $factoryName::getInstance();
+			$this->factory = call_user_func(array(__CLASS__.'Factory', '::getInstance'));
 		}
 		return $this->factory;
 	}
 	
+	function getIdArray() {
+		return $this->idArray;
+	}
+	
 	function getIdWhere() {
+		$primary_key_datatypes = $this->getFactory()->getPrimaryKeyDescr();
 		$where = '1=1';
 		foreach($this->idArray AS $key => $value) {
-			$where .= ' AND '.$key.'=\''.$this->escape($value).'\'';
+			$where .= ' AND '.$key.'='.$this->db->getValueByType($value, $primary_key_datatypes[$key]);
 		}
 		return $where;
 	}
 	
-	function exists() {
-		if(empty($this->data) || empty($this->idArray)) {
-			return false;
-		} else {
-			return true;
-		}
-	}
-	
-	function fetchData() {
-		$this->db->connectToDB();
-		$query = $this->getSelectQuery().' WHERE '.$this->getIdWhere();
-		$result = $this->db->sql_query($query);
-		if($this->db->sql_num_rows($result) == 1) {
-			$this->data = $this->db->sql_fetch_assoc($result);
-		} elseif($this->db->sql_num_rows($result) == 0) {
-			$this->data = array();
-			$this->addError('L\'objet demand� n\'existe pas.');
-		} else {
-			$this->data = array();
-			$this->addError('La cl� primaire ne semble pas �tre unique.');
-		}
-		$this->db->disconnectFromDB();
-	}
-	
-	function getAllColumnsDescr() {
-		$factory = $this->getFactory();
-		return $factory->getAllColumnsDescr();
-	}
-	
-	function getDataColumnsDescr() {
-		$factory = $this->getFactory();
-		return $factory->getDataColumnsDescr();
-	}
-	
-	function getDataColumnsList() {
-		$factory = $this->getFactory();
-		return $factory->getDataColumnsList();
-	}
-	
 	function getPrimaryKeyDescr() {
-		$factory = $this->getFactory();
-		return $factory->getPrimaryKeyDescr();
+		return $this->getFactory()->getPrimaryKeyDescr();
 	}
 	
 	function getPrimaryKeyList() {
@@ -168,54 +151,47 @@ class DatabaseObject extends BaseObject {
 		return $factory->getPrimaryKeyList();
 	}
 	
-	function getInstanceType() {
-		$factory = $this->getFactory();
-		return $factory->getInstanceType();
-	}
-	
-	function getInstanceClassName() {
-		$factory = $this->getFactory();
-		return $factory->getInstanceClassName();
+	function getSelectQuery() {
+		return $this->getFactory()->getSelectQuery();
 	}
 	
 	function getTableName() {
-		$factory = $this->getFactory();
-		return $factory->getCompleteTableName();
+		return $this->getFactory()->getTableName();
 	}
 	
-	function getSelectQuery() {
+	function update($updatedData, $applyFilters = true) {
+		if(!$this->exists()) {
+			trigger_error('Mise à jour d\'un élément non existant', E_USER_ERROR);
+			return false;
+		}
 		$factory = $this->getFactory();
-		return $factory->getSelectQuery();
-	}
-	
-	function concatenateFields($keys, $separator) {
-		$stringArray = array();
-		foreach($keys AS $key) {
-			$value = $this->getData($key);
-			if ($value) {
-				$stringArray[] = $value;
+		if (true == $applyFilters) {
+			$updatedData = $this->filterOnUpdate($updatedData);
+		}
+		$updatedData = $factory->formatInputData($updatedData);
+		if(!empty($updatedData)) {
+			if($this->db->update($this->getTableName(), $this->getIdWhere(), $updatedData, $factory->getDataColumnsDescr())) {
+				$this->fetchData();
+				return true;
+			} else {
+				return false;
 			}
 		}
-		return implode($stringArray, $separator);
 	}
 	
-	function serializePrimaryKey() {
+	/*function serializePrimaryKey() {
 		ksort($this->idArray);
 		return implode(',', $this->idArray);
-	}
+	}*/
 	
-	function escape($sqlField) {
-		return $this->db->quoteStr($sqlField, $this->getTableName());
-	}
-	
-	function getWhereClauseBaseeSurClePrimaire() {
+	/*function getWhereClauseBaseeSurClePrimaire() {
 		$champsDeLaClePrimaire = $this->getPrimaryKeyList();
 		$whereClause = 'WHERE 1=1';
 		foreach($champsDeLaClePrimaire AS $nomChamp) {
 			$whereClause .= ' AND ' . $nomChamp . '=\'' . $this->escape($this->getData($nomChamp)) . '\'';
 		}
 		return $whereClause;	
-	}
+	}*/
 	
 }
 

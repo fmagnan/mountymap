@@ -5,6 +5,16 @@ require_once 'Member.class.php';
 
 class MemberFactory extends DatabaseObjectFactory {
 
+	private static $instance;
+	
+	public static function getInstance() {
+		if ( !isset(self::$instance) ) {
+			$className = __CLASS__;
+			self::$instance = new $className();
+    	}
+	    return self::$instance;
+	}
+	
 	function getDataColumnsDescr() {
 		return array(
 			'password' => 'string',
@@ -35,12 +45,6 @@ class MemberFactory extends DatabaseObjectFactory {
 		} else {
 			return '';
 		}
-	}
-	
-	function updateMember($numeroTroll) {
-		//TODO
-		/*$query = "UPDATE ".$this->tableName." SET `mise_a_jour`=NOW() WHERE `id`=".intval($numeroTroll);
-		$this->executeRequeteSansDonneesDeRetour($query, 'updateMember');*/
 	}
 	
 }
