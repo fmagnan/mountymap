@@ -41,6 +41,7 @@ class DatabaseConnector {
 		
 		$this->link = mysql_connect($host, $user, $password) or $this->addError('error[connectToDB()]: unable to connect to database');
 	 	@mysql_select_db($database) or $this->addError('error[connectToDB()]: unable to select a database');
+	 	mysql_query("SET NAMES 'utf8'");
 	}
 	
 	function disconnectFromDB() {
@@ -158,9 +159,14 @@ class DatabaseConnector {
 		$query = 'DELETE FROM `'.$tableName.'` WHERE ' . $whereClause;
 	}
 	
-	function create($tableName, $data) {
+	function create($tableName, $data, $datatypes) {
 		$keys = array_map('add_backquotes', array_keys($data));
-		$values = array_values($data);
+		$values = array();
+		foreach ($data as $key => $value) {
+			if (array_key_exists($key, $datatypes)) {
+				$values[] = $this->getValueByType($value, $datatypes[$key]);
+			}
+		}
 		$query = 'INSERT INTO `'.$tableName.'` ('.implode(',',$keys).') VALUES ('.implode(',', $values).')';
 		$this->executeRequeteSansDonneesDeRetour($query);
 	}

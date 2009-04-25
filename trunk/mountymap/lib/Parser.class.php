@@ -2,68 +2,28 @@
 
 class Parser {
 
-	var $file;
-	var $trollsData;
-	var $origineData;
-	var $errors;
+	var $file, $data, $errors, $flags;
+	var $sections = array('TROLLS', 'MONSTRES', 'TRESORS', 'LIEUX', 'CHAMPIGNONS', 'ORIGINE');
 	
 	function Parser($file) {
 		$this->file = $file;
-		$this->trollsData = array();
-		$this->origineData = array();
+		$this->data = array();
 		$this->errors = array();
+		$this->flags = array();
 	}
 	
 	function parseFile($membre) {
 		$viewHandle = fopen($this->file, "r");
 		if ($viewHandle) {
-			$debutChampignons = false; $debutLieux = false; $debutMonstres = false;
-			$debutOrigine = false; $debutTresors = false; $debutTrolls = false;
-			
-			$finChampignons = true; $finLieux = true; $finMonstres = true;
-			$finOrigine = true;	$finTresors = true;	$finTrolls = true;
+			foreach($this->sections AS $section) {
+				$this->initSection($section);
+			}
 			
 			while (!feof($viewHandle)) {
-	   			$line = trim(fgets($viewHandle));
-	   			if ('#DEBUT TROLLS' == $line) {
-	   				$debutTrolls = true;
-	   			} elseif('#FIN TROLLS' == $line) {
-	   				$finTrolls = false;
-	   			} elseif($debutTrolls && $finTrolls) {
-	   				$trollLine = explode(';', $line);
-	   				$this->trollsData[] = array(
-	   					'id' => $trollLine[0],
-	   					'position_x' => $trollLine[1],
-	   					'position_y' => $trollLine[2],
-	   					'position_n' => $trollLine[3],
-	   				);
-	   			} elseif('#DEBUT ORIGINE' == $line) {
-	   				$debutOrigine = true;
-	   			} elseif('#FIN ORIGINE' == $line) {
-	   				$finOrigine = false;
-	   			} elseif($debutOrigine && $finOrigine) {
-	   				$origineLine = explode(';', $line);
-	   				$this->trollsData[] = array(
-	   					'id' => $membre,
-	   					'position_x' => $origineLine[1],
-	   					'position_y' => $origineLine[2],
-	   					'position_n' => $origineLine[3],
-	   				);
-	   				$this->origineData = array(
-	   					'nombre_cases_vues_horizontales' => $origineLine[0],
-	   					'nombre_cases_vues_verticales' => floor(intval($origineLine[0]) / 2),
-	   					'position_x' => $origineLine[1],
-	   					'position_y' => $origineLine[2],
-	   					'position_n' => $origineLine[3],
-	   				);
-	   			}/* elseif('#DEBUT TRESORS' == $line) {
-	   				$debutTresors = true;
-	   			} elseif('#FIN TRESORS' == $line) {
-	   				$finTresors = false;
-	   			} elseif($debutTresors && $finTresors) {
-	   				$tresorData = explode(';', $line);
-	   				insertOrUpdateTresorPosition($tresorData);
-	   			}*/
+				$line = trim(fgets($viewHandle));
+				foreach ($this->sections AS $section) {
+					$this->parseSection($section, $line);	
+				}
 			}
 		} else {
 			$this->errors[] = 'erreur à l\'ouverture du fichier ' . $this->file;
@@ -74,32 +34,89 @@ class Parser {
 		}
 	}
 	
-	function getTrollsData() {
-		return $this->trollsData;
-	}
-	
-	function getOrigineData() {
-		return $this->origineData;
+	function getData($section) {
+		return $this->data[$section];
 	}
 	
 	function isInErrorStatus() {
 		return !empty($this->errors);
 	}
 	
-	/*function parseSection($sectionName, $line) {
-	if ('#DEBUT ' . $sectionName == $line) {
-		$debutTrolls = true;
-	} elseif('#FIN TROLLS' == $line) {
-		$finTrolls = false;
-   	} elseif($debutTrolls && $finTrolls) {
-		$trollLine = explode(';', $line);
-   		$trollsData[] = array(
-   			'id' => $trollLine[0],
-   			'position_x' => $trollLine[1],
-   			'position_y' => $trollLine[2],
-   			'position_n' => $trollLine[3],
-   			);
-	}}*/
+	function initSection($section) {
+		$this->flags['debut'.$section] = false;
+		$this->flags['fin'.$section] = true;
+		$this->data[$section] = array();
+	}
 	
+	function parseSection($section, $line) {
+		if ('#DEBUT ' . $section == $line) {
+			$this->flags['debut'.$section] = true;
+		} elseif('#FIN '.$section == $line) {
+			$this->flags['fin'.$section] = false;
+		} elseif($this->flags['debut'.$section] && $this->flags['fin'.$section]) {
+			$lineInArray = explode(';', $line);
+			$formatFunction = 'get'.$section.'data';
+   			$this->data[$section][] = $this->$formatFunction($lineInArray);
+		}
+	}
+	
+	function getTROLLSdata($array) {
+		return array(
+			'id' => $array[0],
+   			'position_x' => $array[1],
+   			'position_y' => $array[2],
+   			'position_n' => $array[3],
+   		);
+	}
+	
+	function getMONSTRESdata($array) {
+		return array(
+			'id' => $array[0],
+			'nom' => utf8_encode($array[1]),
+   			'position_x' => $array[2],
+   			'position_y' => $array[3],
+   			'position_n' => $array[4],
+   		);
+	}
+	
+	function getTRESORSdata($array) {
+		return array(
+			'id' => $array[0],
+			'type' => utf8_encode($array[1]),
+   			'position_x' => $array[2],
+   			'position_y' => $array[3],
+   			'position_n' => $array[4],
+   		);
+	}
+	
+	function getCHAMPIGNONSdata($array) {
+		return array(
+			'id' => $array[0],
+			'type' => utf8_encode($array[1]),
+   			'position_x' => $array[2],
+   			'position_y' => $array[3],
+   			'position_n' => $array[4],
+   		);
+	}
+	
+	function getLIEUXdata($array) {
+		return array(
+			'id' => $array[0],
+			'nom' => utf8_encode($array[1]),
+   			'position_x' => $array[2],
+   			'position_y' => $array[3],
+   			'position_n' => $array[4],
+   		);
+	}
+	
+	function getORIGINEdata($array) {
+		return array(
+			'nombre_cases_vues_horizontales' => $array[0],
+	   		'nombre_cases_vues_verticales' => floor(intval($array[0]) / 2),
+	   		'position_x' => $array[1],
+	   		'position_y' => $array[2],
+	   		'position_n' => $array[3],
+	   	);
+	}
 }
 ?>

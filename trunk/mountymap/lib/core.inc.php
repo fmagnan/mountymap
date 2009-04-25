@@ -3,6 +3,10 @@
 require_once dirname(__FILE__).'/../etc/config.inc.php';
 require_once 'Parser.class.php';
 require_once 'Troll.class.php';
+require_once 'Monster.class.php';
+require_once 'Tresor.class.php';
+require_once 'Champignon.class.php';
+require_once 'Lieu.class.php';
 require_once 'Member.class.php';
 
 function debugArray($array, $type='') {
@@ -37,17 +41,39 @@ function updateView($membre) {
 	
 	$parser = new Parser($viewFilePath);
 	$parser->parseFile($membre);
-	$trollsData = $parser->getTrollsData();
-	$origineData = $parser->getOrigineData();
 	
-	if (!$parser->isInErrorStatus() && !empty($trollsData) && !empty($origineData)) {
-		$trollsFactory = TrollFactory::getInstance();
-		foreach($trollsData as $trollData) {
-			$trollsFactory->insertOrUpdateTroll($trollData);
+	if (!$parser->isInErrorStatus()) {
+		$trollsData = $parser->getData('TROLLS');
+		if (!empty($trollsData)) {
+			$trollsFactory = TrollFactory::getInstance();
+			$trollsFactory->insertOrUpdate($trollsData);
 		}
-		$memberData = array('id' => $membre, 'mise_a_jour' => 'NOW()');
-		$member = $memberFactory->getInstanceFromArray($memberData);
-		$member->update($memberData);
+		$monstersData = $parser->getData('MONSTRES');
+		if (!empty($monstersData)) {
+			$monstersFactory = MonsterFactory::getInstance();
+			$monstersFactory->insertOrUpdate($monstersData);
+		}
+		$treasuresData = $parser->getData('TRESORS');
+		if (!empty($treasuresData)) {
+			$treasuresFactory = TresorFactory::getInstance();
+			$treasuresFactory->insertOrUpdate($treasuresData);
+		}
+		$lieuxData = $parser->getData('LIEUX');
+		if (!empty($lieuxData)) {
+			$lieuxFactory = LieuFactory::getInstance();
+			$lieuxFactory->insertOrUpdate($lieuxData);
+		}
+		$champignonsData = $parser->getData('CHAMPIGNONS');
+		if (!empty($champignonsData)) {
+			$champignonsFactory = ChampignonFactory::getInstance();
+			$champignonsFactory->insertOrUpdate($champignonsData);
+		}
+		/*$origineData = $parser->getData('ORIGINE');
+		if (!empty($origineData)) {
+			$memberData = array('id' => $membre, 'mise_a_jour' => 'NOW()');
+			$member = $memberFactory->getInstanceFromArray($memberData);
+			$member->update($memberData);
+		}*/
 	}
 }
 

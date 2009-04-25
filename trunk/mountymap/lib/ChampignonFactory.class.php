@@ -1,9 +1,8 @@
 <?php
 
 require_once 'DatabaseObjectFactory.class.php';
-require_once 'Troll.class.php';
 
-class TrollFactory extends DatabaseObjectFactory {
+class ChampignonFactory extends DatabaseObjectFactory {
 	
 	private static $instance;
 	
@@ -18,6 +17,7 @@ class TrollFactory extends DatabaseObjectFactory {
 	function getDataColumnsDescr() {
 		return array(
 			'mise_a_jour' => 'date',
+			'type' => 'string',
 			'position_x' => 'int',
 			'position_y' => 'int',
 			'position_n' => 'int',
@@ -31,7 +31,7 @@ class TrollFactory extends DatabaseObjectFactory {
 	}
 	
 	function getTableName() {
-		return 'troll';
+		return 'champignon';
 	}
 	
 }
