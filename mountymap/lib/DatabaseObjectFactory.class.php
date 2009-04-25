@@ -56,9 +56,8 @@ abstract class DatabaseObjectFactory extends BaseObject {
 				return false;
 			}
 		}
-		$data = $this->formatInputData($data);
-		
-		if($this->db->create($this->getTableName(), $data)) {
+
+		if($this->db->create($this->getTableName(), $data, $this->getAllColumnsDescr())) {
 			if($autoIncrement) {
 				return array($keyName => mysql_insert_id());
 			} else {
@@ -107,24 +106,6 @@ abstract class DatabaseObjectFactory extends BaseObject {
 	
 	function getInstanceClassName() {
 		return str_replace('factory', '', strtolower(get_class($this)));
-	}
-	
-	function formatInputData($dataArray) {
-		$dataFields = $this->getAllColumnsDescr();
-		$filteredDataArray = array();
-		foreach($dataArray AS $key => $value) {
-			if(isset($dataFields[$key])) {
-				switch($dataFields[$key]) {
-					/*case 'date':
-						$filteredDataArray[$key] = $this->formatDateToDatabase($value);
-						break;*/
-					default:
-						$filteredDataArray[$key] = $value;
-						break;
-				}
-			}
-		}
-		return $filteredDataArray;
 	}
 	
 	function getInstanceFromArray($data) {
@@ -190,6 +171,17 @@ abstract class DatabaseObjectFactory extends BaseObject {
 		return $this->db->executeRequeteAvecDonneesDeRetourMultiples($query);
 	}
 	
+	function insertOrUpdate($multipleData) {
+		foreach($multipleData as $data) {
+			$databaseObject = $this->getInstanceFromArray($data);
+			if ($databaseObject->isError()) {
+				$data['mise_a_jour'] = 'NOW()';
+				$this->create($data);
+			} else {
+				$databaseObject->update($data);
+			}
+		}
+	}
 }
 
 ?>

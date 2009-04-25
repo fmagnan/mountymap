@@ -137,7 +137,7 @@ class DatabaseObject extends BaseObject {
 		$primary_key_datatypes = $this->getFactory()->getPrimaryKeyDescr();
 		$where = '1=1';
 		foreach($this->idArray AS $key => $value) {
-			$where .= ' AND '.$key.'='.$this->db->getValueByType($value, $primary_key_datatypes[$key]);
+			$where .= ' AND `'.$key.'`='.$this->db->getValueByType($value, $primary_key_datatypes[$key]);
 		}
 		return $where;
 	}
@@ -168,7 +168,6 @@ class DatabaseObject extends BaseObject {
 		if (true == $applyFilters) {
 			$updatedData = $this->filterOnUpdate($updatedData);
 		}
-		$updatedData = $factory->formatInputData($updatedData);
 		if(!empty($updatedData)) {
 			if($this->db->update($this->getTableName(), $this->getIdWhere(), $updatedData, $factory->getDataColumnsDescr())) {
 				$this->fetchData();

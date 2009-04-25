@@ -2,8 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
 	<head>
 		<title>Vue globale</title>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<link rel="shortcut icon" type="image/png" href="/images/favicon.gif" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="shortcut icon" type="image/gif" href="/images/favicon.gif" />
 		<link rel="stylesheet" type="text/css" href="/css/screen.css" media="screen" title="Normal" />
 		<base href="{$server_root_path}" />
 		<script type="text/javascript" src="/js/functions_MH.js"></script>
