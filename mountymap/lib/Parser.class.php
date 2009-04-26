@@ -3,13 +3,25 @@
 class Parser {
 
 	var $file, $data, $errors, $flags;
-	var $sections = array('TROLLS', 'MONSTRES', 'TRESORS', 'LIEUX', 'CHAMPIGNONS', 'ORIGINE');
+	var $sections = array(
+		'Troll' => 'TROLLS',
+		'Monster' => 'MONSTRES',
+		'Tresor' => 'TRESORS',
+		'Lieu' => 'LIEUX',
+		'Champignon' => 'CHAMPIGNONS',
+		/*'ORIGINE'*/
+	);
 	
 	function Parser($file) {
 		$this->file = $file;
 		$this->data = array();
 		$this->errors = array();
 		$this->flags = array();
+	}
+	
+	function getSections() {
+		return $this->sections;
+	
 	}
 	
 	function parseFile($membre) {
