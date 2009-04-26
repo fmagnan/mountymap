@@ -124,7 +124,7 @@ class DatabaseObject extends BaseObject {
 	
 	function getFactory() {
 		if(!isset($this->factory)) {
-			$this->factory = call_user_func(array(__CLASS__.'Factory', '::getInstance'));
+			$this->factory = call_user_func(array(__CLASS__.'Factory', 'getInstance'));
 		}
 		return $this->factory;
 	}

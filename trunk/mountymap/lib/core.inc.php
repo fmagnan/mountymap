@@ -41,9 +41,17 @@ function updateView($membre) {
 	
 	$parser = new Parser($viewFilePath);
 	$parser->parseFile($membre);
+	$sections = $parser->getSections();
 	
 	if (!$parser->isInErrorStatus()) {
-		$trollsData = $parser->getData('TROLLS');
+		foreach ($sections as $object => $section) {
+			$data = $parser->getData($section);
+			$factoryName = $object . 'Factory';
+			$factory = call_user_func(array($factoryName, 'getInstance'));
+			$factory->insertOrUpdate($data);
+		}
+		
+		/*$trollsData = $parser->getData('TROLLS');
 		if (!empty($trollsData)) {
 			$trollsFactory = TrollFactory::getInstance();
 			$trollsFactory->insertOrUpdate($trollsData);
