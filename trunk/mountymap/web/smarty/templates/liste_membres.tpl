@@ -15,10 +15,10 @@
 		{else}
    			<tr class="odd">
 		{/if}
-			<td>{$membres[numero].nom} ({$membres[numero].id})</td>
-			<td>{$membres[numero].position_x} / {$membres[numero].position_y} / {$membres[numero].position_n}</td>
-			<td>{$membres[numero].mise_a_jour}</td>
-			<td><a href="update_view.php?membre={$membres[numero].id}">mettre à jour la vue</a></td>
+			<td>{$membres[numero]->getName()} ({$membres[numero]->getId()})</td>
+			<td>{$membres[numero]->getFormattedPosition()}</td>
+			<td>{$membres[numero]->getUpdate()}</td>
+			<td><a href="update_view.php?membre={$membres[numero]->getId()}">mettre à jour la vue</a></td>
 		</tr>
 	{/section}
 	</tbody>

@@ -9,7 +9,7 @@ class Parser {
 		'Tresor' => 'TRESORS',
 		'Lieu' => 'LIEUX',
 		'Champignon' => 'CHAMPIGNONS',
-		/*'ORIGINE'*/
+		'Troll' => 'ORIGINE',
 	);
 	
 	function Parser($file) {
@@ -21,10 +21,10 @@ class Parser {
 	
 	function getSections() {
 		return $this->sections;
-	
 	}
 	
-	function parseFile($membre) {
+	function parseFile($memberId) {
+		$this->member_id = $memberId;
 		$viewHandle = fopen($this->file, "r");
 		if ($viewHandle) {
 			foreach($this->sections AS $section) {
@@ -81,6 +81,15 @@ class Parser {
    		);
 	}
 	
+	function getORIGINEdata($array) {
+		return array(
+			'id' => $this->member_id,
+   			'position_x' => $array[1],
+   			'position_y' => $array[2],
+   			'position_n' => $array[3],
+   		);
+	}
+	
 	function getMONSTRESdata($array) {
 		return array(
 			'id' => $array[0],
@@ -120,15 +129,6 @@ class Parser {
    			'position_n' => $array[4],
    		);
 	}
-	
-	function getORIGINEdata($array) {
-		return array(
-			'nombre_cases_vues_horizontales' => $array[0],
-	   		'nombre_cases_vues_verticales' => floor(intval($array[0]) / 2),
-	   		'position_x' => $array[1],
-	   		'position_y' => $array[2],
-	   		'position_n' => $array[3],
-	   	);
-	}
+
 }
 ?>

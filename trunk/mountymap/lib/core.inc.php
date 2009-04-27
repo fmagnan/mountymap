@@ -53,13 +53,13 @@ function updateView($membre) {
 	}
 }
 
-/*function getDateEnFrancais($dateEnAnglais) {
+function getDateEnFrancais($dateEnAnglais) {
 	$dateEtHeure = explode(' ', $dateEnAnglais);
 	$date = explode('-', $dateEtHeure[0]);
 	$heure = explode(':', $dateEtHeure[1]);
 	$dateEnFrancais = $date[2] . '/' . $date[1] . '/' . $date[0] . ' à ' . $heure[0] . 'h' . $heure[1];
 	return $dateEnFrancais;
-}*/
+}
 
 function instantiateSmartyTemplate($path) {
 	$smarty = new Smarty();
