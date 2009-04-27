@@ -8,39 +8,9 @@ abstract class DatabaseObjectFactory extends BaseObject {
 	var $db;
 	private static $instance;
 	
-	public static function getInstance() {
-		if ( !isset(self::$instance) ) {
-			$className = __CLASS__;
-			self::$instance = new $className();
-    	}
-	    return self::$instance;
-	}
-	
 	function DatabaseObjectFactory() {
 		$this->db = DatabaseConnector::getInstance();
 	}
-	
-	function getAllColumnsDescr() {
-		return array_merge($this->getPrimaryKeyDescr(), $this->getDataColumnsDescr());
-	}
-	
-	function getAllColumnsList() {
-		return array_merge($this->getPrimaryKeyList(), $this->getDataColumnsList());
-	}
-	
-	abstract function getDataColumnsDescr();
-	
-	function getDataColumnsList() {
-		return array_keys($this->getDataColumnsDescr());
-	}
-
-	abstract function getPrimaryKeyDescr();
-	
-	function getPrimaryKeyList() {
-		return array_keys($this->getPrimaryKeyDescr());
-	}
-	
-	abstract function getTableName();
 	
 	function create($data) {
 		$this->resetErrors();
@@ -72,27 +42,9 @@ abstract class DatabaseObjectFactory extends BaseObject {
 			return false;
 		}
 	}
-	
-	function filterOnCreate($data) {
-		return $data;
-	}
-	
-	function getCount($tableName = '', $where = '') {
-		$this->resetErrors();
-		$result = $this->mysql_query($this->getCountQuery($tableName) . ' ' . $where);
-		$data = $this->mysql_fetch_assoc($result);
-		return $data['count'];
-	}
-	
-	function getSelectQuery() {
-		return 'SELECT * FROM '.$this->getTableName();
-	}
-				
-	function getCountQuery($tableName='') {
-		if ($tableName == '') {
-			$tableName = $this->getTableName();
-		}
-		return 'SELECT count(*) AS count FROM ' . $tableName;
+		
+	function emptyTable($whereClause = '') {
+		return mysql_query('DELETE FROM `'.$this->getTableName().'` '.$whereClause);
 	}
 	
 	function extractIdArray($data) {
@@ -104,8 +56,44 @@ abstract class DatabaseObjectFactory extends BaseObject {
 		return $id;
 	}
 	
-	function emptyTable($whereClause = '') {
-		return mysql_query('DELETE FROM `'.$this->getTableName().'` '.$whereClause);
+	function filterOnCreate($data) {
+		return $data;
+	}
+				
+	function getAllColumnsDescr() {
+		return array_merge($this->getPrimaryKeyDescr(), $this->getDataColumnsDescr());
+	}
+	
+	function getAllColumnsList() {
+		return array_merge($this->getPrimaryKeyList(), $this->getDataColumnsList());
+	}
+	
+	function getCount($tableName = '', $where = '') {
+		$this->resetErrors();
+		$result = $this->mysql_query($this->getCountQuery($tableName) . ' ' . $where);
+		$data = $this->mysql_fetch_assoc($result);
+		return $data['count'];
+	}
+	
+	function getCountQuery($tableName='') {
+		if ($tableName == '') {
+			$tableName = $this->getTableName();
+		}
+		return 'SELECT count(*) AS count FROM ' . $tableName;
+	}
+	
+	abstract function getDataColumnsDescr();
+	
+	function getDataColumnsList() {
+		return array_keys($this->getDataColumnsDescr());
+	}
+
+	public static function getInstance() {
+		if ( !isset(self::$instance) ) {
+			$className = __CLASS__;
+			self::$instance = new $className();
+    	}
+	    return self::$instance;
 	}
 	
 	function getInstanceClassName() {
@@ -182,10 +170,20 @@ abstract class DatabaseObjectFactory extends BaseObject {
 	}
 	
 	function getInstances($orderBy, $sort) {
-		return $this->getInstancesWithQuery($this->select($orderBy, $sort));
+		return $this->getInstancesWithQuery($this->getSelectQuery($orderBy, $sort));
 	}
 	
-	function selectWithWhereClause($whereClause, $orderBy='', $sort='ASC') {
+	abstract function getPrimaryKeyDescr();
+	
+	function getPrimaryKeyList() {
+		return array_keys($this->getPrimaryKeyDescr());
+	}
+	
+	function getSelectQuery($orderBy='', $sort='ASC') {
+		return $this->getSelectQueryWithWhereClause('1', $orderBy, $sort);
+	}
+	
+	function getSelectQueryWithWhereClause($whereClause, $orderBy='', $sort='ASC') {
 		$fieldsToRetrieve = implode(',', array_map('add_backquotes', $this->getAllColumnsList()));
 		if ($orderBy == '') {
 			$keyFields = $this->getPrimaryKeyList(); 
@@ -194,18 +192,16 @@ abstract class DatabaseObjectFactory extends BaseObject {
 		return "SELECT ".$fieldsToRetrieve." FROM `".$this->getTableName()."` WHERE " . $whereClause . " ORDER BY " . $orderBy . " " . $sort;
 	}
 	
-	function select($orderBy='', $sort='ASC') {
-		return $this->selectWithWhereClause('1', $orderBy, $sort);
-	}
+	abstract function getTableName();
 	
 	function insertOrUpdate($multipleData) {
 		foreach($multipleData as $data) {
 			$databaseObject = $this->getInstanceFromArray($data);
-			if ($databaseObject->isError()) {
-				$data['mise_a_jour'] = 'NOW()';
-				$this->create($data);
-			} else {
+			$data['mise_a_jour'] = 'NOW()';
+			if (is_object($databaseObject) && $databaseObject->exists()) {
 				$databaseObject->update($data);
+			} else {
+				$this->create($data);
 			}
 		}
 	}

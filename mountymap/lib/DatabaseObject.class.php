@@ -59,10 +59,8 @@ class DatabaseObject extends BaseObject {
 	}
 	
 	function fetchData() {
-		$this->db->connectToDB();
-		$query = $this->selectWithWhereClause($this->getIdWhere());
+		$query = $this->getSelectQueryWithWhereClause($this->getIdWhere());
 		$this->data = $this->db->executeRequeteAvecDonneeDeRetourUnique($query);
-		$this->db->disconnectFromDB();
 	}
 	
 	function filterOnUpdate($data) {
@@ -141,8 +139,8 @@ class DatabaseObject extends BaseObject {
 		return $this->getFactory()->getTableName();
 	}
 	
-	function selectWithWhereClause($whereClause) {
-		return $this->getFactory()->selectWithWhereClause($whereClause);
+	function getSelectQueryWithWhereClause($whereClause) {
+		return $this->getFactory()->getSelectQueryWithWhereClause($whereClause);
 	}
 	
 	function update($updatedData, $applyFilters = true) {
