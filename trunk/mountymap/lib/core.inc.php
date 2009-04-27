@@ -1,7 +1,9 @@
 <?php
 
 require_once dirname(__FILE__).'/../etc/config.inc.php';
-require_once 'Parser.class.php';
+require_once 'ViewParser.class.php';
+require_once 'GuildParser.class.php';
+require_once 'Guild.class.php';
 require_once 'Troll.class.php';
 require_once 'Monster.class.php';
 require_once 'Tresor.class.php';
@@ -39,12 +41,29 @@ function updateView($membre) {
 	*/
 	$viewFilePath = dirname(__FILE__).'/../data/vue_'.intval($membre).'.txt';
 	
-	$parser = new Parser($viewFilePath);
-	$parser->parseFile($membre);
+	$parser = new ViewParser($viewFilePath, $membre);
+	$parser->parseFile();
 	$sections = $parser->getSections();
 	
 	if (!$parser->isInErrorStatus()) {
-		foreach ($sections as $object => $section) {
+		foreach ($sections as $section => $object) {
+			$data = $parser->getData($section);
+			$factoryName = $object . 'Factory';
+			$factory = call_user_func(array($factoryName, 'getInstance'));
+			$factory->insertOrUpdate($data);
+		}
+	}
+}
+
+function updatePublicGuild() {
+	//TODO modifier le chemin du fichier pour pointer sur le site MH
+	$guildFilePath = dirname(__FILE__).'/../data/Public_Guildes.txt';
+	$parser = new GuildParser($guildFilePath);
+	$parser->parseFile();
+	$sections = $parser->getSections();
+	
+	if (!$parser->isInErrorStatus()) {
+		foreach ($sections as $section => $object) {
 			$data = $parser->getData($section);
 			$factoryName = $object . 'Factory';
 			$factory = call_user_func(array($factoryName, 'getInstance'));
