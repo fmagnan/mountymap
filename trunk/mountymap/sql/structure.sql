@@ -26,7 +26,7 @@ DROP TABLE IF EXISTS `membre`;
 CREATE TABLE IF NOT EXISTS `membre` (
   `id` int(11) NOT NULL,
   `mise_a_jour` datetime NOT NULL,
-  `password` varchar(30) character set latin1 NOT NULL,
+  `password` varchar(32) character set latin1 NOT NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 

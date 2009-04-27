@@ -5,4 +5,11 @@
 			{$all_sql_queries[number]}
 		</div>
 	{/section}
-</div>	
+</div>
+<div id="error">
+	{section name=err loop=$all_errors}
+		{if $smarty.section.err.index is even}<div class="even">{else}<div class="odd">{/if}
+			{$all_errors[err]}
+		</div>
+	{/section}
+</div>
