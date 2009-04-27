@@ -11,6 +11,14 @@ CREATE TABLE IF NOT EXISTS `champignon` (
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS `guilde`;
+CREATE TABLE IF NOT EXISTS `guilde` (
+  `id` int(11) NOT NULL,
+  `mise_a_jour` datetime NOT NULL,
+  `nom` varchar(100) NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
 DROP TABLE IF EXISTS `lieu`;
 CREATE TABLE IF NOT EXISTS `lieu` (
   `id` int(11) NOT NULL,
