@@ -24,6 +24,10 @@ abstract class DatabaseObjectFactory extends BaseObject {
 		return array_merge($this->getPrimaryKeyDescr(), $this->getDataColumnsDescr());
 	}
 	
+	function getAllColumnsList() {
+		return array_merge($this->getPrimaryKeyList(), $this->getDataColumnsList());
+	}
+	
 	abstract function getDataColumnsDescr();
 	
 	function getDataColumnsList() {
@@ -158,8 +162,8 @@ abstract class DatabaseObjectFactory extends BaseObject {
 		return $this->getInstanceWithQuery($query);
 	}
 	
-	function getInstanceWithQuery($query) {
-		return $this->db->executeRequeteAvecDonneeDeRetourUnique($query);
+	function getInstanceWithQuery($query, $dataName='') {
+		return $this->db->executeRequeteAvecDonneeDeRetourUnique($query, $dataName);
 	}
 	
 	function getInstancesWithWhereClause($whereClause='') {
@@ -169,6 +173,24 @@ abstract class DatabaseObjectFactory extends BaseObject {
 	
 	function getInstancesWithQuery($query) {
 		return $this->db->executeRequeteAvecDonneesDeRetourMultiples($query);
+	}
+	
+	function getInstances($orderBy, $sort) {
+		$query = $this->select($orderBy, $sort);
+		return $this->getInstancesWithQuery($query);
+	}
+	
+	function selectWithWhereClause($whereClause, $orderBy='', $sort='ASC') {
+		$fieldsToRetrieve = implode(',', array_map('add_backquotes', $this->getAllColumnsList()));
+		if ($orderBy == '') {
+			$keyFields = $this->getPrimaryKeyList(); 
+			$orderBy = add_backquotes($keyFields[0]);
+		}
+		return "SELECT ".$fieldsToRetrieve." FROM `".$this->getTableName()."` WHERE " . $whereClause . " ORDER BY " . $orderBy . " " . $sort;
+	}
+	
+	function select($orderBy='', $sort='ASC') {
+		return $this->selectWithWhereClause('1', $orderBy, $sort);
 	}
 	
 	function insertOrUpdate($multipleData) {

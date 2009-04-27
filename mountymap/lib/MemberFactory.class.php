@@ -33,18 +33,12 @@ class MemberFactory extends DatabaseObjectFactory {
 	}
 	
 	function getMembres() {
-		return $this->getInstancesWithWhereClause();
-		//return $this->select("`mise_a_jour`", "DESC");
+		return $this->getInstances('`mise_a_jour`', 'DESC');
 	}
 	
-	function getRestrictedPasswordFrom($membre) {
-		if (is_numeric($membre)) {
-			$query = "SELECT `password` FROM ".$this->getTableName()." WHERE `id`=".intval($membre)." LIMIT 1";
-			$password = $this->getInstanceWithQuery($query);
-			return md5($password['password']);
-		} else {
-			return '';
-		}
+	function getPasswordFrom($membre) {
+		$member = $this->getInstanceFromArray(array('id' => $membre));
+		return $member->getPassword();
 	}
 	
 }

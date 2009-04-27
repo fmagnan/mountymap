@@ -60,17 +60,8 @@ class DatabaseObject extends BaseObject {
 	
 	function fetchData() {
 		$this->db->connectToDB();
-		$query = $this->getSelectQuery().' WHERE '.$this->getIdWhere();
-		$result = $this->db->sql_query($query);
-		if($this->db->sql_num_rows($result) == 1) {
-			$this->data = $this->db->sql_fetch_assoc($result);
-		} elseif($this->db->sql_num_rows($result) == 0) {
-			$this->data = array();
-			$this->addError('L\'objet demandé n\'existe pas.');
-		} else {
-			$this->data = array();
-			$this->addError('La clef primaire ne semble pas être unique.');
-		}
+		$query = $this->selectWithWhereClause($this->getIdWhere());
+		$this->data = $this->db->executeRequeteAvecDonneeDeRetourUnique($query);
 		$this->db->disconnectFromDB();
 	}
 	
@@ -151,12 +142,12 @@ class DatabaseObject extends BaseObject {
 		return $factory->getPrimaryKeyList();
 	}
 	
-	function getSelectQuery() {
-		return $this->getFactory()->getSelectQuery();
-	}
-	
 	function getTableName() {
 		return $this->getFactory()->getTableName();
+	}
+	
+	function selectWithWhereClause($whereClause) {
+		return $this->getFactory()->selectWithWhereClause($whereClause);
 	}
 	
 	function update($updatedData, $applyFilters = true) {

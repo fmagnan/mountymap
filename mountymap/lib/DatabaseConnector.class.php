@@ -33,6 +33,14 @@ class DatabaseConnector {
 		return $this->all_sql_queries;
 	}
 	
+	function getAllErrors() {
+		return $this->errors;
+	}
+	
+	function isInError() {
+		return !empty($this->errors);
+	}
+	
 	function connectToDB($host='', $user='', $password='', $database='') {
 		if ($host == '') { $host = _HOST_; }
 		if ($user == '') { $user = _USER_; }
@@ -50,7 +58,7 @@ class DatabaseConnector {
 	
 	function addMysqlError($query) {
 		$mysqlError = mysql_errno();
-		$error .= 'requête ' . $query;
+		$error = 'requête ' . $query;
 		if (1022 == $mysqlError || 1062 == $mysqlError) {
 			$error .= ' : clef primaire dupliquée, l\'enregistrement a déjà été soumis.';
 		} elseif (1146 == $mysqlError) {
@@ -117,20 +125,6 @@ class DatabaseConnector {
 		}
 		$this->disconnectFromDB();
 		return $donneesDeRetour;
-	}
-	
-	function selectWithWhereClause($whereClause, $orderBy='', $sort='ASC') {
-		$fieldsToRetrieve = implode(',', array_map('add_backquotes', array_merge(array_keys($this->keys), array_keys($this->data))));
-		if ($orderBy == '') {
-			$keyFields = array_keys($this->keys); 
-			$orderBy = add_backquotes($keyFields[0]);
-		}
-		$requete = "SELECT ".$fieldsToRetrieve." FROM `".$this->tableName."` WHERE " . $whereClause . " ORDER BY " . $orderBy . " " . $sort;
-		return $this->executeRequeteAvecDonneesDeRetourMultiples($requete);
-	}
-	
-	function select($orderBy='', $sort='ASC') {
-		return $this->selectWithWhereClause('1', $orderBy, $sort);
 	}
 	
 	function getValueByType($value, $type) {
