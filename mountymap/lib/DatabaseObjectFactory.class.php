@@ -138,7 +138,6 @@ abstract class DatabaseObjectFactory extends BaseObject {
 	
 	function getInstanceFromObject($object) {
 		$primaryKeyList = $this->getPrimaryKeyList();
-		
 		$primaryKey = array();
 		
 		foreach($primaryKeyList AS $primaryKeyElement) {
@@ -172,12 +171,18 @@ abstract class DatabaseObjectFactory extends BaseObject {
 	}
 	
 	function getInstancesWithQuery($query) {
-		return $this->db->executeRequeteAvecDonneesDeRetourMultiples($query);
+		$instanceName = $this->getInstanceClassName();
+		$instances = array();
+		$multipleData = $this->db->executeRequeteAvecDonneesDeRetourMultiples($query);
+		foreach($multipleData as $data) {
+			$idsArray = array_intersect_key($data, $this->getPrimaryKeyDescr());
+			$instances[] = new $instanceName($this, $idsArray);
+		}
+		return $instances;
 	}
 	
 	function getInstances($orderBy, $sort) {
-		$query = $this->select($orderBy, $sort);
-		return $this->getInstancesWithQuery($query);
+		return $this->getInstancesWithQuery($this->select($orderBy, $sort));
 	}
 	
 	function selectWithWhereClause($whereClause, $orderBy='', $sort='ASC') {

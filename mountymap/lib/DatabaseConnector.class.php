@@ -108,7 +108,7 @@ class DatabaseConnector {
 		return $donneesDeRetour;
 	}
 	
-	function executeRequeteEtTransformeDates($query, $champsDate) {
+/*	function executeRequeteEtTransformeDates($query, $champsDate) {
 		$this->addQuery($query);
 		$donneesDeRetour = array();
 		$this->connectToDB();
@@ -125,7 +125,7 @@ class DatabaseConnector {
 		}
 		$this->disconnectFromDB();
 		return $donneesDeRetour;
-	}
+	}*/
 	
 	function getValueByType($value, $type) {
 		if ($type == 'string') {

@@ -89,11 +89,6 @@ class DatabaseObject extends BaseObject {
 				if ($useFilter) {
 					switch($columnDescription[$column]) {
 						case 'date':
-							$dateElements = explode('-', $dataValue);
-							$dataValue = $dateElements[2].'/'.$dateElements[1].'/'.$dateElements[0];
-							if($dataValue == '31/12/9999') {
-								$dataValue = '-';
-							}
 							break;
 						default:
 							break;
