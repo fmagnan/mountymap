@@ -33,7 +33,7 @@ function getTimeStampFromTrollDate($dateCompilation) {
 
 function updateView($membre) {
 	$memberFactory = MemberFactory::getInstance();
-	$restrictedPassword = $memberFactory->getRestrictedPasswordFrom($membre);
+	$password = $memberFactory->getPasswordFrom($membre);
 	/* 	TODO utiliser le bon chemin
 		$viewFilePath = VIEW_FILE_PATH . '?Numero='.intval($membre).'&Motdepasse='.$restrictedPassword.'&Tresors=1&Lieux=1&Champignons=1';
 	*/
@@ -50,38 +50,6 @@ function updateView($membre) {
 			$factory = call_user_func(array($factoryName, 'getInstance'));
 			$factory->insertOrUpdate($data);
 		}
-		
-		/*$trollsData = $parser->getData('TROLLS');
-		if (!empty($trollsData)) {
-			$trollsFactory = TrollFactory::getInstance();
-			$trollsFactory->insertOrUpdate($trollsData);
-		}
-		$monstersData = $parser->getData('MONSTRES');
-		if (!empty($monstersData)) {
-			$monstersFactory = MonsterFactory::getInstance();
-			$monstersFactory->insertOrUpdate($monstersData);
-		}
-		$treasuresData = $parser->getData('TRESORS');
-		if (!empty($treasuresData)) {
-			$treasuresFactory = TresorFactory::getInstance();
-			$treasuresFactory->insertOrUpdate($treasuresData);
-		}
-		$lieuxData = $parser->getData('LIEUX');
-		if (!empty($lieuxData)) {
-			$lieuxFactory = LieuFactory::getInstance();
-			$lieuxFactory->insertOrUpdate($lieuxData);
-		}
-		$champignonsData = $parser->getData('CHAMPIGNONS');
-		if (!empty($champignonsData)) {
-			$champignonsFactory = ChampignonFactory::getInstance();
-			$champignonsFactory->insertOrUpdate($champignonsData);
-		}
-		/*$origineData = $parser->getData('ORIGINE');
-		if (!empty($origineData)) {
-			$memberData = array('id' => $membre, 'mise_a_jour' => 'NOW()');
-			$member = $memberFactory->getInstanceFromArray($memberData);
-			$member->update($memberData);
-		}*/
 	}
 }
 
@@ -111,6 +79,13 @@ function setDebugTrace($smartyTemplate) {
 		$databaseConnector = DatabaseConnector::getInstance();
 		$smartyTemplate->assign('all_sql_queries', $databaseConnector->getAllSqlQueries());
 		$smartyTemplate->assign('nb_queries', count($databaseConnector->getAllSqlQueries()));
+	}
+}
+
+function setErrorTrace($smartyTemplate) {
+	$databaseConnector = DatabaseConnector::getInstance();
+	if ($databaseConnector->isInError()) {
+		$smartyTemplate->assign('all_errors', $databaseConnector->getAllErrors());
 	}
 }
 

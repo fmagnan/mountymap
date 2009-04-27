@@ -5,6 +5,10 @@ require_once 'MemberFactory.class.php';
 
 class Member extends DatabaseObject {
 
+	function getPassword() {
+		return $this->getData('password');
+	}
+	
 }
 
 ?>
