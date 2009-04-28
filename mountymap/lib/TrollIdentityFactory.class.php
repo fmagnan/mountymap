@@ -3,7 +3,7 @@
 require_once 'DatabaseObjectFactory.class.php';
 require_once 'Troll.class.php';
 
-class TrollFactory extends DatabaseObjectFactory {
+class TrollIdentityFactory extends DatabaseObjectFactory {
 	
 	private static $instance;
 	
@@ -18,9 +18,11 @@ class TrollFactory extends DatabaseObjectFactory {
 	function getDataColumnsDescr() {
 		return array(
 			'mise_a_jour' => 'date',
-			'position_x' => 'int',
-			'position_y' => 'int',
-			'position_n' => 'int',
+			'nom' => 'string',
+			'race' => 'string',
+			'niveau' => 'int',
+			'id_guilde' => 'int',
+			'nombre_mouches' => 'int',
 		);
 	}
 	
@@ -31,6 +33,10 @@ class TrollFactory extends DatabaseObjectFactory {
 	}
 	
 	function getTableName() {
+		return 'troll_identity';
+	}
+	
+	function getInstanceClassName() {
 		return 'troll';
 	}
 	
