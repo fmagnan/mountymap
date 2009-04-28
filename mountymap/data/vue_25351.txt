@@ -1,0 +1,115 @@
+#DEBUT TROLLS
+1286;-114;-75;-55
+7165;-114;-75;-55
+79385;-114;-75;-55
+80455;-113;-77;-54
+23386;-112;-77;-54
+28696;-112;-77;-54
+17697;-111;-70;-55
+25351;-110;-76;-53
+76527;-110;-76;-53
+761;-110;-74;-53
+6807;-110;-74;-53
+49650;-109;-78;-50
+3388;-109;-74;-53
+28244;-108;-79;-50
+1108;-107;-76;-52
+#FIN TROLLS
+#DEBUT MONSTRES
+458487;Gowap Apprivoisé [Ancêtre];-114;-75;-56
+755512;Gowap Apprivoisé [Ancien];-114;-75;-56
+1112051;Gowap Apprivoisé [Ancien];-114;-75;-56
+470139;Gowap Apprivoisé [Ancêtre];-114;-75;-55
+1017744;Gowap Apprivoisé [Ancien];-114;-75;-55
+465786;Gowap Apprivoisé [Ancêtre];-114;-75;-54
+505178;Gowap Apprivoisé [Ancêtre] Gnoumphinet de le troupal de le Links;-112;-77;-55
+442809;Gowap Apprivoisé [Ancêtre] Poumphinet de le troupal de le Links;-112;-77;-55
+445828;Gowap Apprivoisé [Ancêtre];-112;-77;-55
+447356;Gowap Apprivoisé [Ancêtre] Agnoumphinet de le troupal de le Links;-112;-77;-55
+467136;Gowap Apprivoisé [Ancêtre] Badaboumphinet de le troupal de le Links;-112;-77;-55
+487000;Gowap Apprivoisé [Ancêtre] Toboumphinet de le troupal de le Links;-112;-77;-55
+611469;Gowap Apprivoisé [Ancêtre] Qué sappéleriot Raoûl;-112;-77;-54
+491326;Gowap Apprivoisé [Ancêtre] Boumphinet de le troupal de le Links;-112;-76;-55
+459387;Gowap Apprivoisé [Ancêtre] Nabot mal grandi et très ramollii;-109;-78;-50
+497491;Gowap Apprivoisé [Ancêtre];-109;-76;-52
+590331;Gowap Apprivoisé [Ancêtre] Sarge;-107;-77;-52
+457852;Gowap Apprivoisé [Ancêtre];-107;-76;-52
+457851;Gowap Apprivoisé [Ancêtre];-107;-76;-52
+1499588;Gowap Apprivoisé [Ancien];-106;-78;-52
+470852;Gowap Apprivoisé [Ancêtre] répondant à le doux nom de Miette;-106;-74;-51
+470192;Gowap Apprivoisé [Ancêtre] répondant à le doux nom de One;-106;-74;-51
+533280;Gowap Apprivoisé [Ancêtre] répondant à le doux nom de Petit Frère;-106;-74;-51
+562751;Gowap Apprivoisé [Ancêtre];-104;-74;-53
+1821131;Gowap Apprivoisé [Ancien];-103;-76;-50
+#FIN MONSTRES
+#DEBUT TRESORS
+3118204;Arme (1 main);-117;-71;-52
+595259;Armure;-117;-71;-52
+6721727;Composant;-113;-72;-52
+6721726;Spécial;-113;-72;-52
+5460866;Bidouille;-113;-72;-52
+6696567;Composant;-111;-74;-53
+6432555;Potion;-111;-74;-53
+6524504;Parchemin;-111;-74;-53
+6728657;Gigots de Gob;-111;-74;-53
+6637332;Potion;-111;-74;-53
+6711527;Potion;-111;-74;-53
+6201472;Potion;-111;-74;-53
+3262040;Bidouille;-111;-71;-56
+6740108;Gigots de Gob;-111;-70;-55
+6641247;Composant;-111;-70;-55
+1688749;Bidouille;-111;-69;-52
+6703450;Composant;-110;-74;-53
+6702654;Composant;-110;-74;-53
+6733300;Gigots de Gob;-110;-74;-53
+6701606;Composant;-110;-74;-53
+6590651;Parchemin;-109;-75;-54
+6731617;Gigots de Gob;-109;-75;-54
+5511622;Armure;-109;-72;-54
+6729121;Gigots de Gob;-108;-75;-55
+2746000;Bidouille;-108;-73;-55
+6435536;Bidouille;-107;-78;-53
+6473079;Bidouille;-107;-77;-52
+6661183;Parchemin;-107;-77;-52
+6722860;Gigots de Gob;-107;-77;-52
+6730250;Gigots de Gob;-107;-76;-53
+5506384;Bidouille;-107;-69;-53
+6012079;Bidouille;-106;-78;-52
+6612170;Armure;-105;-82;-51
+6355753;Arme (1 main);-104;-75;-55
+#FIN TRESORS
+#DEBUT LIEUX
+79467;Petite Lice;-117;-74;-53
+59346;Grand Garde-Manger à l'Ouest (3531);-116;-72;-54
+65587;La Gràndé KävaVhîn (2848);-114;-75;-55
+77686;Source de Purification;-113;-73;-56
+74130;Au Gnou Joyeux (19);-112;-77;-54
+1502035;Portail de Téléportation;-112;-72;-56
+41946;Tanière de FulJakhal (5190);-112;-71;-52
+75387;Agence d'Annonce;-111;-77;-52
+1180402;Tanière de Tenshinobi (77153);-111;-76;-50
+918580;La tanière du mage Hélium (2246);-110;-77;-49
+75185;Forge;-110;-76;-55
+75181;Paillotte No Poussâhran (237);-110;-75;-53
+456958;Refuge;-109;-81;-52
+1266796;Tanière de trõll;-109;-78;-51
+450063;-*- Trou du KuB -*- (407);-109;-78;-50
+38460;Au Vieux Moulineux (2897);-109;-73;-54
+276314;Auberge : Au champignon  noir;-108;-75;-53
+989735;Armurerie;-107;-80;-49
+1321873;Tanière de Niamh (83721);-107;-77;-53
+133049;Tanière de The_Pit (17102);-107;-77;-52
+168065;Minéroll;-107;-76;-50
+253637;L'île aux compos (3703);-106;-78;-52
+168036;Tanière de Koban Dent Bitchel (4767);-106;-74;-50
+38553;L'Auge du Grand Kochon (301);-106;-70;-53
+1322621;Tanière de trõll;-105;-75;-52
+253888;Bureau des Primes;-105;-75;-50
+1331154;Grande Lice;-104;-79;-53
+75279;Cahute du Rémouleur;-104;-69;-52
+#FIN LIEUX
+#DEBUT CHAMPIGNONS
+#FIN CHAMPIGNONS
+#DEBUT ORIGINE
+7;-110;-76;-53
+#FIN ORIGINE

@@ -1,0 +1,36 @@
+#DEBUT TROLLS
+6267;-6;60;-14
+14082;-6;60;-14
+46907;-6;60;-14
+50045;-6;60;-14
+61045;-6;60;-14
+92111;-6;60;-14
+34369;-7;61;-14
+#FIN TROLLS
+#DEBUT MONSTRES
+579322;Gowap Apprivoisé [Ancêtre];-8;58;-14
+590019;Gowap Apprivoisé [Ancêtre];-6;60;-14
+1179085;Gowap Apprivoisé [Ancien];-6;60;-14
+1851925;Gowap Apprivoisé [Ancien];-6;60;-14
+1017855;Gowap Apprivoisé [Ancien];-8;61;-15
+1664192;Gowap Apprivoisé [Ancien];-7;61;-15
+693650;Gowap Apprivoisé [Ancien];-7;61;-14
+615364;Gowap Apprivoisé [Ancêtre] Helmut;-7;61;-13
+#FIN MONSTRES
+#DEBUT TRESORS
+6681122;Potion;-8;62;-14
+6591967;Potion;-7;60;-14
+6552910;Arme (2 mains);-7;61;-15
+6679490;Arme (1 main);-6;58;-14
+#FIN TRESORS
+#DEBUT LIEUX
+74389;Forge;-7;61;-15
+34327;La Caserne (3053);-6;60;-14
+1503312;Portail de Téléportation;-5;60;-14
+134353;Bureau des Primes;-4;62;-14
+#FIN LIEUX
+#DEBUT CHAMPIGNONS
+#FIN CHAMPIGNONS
+#DEBUT ORIGINE
+2;-6;60;-14
+#FIN ORIGINE
