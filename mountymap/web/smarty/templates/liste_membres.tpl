@@ -2,6 +2,7 @@
 <ul>
 	<li><a href="update_public_guild.php">mettre à jour les infos publiques sur les guildes</a></li>
 	<li><a href="update_public_trolls.php">mettre à jour les infos publiques sur les trolls</a></li>
+	<li><a href="map.php">afficher la carte</a></li>
 </ul>
 <table>
 	<thead>
