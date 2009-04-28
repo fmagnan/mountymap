@@ -1,11 +1,16 @@
 @CHARSET "UTF-8";
 
+body {
+	background-image:url(/images/background.jpg);
+	background-repeat:repeat;
+}
+
 table {
 	border-collapse:collapse;
 }
 
 table, table td, table th {
-	border:1px solid grey;
+	border:1px solid black;
 }
 
 table td, table th {
@@ -18,6 +23,16 @@ table td, table th {
 
 .even {
 	background-color:#E0DDD9;
+}
+
+#map, #map td, #map img {
+	padding:0;
+	margin:0;
+}
+
+#map td {
+	width:32px;
+	height:32px;
 }
 
 #debug {
