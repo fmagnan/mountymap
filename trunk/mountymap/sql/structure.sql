@@ -60,8 +60,20 @@ CREATE TABLE IF NOT EXISTS `tresor` (
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `troll`;
-CREATE TABLE IF NOT EXISTS `troll` (
+DROP TABLE IF EXISTS `troll_identity`;
+CREATE TABLE IF NOT EXISTS `troll_identity` (
+  `id` int(11) NOT NULL,
+  `mise_a_jour` datetime NOT NULL,
+  `nom` varchar(100) NOT NULL,
+  `race` varchar(100) NOT NULL,
+  `niveau` int(11) NOT NULL,
+  `id_guilde` int(11) NOT NULL,
+  `nombre_mouches` int(11) NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `troll_position`;
+CREATE TABLE IF NOT EXISTS `troll_position` (
   `id` int(11) NOT NULL,
   `mise_a_jour` datetime NOT NULL,
   `position_x` int(11) NOT NULL,
