@@ -35,48 +35,20 @@ function getTimeStampFromTrollDate($dateCompilation) {
 }*/
 
 function updateView($membre) {
-	$memberFactory = MemberFactory::getInstance();
-	$password = $memberFactory->getPasswordFrom($membre);
-	/* 	TODO utiliser le bon chemin
-		$viewFilePath = VIEW_FILE_PATH . '?Numero='.intval($membre).'&Motdepasse='.$restrictedPassword.'&Tresors=1&Lieux=1&Champignons=1';
-	*/
-	$viewFilePath = dirname(__FILE__).'/../data/vue_'.intval($membre).'.txt';
-	
-	$parser = new ViewParser($viewFilePath, $membre);
-	$parser->parseFile();
-	$sections = $parser->getSections();
-	
-	if (!$parser->isInErrorStatus()) {
-		foreach ($sections as $section => $object) {
-			$data = $parser->getData($section);
-			$factoryName = $object . 'Factory';
-			$factory = call_user_func(array($factoryName, 'getInstance'));
-			$factory->insertOrUpdate($data);
-		}
-	}
+	/*$memberFactory = MemberFactory::getInstance();
+	$password = $memberFactory->getPasswordFrom($membre);*/
+	updateDataFromMountySite(new ViewParser(VIEW_FILE_PATH.intval($membre).'.txt', $membre));
 }
 
 function updatePublicGuild() {
-	//TODO modifier le chemin du fichier pour pointer sur le site MH
-	$guildFilePath = dirname(__FILE__).'/../data/Public_Guildes.txt';
-	$parser = new GuildParser($guildFilePath);
-	$parser->parseFile();
-	$sections = $parser->getSections();
-	
-	if (!$parser->isInErrorStatus()) {
-		foreach ($sections as $section => $object) {
-			$data = $parser->getData($section);
-			$factoryName = $object . 'Factory';
-			$factory = call_user_func(array($factoryName, 'getInstance'));
-			$factory->insertOrUpdate($data);
-		}
-	}
+	updateDataFromMountySite(new GuildParser(GUILD_DATA_FILE_PATH));
 }
 
 function updatePublicTrolls() {
-	//TODO modifier le chemin du fichier pour pointer sur le site MH
-	$guildFilePath = dirname(__FILE__).'/../data/Public_Trolls.txt';
-	$parser = new TrollIdentityParser($guildFilePath);
+	updateDataFromMountySite(new TrollIdentityParser(TROLL_IDENTITY_DATA_FILE_PATH));
+}
+
+function updateDataFromMountySite($parser) {
 	$parser->parseFile();
 	$sections = $parser->getSections();
 	
