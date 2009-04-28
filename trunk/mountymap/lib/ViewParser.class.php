@@ -9,8 +9,8 @@ class ViewParser extends Parser {
 	function __construct($file, $memberId) {
 		parent::__construct($file); 
 		$this->sections = array(
-			'TROLLS' => 'Troll', 'MONSTRES' => 'Monster', 'TRESORS' => 'Tresor',
-			'LIEUX' => 'Lieu', 'CHAMPIGNONS' => 'Champignon', 'ORIGINE' => 'Troll',
+			'TROLLS' => 'TrollPosition', 'MONSTRES' => 'Monster', 'TRESORS' => 'Tresor',
+			'LIEUX' => 'Lieu', 'CHAMPIGNONS' => 'Champignon', 'ORIGINE' => 'TrollPosition',
 		);
 		$this->member_id = $memberId;
 	}

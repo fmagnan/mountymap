@@ -18,13 +18,14 @@ class Member extends DatabaseObject {
 	}
 	
 	function getFormattedPosition() {
-		$trollFactory = TrollFactory::getInstance();
+		$trollFactory = TrollPositionFactory::getInstance();
 		$troll = $trollFactory->getInstanceFromObject($this);
 		return $troll->getFormattedPosition();
 	}
 	
 	function getName() {
-		return 'TODO';
+		$trollFactory = TrollIdentityFactory::getInstance();
+		return $trollFactory->getInstanceFromObject($this)->getName();
 	}
 }
 

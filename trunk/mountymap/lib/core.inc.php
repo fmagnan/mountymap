@@ -3,6 +3,7 @@
 require_once dirname(__FILE__).'/../etc/config.inc.php';
 require_once 'ViewParser.class.php';
 require_once 'GuildParser.class.php';
+require_once 'TrollIdentityParser.class.php';
 require_once 'Guild.class.php';
 require_once 'Troll.class.php';
 require_once 'Monster.class.php';
@@ -59,6 +60,23 @@ function updatePublicGuild() {
 	//TODO modifier le chemin du fichier pour pointer sur le site MH
 	$guildFilePath = dirname(__FILE__).'/../data/Public_Guildes.txt';
 	$parser = new GuildParser($guildFilePath);
+	$parser->parseFile();
+	$sections = $parser->getSections();
+	
+	if (!$parser->isInErrorStatus()) {
+		foreach ($sections as $section => $object) {
+			$data = $parser->getData($section);
+			$factoryName = $object . 'Factory';
+			$factory = call_user_func(array($factoryName, 'getInstance'));
+			$factory->insertOrUpdate($data);
+		}
+	}
+}
+
+function updatePublicTrolls() {
+	//TODO modifier le chemin du fichier pour pointer sur le site MH
+	$guildFilePath = dirname(__FILE__).'/../data/Public_Trolls.txt';
+	$parser = new TrollIdentityParser($guildFilePath);
 	$parser->parseFile();
 	$sections = $parser->getSections();
 	

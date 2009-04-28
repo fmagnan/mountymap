@@ -1,7 +1,8 @@
 <?php
 
 require_once 'DatabaseObject.class.php';
-require_once 'TrollFactory.class.php';
+require_once 'TrollPositionFactory.class.php';
+require_once 'TrollIdentityFactory.class.php';
 
 class Troll extends DatabaseObject {
 
@@ -19,6 +20,10 @@ class Troll extends DatabaseObject {
 	
 	function getFormattedPosition() {
 		return implode(' / ', array($this->getPositionX(), $this->getPositionY(), $this->getPositionN()));
+	}
+	
+	function getName() {
+		return $this->getData('nom');	
 	}
 }
 
