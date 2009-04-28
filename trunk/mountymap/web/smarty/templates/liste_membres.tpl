@@ -1,6 +1,7 @@
 {include file='header.tpl'}
 <ul>
 	<li><a href="update_public_guild.php">mettre à jour les infos publiques sur les guildes</a></li>
+	<li><a href="update_public_trolls.php">mettre à jour les infos publiques sur les trolls</a></li>
 </ul>
 <table>
 	<thead>
