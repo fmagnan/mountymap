@@ -18,6 +18,6 @@ define('GUILD_DATA_FILE_PATH', dirname(__FILE__).'/../data/Public_Guildes.txt');
 define('TROLL_IDENTITY_DATA_FILE_PATH', dirname(__FILE__).'/../data/Public_Trolls.txt');
 define('VIEW_FILE_PATH', dirname(__FILE__).'/../data/vue_');
 
-define('DEBUG_MODE', true);
+define('DEBUG_MODE', false);
 
 ?>
