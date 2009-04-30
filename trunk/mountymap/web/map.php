@@ -7,6 +7,7 @@
 	$smarty = instantiateSmartyTemplate(dirname(__FILE__));
 	$mapBuilder = new MapBuilder();
 	$smarty->assign('map',  $mapBuilder->buildMap());
+	//debugArray($mapBuilder->buildMap());
 	$smarty->assign('row_size', $mapBuilder->getRowSize());
 	setDebugTrace($smarty);
 	setErrorTrace($smarty);

@@ -56,3 +56,13 @@ table td, table th {
 	background-color:black;
 	border-color:lightgrey;
 }
+
+.cell-info {
+	position: absolute;   
+	visibility : hidden;
+	border: 1px solid Black;
+	padding: 10px;
+	font-family: Verdana, Arial;
+	font-size: 10px;
+	background-color: #FFFFCC;
+}
