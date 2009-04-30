@@ -1,18 +1,10 @@
 <?php
 
-require_once 'LocatedObject.class.php';
+require_once 'Tresor.class.php';
 require_once 'ChampignonFactory.class.php';
 
-class Champignon extends LocatedObject {
+class Champignon extends Tresor {
 
-	function getType() {
-		return $this->getData('type');
-	}
-	
-	function getCellInfo() {
-		return $this->getFormattedPosition() . ' ' . $this->getId() . ' ' . $this->getType();
-	}
-	
 }
 
 ?>

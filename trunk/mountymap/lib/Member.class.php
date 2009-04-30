@@ -9,10 +9,6 @@ class Member extends DatabaseObject {
 		return $this->getData('password');
 	}
 	
-	function getId() {
-		return $this->getData('id');
-	}
-	
 	function getUpdate() {
 		return getDateEnFrancais($this->getData('mise_a_jour'));
 	}

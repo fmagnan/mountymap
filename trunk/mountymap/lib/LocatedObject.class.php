@@ -17,11 +17,9 @@ abstract class LocatedObject extends DatabaseObject {
 	}
 	
 	function getFormattedPosition() {
-		return implode(' / ', array($this->getPositionX(), $this->getPositionY(), $this->getPositionN()));
-	}
-	
-	function getId() {
-		return $this->getData('id');	
+		$formattedPosition = '<strong>X = ' .$this->getPositionX().' | Y = '.$this->getPositionY();
+		$formattedPosition .= ' | N = '.$this->getPositionN() .'</strong>';
+		return $formattedPosition;
 	}
 	
 	abstract function getCellInfo();

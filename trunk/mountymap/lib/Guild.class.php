@@ -9,6 +9,10 @@ class Guild extends DatabaseObject {
 		return $this->getData('nom');
 	}
 	
+	function getFormattedIdentity() {
+		return '<a href="javascript:EAV('.$this->getId().')">'. $this->getName() . '</a>';
+	}
+	
 }
 
 ?>

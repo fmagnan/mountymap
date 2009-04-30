@@ -35,9 +35,9 @@ class Troll extends LocatedObject {
 	
 	function getFormattedIdentity() {
 		$this->initIdentityData();
-		$identity = $this->getId() . ' ' . $this->getName() . '(' . $this->getRace() . ' ' . $this->getLevel() . ') ';
+		$identity = '<a href="javascript:EPV('.$this->getId().')">'. $this->getName() . '</a> (' . $this->getRace() . ' ' . $this->getLevel() . ') ';
 		$guild = $this->getGuild();
-		$identity .= $guild->getName(); 
+		$identity .= $guild->getFormattedIdentity(); 
 		return $identity;
 	}
 	
