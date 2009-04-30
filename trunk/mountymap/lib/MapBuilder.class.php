@@ -5,10 +5,10 @@ class MapBuilder {
 	var $startInX, $startInY, $startInN, $horizontalRange, $verticalRange;
 	
 	function __construct() {
-		$this->startInX = -6;
-		$this->startInY = 60;
-		$this->startInN = -14;
-		$this->horizontalRange = 4;
+		$this->startInX = -2;
+		$this->startInY = 45;
+		$this->startInN = -15;
+		$this->horizontalRange = 6;
 		$this->verticalRange = floor($this->horizontalRange / 2);
 	}
 
@@ -22,6 +22,10 @@ class MapBuilder {
 		for($y = $beginY; $y <= $endY; $y++) {
 			for($x = $beginX; $x <= $endX; $x++) {
 				$cell = array('position_x' => $x, 'position_y' => $y);
+				$cell['info_trolls'] = $this->getInfoInCell($cell, 'TrollPositionFactory');
+				$cell['info_monstres'] = $this->getInfoInCell($cell, 'MonsterFactory');
+				$cell['info_tresors'] = $this->getInfoInCell($cell, 'TresorFactory');
+				$cell['info_champignons'] = $this->getInfoInCell($cell, 'ChampignonFactory');
 				$map[] = $cell;
 			}	
 		}
@@ -32,5 +36,14 @@ class MapBuilder {
 		return (2 * $this->horizontalRange) + 1;
 	}
 	
+	function getInfoInCell($cell, $factoryName) {
+		$factory = call_user_func(array($factoryName, 'getInstance'));
+		$objects = $factory->getInstancesFromArray($cell);
+		$objectsInfo = array();
+		foreach ($objects as $object) {
+			$objectsInfo[] = $object->getCellInfo();
+		}
+		return implode('<br />', $objectsInfo);
+	}
 }
 ?>

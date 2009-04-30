@@ -153,6 +153,21 @@ abstract class DatabaseObjectFactory extends BaseObject {
 		return $this->db->executeRequeteAvecDonneeDeRetourUnique($query, $dataName);
 	}
 	
+	function getInstances($orderBy, $sort) {
+		return $this->getInstancesWithQuery($this->getSelectQuery($orderBy, $sort));
+	}
+	
+	function getInstancesFromArray($array) {
+		$whereClause = '';
+		foreach($array as $key => $value) {
+			$columnsDescr = $this->getAllColumnsDescr();
+			if (array_key_exists($key, $columnsDescr)) {
+				$whereClause .= ' AND `'.$key.'` = ' . $this->db->getValueByType($value, $columnsDescr[$key]);	
+			}
+		}
+		return $this->getInstancesWithWhereClause($whereClause);
+	}
+	
 	function getInstancesWithWhereClause($whereClause='') {
 		$query = $this->getSelectQuery().' '.$whereClause;
 		return $this->getInstancesWithQuery($query);
@@ -168,28 +183,29 @@ abstract class DatabaseObjectFactory extends BaseObject {
 		}
 		return $instances;
 	}
-	
-	function getInstances($orderBy, $sort) {
-		return $this->getInstancesWithQuery($this->getSelectQuery($orderBy, $sort));
-	}
-	
+		
 	abstract function getPrimaryKeyDescr();
 	
 	function getPrimaryKeyList() {
 		return array_keys($this->getPrimaryKeyDescr());
 	}
 	
-	function getSelectQuery($orderBy='', $sort='ASC') {
+	function getSelectQuery($orderBy='', $sort='') {
 		return $this->getSelectQueryWithWhereClause('1', $orderBy, $sort);
 	}
 	
-	function getSelectQueryWithWhereClause($whereClause, $orderBy='', $sort='ASC') {
+	function getSelectQueryWithWhereClause($whereClause, $orderBy='', $sort='') {
 		$fieldsToRetrieve = implode(',', array_map('add_backquotes', $this->getAllColumnsList()));
 		if ($orderBy == '') {
 			$keyFields = $this->getPrimaryKeyList(); 
 			$orderBy = add_backquotes($keyFields[0]);
 		}
-		return "SELECT ".$fieldsToRetrieve." FROM `".$this->getTableName()."` WHERE " . $whereClause . " ORDER BY " . $orderBy . " " . $sort;
+		if ($sort != '') {
+			$orderClause = " ORDER BY " . $orderBy . " " . $sort;
+		} else {
+			$orderClause = '';
+		}
+		return "SELECT ".$fieldsToRetrieve." FROM `".$this->getTableName()."` WHERE " . $whereClause . $orderClause;
 	}
 	
 	abstract function getTableName();
