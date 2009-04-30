@@ -7,6 +7,6 @@
 		<link rel="stylesheet" type="text/css" href="/css/screen.css" media="screen" title="Normal" />
 		<base href="{$server_root_path}" />
 		<script type="text/javascript" src="/js/functions_MH.js"></script>
-		<script type="text/javascript" src="/js/functions.js"></script>
+		
 	</head>
 <body>
