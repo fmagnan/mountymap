@@ -10,7 +10,7 @@ class Tresor extends LocatedObject {
 	}
 	
 	function getCellInfo() {
-		return $this->getFormattedPosition() . ' ' . $this->getId() . ' ' . $this->getType();
+		return $this->getFormattedPosition() . ' <a href="javascript:ETV('.$this->getId().')">'. $this->getType() . '</a>';
 	}
 	
 }

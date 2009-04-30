@@ -162,6 +162,10 @@ class DatabaseObject extends BaseObject {
 		}
 	}
 	
+	function getId() {
+		return $this->getData('id');
+	}
+	
 	/*function serializePrimaryKey() {
 		ksort($this->idArray);
 		return implode(',', $this->idArray);
