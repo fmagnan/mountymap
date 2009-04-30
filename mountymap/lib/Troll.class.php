@@ -1,29 +1,48 @@
 <?php
 
-require_once 'DatabaseObject.class.php';
+require_once 'LocatedObject.class.php';
 require_once 'TrollPositionFactory.class.php';
 require_once 'TrollIdentityFactory.class.php';
 
-class Troll extends DatabaseObject {
+class Troll extends LocatedObject {
 
-	function getPositionX() {
-		return $this->getData('position_x');
-	}
-	
-	function getPositionY() {
-		return $this->getData('position_y');
-	}
-	
-	function getPositionN() {
-		return $this->getData('position_n');
-	}
-	
-	function getFormattedPosition() {
-		return implode(' / ', array($this->getPositionX(), $this->getPositionY(), $this->getPositionN()));
+	function initIdentityData() {
+		$trollIdentityFactory = TrollIdentityFactory::getInstance();
+		$troll = $trollIdentityFactory->getInstanceFromObject($this);
+		$this->data = array_merge($this->data, $troll->getAllData());
 	}
 	
 	function getName() {
 		return $this->getData('nom');	
+	}
+	
+	function getRace() {
+		return $this->getData('race');	
+	}
+	
+	function getLevel() {
+		return $this->getData('niveau');	
+	}
+	
+	function getNumeroGuilde() {
+		return $this->getData('id_guilde');
+	}
+	
+	function getGuild() {
+		$guildFactory = GuildFactory::getInstance();
+		return $guildFactory->getInstanceFromArray(array('id' => $this->getNumeroGuilde()));	
+	}
+	
+	function getFormattedIdentity() {
+		$this->initIdentityData();
+		$identity = $this->getId() . ' ' . $this->getName() . '(' . $this->getRace() . ' ' . $this->getLevel() . ') ';
+		$guild = $this->getGuild();
+		$identity .= $guild->getName(); 
+		return $identity;
+	}
+	
+	function getCellInfo() {
+		return parent::getFormattedPosition() . ' ' . $this->getFormattedIdentity();
 	}
 }
 
