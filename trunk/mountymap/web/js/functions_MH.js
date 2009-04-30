@@ -1,35 +1,26 @@
-function openPopup(url, nomPopup, options) {
-	var options = options + ',height=550,toolbar=0,location=0,directories=0,status=0,menubar=0,resizable=0,scrollbars=1';
-	window.open(url, nomPopup, options);
+<!-- dissimulation du contenu du SCRIPT pour les anciens browsers
+
+function openPopup(target, name) {
+	window.open('http://games.mountyhall.com/mountyhall/View/' + target, name, 'width=750,height=550,toolbar=0,location=0,directories=0,status=0,menubar=0,resizable=0,scrollbars=1');
 }
 
-function EnterPJView(IdCible){
-	openPopup('http://games.mountyhall.com/mountyhall/View/PJView.php?ai_IDPJ='+IdCible, 'profilTroll', 'width=750');
+function EPV(IdCible){
+	openPopup('PJView.php?ai_IDPJ='+IdCible, 'troll_view');
 }
 
-function EnterAllianceView(IdCible){
-	openPopup('http://games.mountyhall.com/mountyhall/View/AllianceView.php?ai_IDAlliance='+IdCible, 'profilGuilde', 'width=750');
+function EAV(IdCible){
+	openPopup('AllianceView.php?ai_IDAlliance='+IdCible, 'guild_view');
 }
 
-function ouvreFicheTroll(url, mode) {
-	if (mode == 'popup') {
-		openPopup(url, 'ficheTroll', 'top=100,left=100,width=400');
-	}
-	else {
-		window.location.href=url;
-	}
+function EMV(IdCible) {
+	openPopup('MonsterView.php?ai_IDPJ='+IdCible, 'monster_view');
 }
-
-function majRecherche(url, mode) {
-	if (mode == 'popup') {
-		window.opener.location.href=url;
-	}
-	else {
-		window.location.href=url;
-	}
-
+function ETV(IdCible) {
+	openPopup('TresorHistory.php?ai_IDTresor='+IdCible, 'treasure_view');
 }
 
 function openConfirmationDialog(message) {
 	return window.confirm(message);
 }
+
+// fin de dissimulation du contenu du SCRIPT pour les anciens browsers -->
