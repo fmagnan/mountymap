@@ -1,9 +1,9 @@
 <?php
 
-require_once 'DatabaseObjectFactory.class.php';
+require_once 'NonPermanentDatabaseObjectFactory.class.php';
 require_once 'Monster.class.php';
 
-class MonsterFactory extends DatabaseObjectFactory {
+class MonsterFactory extends NonPermanentDatabaseObjectFactory {
 	
 	private static $instance;
 	
