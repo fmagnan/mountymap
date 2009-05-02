@@ -53,11 +53,14 @@ function updateDataFromMountySite($parser) {
 	$sections = $parser->getSections();
 	
 	if (!$parser->isInErrorStatus()) {
+		$extraData = count($sections) > 1 ? $parser->getOrigin() : false; 
 		foreach ($sections as $section => $object) {
 			$data = $parser->getData($section);
-			$factoryName = $object . 'Factory';
-			$factory = call_user_func(array($factoryName, 'getInstance'));
-			$factory->insertOrUpdate($data);
+			if ($object) {
+				$factoryName = $object . 'Factory';
+				$factory = call_user_func(array($factoryName, 'getInstance'));
+				$factory->publicImport($data, $extraData);
+			}
 		}
 	}
 }

@@ -210,8 +210,10 @@ abstract class DatabaseObjectFactory extends BaseObject {
 	
 	abstract function getTableName();
 	
-	function insertOrUpdate($multipleData) {
+	function publicImport($multipleData, $extraData = false) {
+		$ids = array();
 		foreach($multipleData as $data) {
+			$ids[] = $data['id'];
 			$databaseObject = $this->getInstanceFromArray($data);
 			$data['mise_a_jour'] = 'NOW()';
 			if (is_object($databaseObject) && $databaseObject->exists()) {
@@ -220,6 +222,7 @@ abstract class DatabaseObjectFactory extends BaseObject {
 				$this->create($data);
 			}
 		}
+		return $ids;
 	}
 }
 

@@ -151,6 +151,7 @@ class DatabaseConnector {
 	
 	function delete($tableName, $whereClause) {
 		$query = 'DELETE FROM `'.$tableName.'` WHERE ' . $whereClause;
+		return $this->executeRequeteSansDonneesDeRetour($query);
 	}
 	
 	function create($tableName, $data, $datatypes) {
