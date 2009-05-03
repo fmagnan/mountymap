@@ -37,5 +37,9 @@ class TrollPositionFactory extends DatabaseObjectFactory {
 	function getInstanceClassName() {
 		return 'troll';
 	}
+	
+	function getCellHeader() {
+		return 'Trolls';
+	}
 }
 ?>

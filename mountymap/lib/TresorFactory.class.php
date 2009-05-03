@@ -34,5 +34,8 @@ class TresorFactory extends DatabaseObjectFactory {
 		return 'tresor';
 	}
 	
+	function getCellHeader() {
+		return 'Trésors';
+	}
 }
 ?>

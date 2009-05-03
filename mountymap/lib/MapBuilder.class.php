@@ -20,12 +20,13 @@ class MapBuilder {
 		$endY = $this->startInY + $this->horizontalRange;
 		for($y = $endY; $y >= $beginY; $y--) {
 			for($x = $beginX; $x <= $endX; $x++) {
+				$cell_position = array('position_x' => $x, 'position_y' => $y);
 				$cell = array('position_x' => $x, 'position_y' => $y);
-				$cell['info_champignons'] = $this->getInfoInCell($cell, 'ChampignonFactory');
-				$cell['info_lieux'] = $this->getInfoInCell($cell, 'LieuFactory');
-				$cell['info_monstres'] = $this->getInfoInCell($cell, 'MonsterFactory');
-				$cell['info_tresors'] = $this->getInfoInCell($cell, 'TresorFactory');
-				$cell['info_trolls'] = $this->getInfoInCell($cell, 'TrollPositionFactory');
+				$cell['info_champignons'] = $this->getInfoInCell($cell_position, 'ChampignonFactory');
+				$cell['info_lieux'] = $this->getInfoInCell($cell_position, 'LieuFactory');
+				$cell['info_monstres'] = $this->getInfoInCell($cell_position, 'MonsterFactory');
+				$cell['info_tresors'] = $this->getInfoInCell($cell_position, 'TresorFactory');
+				$cell['info_trolls'] = $this->getInfoInCell($cell_position, 'TrollPositionFactory');
 				$map[] = $cell;
 			}	
 		}
@@ -39,11 +40,15 @@ class MapBuilder {
 	function getInfoInCell($cell, $factoryName) {
 		$factory = call_user_func(array($factoryName, 'getInstance'));
 		$objects = $factory->getInstancesFromArray($cell);
-		$objectsInfo = array();
-		foreach ($objects as $object) {
-			$objectsInfo[] = $object->getCellInfo();
+		if (empty($objects)) {
+			return false;
+		} else {
+			$objectsInfo = '<h3>'.$factory->getCellHeader().' : </h3>';
+			foreach ($objects as $object) {
+				$objectsInfo .= $object->getCellInfo().'<br />';
+			}
+			return $objectsInfo;
 		}
-		return implode('<br />', $objectsInfo);
 	}
 }
 ?>

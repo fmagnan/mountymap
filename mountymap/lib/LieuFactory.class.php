@@ -35,5 +35,8 @@ class LieuFactory extends NonPermanentDatabaseObjectFactory {
 		return 'lieu';
 	}
 	
+	function getCellHeader() {
+		return 'Lieux';
+	}
 }
 ?>
