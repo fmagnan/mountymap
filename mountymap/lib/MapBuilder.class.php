@@ -4,11 +4,11 @@ class MapBuilder {
 	
 	var $startInX, $startInY, $startInN, $horizontalRange, $verticalRange;
 	
-	function __construct() {
-		$this->startInX = -2;
-		$this->startInY = 43;
-		$this->startInN = -15;
-		$this->horizontalRange = 6;
+	function __construct($startInX, $startInY, $startInN, $horizontalRange) {
+		$this->startInX = $startInX;
+		$this->startInY = $startInY;
+		$this->startInN = $startInN;
+		$this->horizontalRange = $horizontalRange;
 		$this->verticalRange = floor($this->horizontalRange / 2);
 	}
 
@@ -18,14 +18,14 @@ class MapBuilder {
 		$endX = $this->startInX + $this->horizontalRange;
 		$beginY = $this->startInY - $this->horizontalRange;
 		$endY = $this->startInY + $this->horizontalRange;
-		echo 'X de '.$beginX.' a ' . $endX . ' et Y de ' .$beginY . ' a ' . $endY . '<br/>';
 		for($y = $endY; $y >= $beginY; $y--) {
 			for($x = $beginX; $x <= $endX; $x++) {
 				$cell = array('position_x' => $x, 'position_y' => $y);
-				$cell['info_trolls'] = $this->getInfoInCell($cell, 'TrollPositionFactory');
+				$cell['info_champignons'] = $this->getInfoInCell($cell, 'ChampignonFactory');
+				$cell['info_lieux'] = $this->getInfoInCell($cell, 'LieuFactory');
 				$cell['info_monstres'] = $this->getInfoInCell($cell, 'MonsterFactory');
 				$cell['info_tresors'] = $this->getInfoInCell($cell, 'TresorFactory');
-				$cell['info_champignons'] = $this->getInfoInCell($cell, 'ChampignonFactory');
+				$cell['info_trolls'] = $this->getInfoInCell($cell, 'TrollPositionFactory');
 				$map[] = $cell;
 			}	
 		}
