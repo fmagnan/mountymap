@@ -208,12 +208,19 @@ abstract class DatabaseObjectFactory extends BaseObject {
 		return "SELECT ".$fieldsToRetrieve." FROM `".$this->getTableName()."` WHERE " . $whereClause . $orderClause;
 	}
 	
+	function deleteWithWhereClause($whereClause) {
+		return $this->db->delete($this->getTableName(), $whereClause);
+	}
+	
 	abstract function getTableName();
 	
+	function deleteInArea($origin) {
+		//do nothing
+	}
+	
 	function publicImport($multipleData, $extraData = false) {
-		$ids = array();
+		$this->deleteInArea($extraData);
 		foreach($multipleData as $data) {
-			$ids[] = $data['id'];
 			$databaseObject = $this->getInstanceFromArray($data);
 			$data['mise_a_jour'] = 'NOW()';
 			if (is_object($databaseObject) && $databaseObject->exists()) {
@@ -222,7 +229,6 @@ abstract class DatabaseObjectFactory extends BaseObject {
 				$this->create($data);
 			}
 		}
-		return $ids;
 	}
 }
 
