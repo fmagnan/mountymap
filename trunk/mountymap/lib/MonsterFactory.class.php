@@ -35,5 +35,8 @@ class MonsterFactory extends NonPermanentDatabaseObjectFactory {
 		return 'monstre';
 	}
 	
+	function getCellHeader() {
+		return 'Monstres';
+	}
 }
 ?>
