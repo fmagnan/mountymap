@@ -22,9 +22,22 @@
 			{assign var=tresors value=$map[$num_cell].info_tresors}
 			{assign var=champignons value=$map[$num_cell].info_champignons}
 			{assign var=lieux value=$map[$num_cell].info_lieux}
-
+			{if $trolls || $monstres || $tresors || $champignons || $lieux}
+				{assign var=is_content value=true}
+				{assign var=cell_class value='cell'}
+			{else} 
+				{assign var=is_content value=false}
+				{assign var=cell_class value=''}
+			{/if}
+			
+			{if $lieux}
+				{assign var=type_lieu value='lieu'}
+			{else}
+				{assign var=type_lieu value=''}
+			{/if}
+			
 			{if ($num_cell mod $row_size) eq 0}<tr>{/if}
-			<td>{if $lieux ne ''}<div class="map-element lieu">{/if}{if $trolls ne ''}<img class="map-element" src="/images/ico_troll_16.png" /><div class="tooltip">{$trolls}</div>{/if}{if $monstres ne ''}<img class="map-element" src="/images/ico_monstre_16.png" /><div class="tooltip">{$monstres}</div>{/if}{if $tresors ne ''}<img class="map-element" src="/images/ico_tresor_16.png" /><div class="tooltip">{$tresors}</div>{/if}{if $champignons ne ''}<img class="map-element" src="/images/ico_champignon_16.png" /><div class="tooltip">{$champignons}</div>{/if}{if $lieux ne ''}</div><div class="tooltip">{$lieux}</div>{/if}</td>
+			<td class="{$cell_class} {$type_lieu}">{if $is_content}<div class="tooltip">{$trolls}{$monstres}{$tresors}{$champignons}{$lieux}</div>{/if}{if $trolls }<img src="/images/ico_troll_16.png" />{/if}{if $monstres }<img src="/images/ico_monstre_16.png" />{/if}{if $tresors }<img src="/images/ico_tresor_16.png" />{/if}{if $champignons }<img src="/images/ico_champignon_16.png" />{/if}</td>
 			{if ($num_cell mod $row_size) eq ($row_size - 1)}</tr>{/if}
 		{/section}
 	</table>
@@ -34,22 +47,12 @@
 	<script type="text/javascript">
 		{literal}
 			$(document).ready(function() {
-   				$('.map-element').each(function() {
-      				$(this).qtip({
-         				content: $(this).next('div.tooltip:first'),
-     					show: {
-        					solo: true
-     					},
-     					hide: {
-     						delay: 200,
-     						fixed: true
-     					},
-     					style: {
-        					padding: '5px 15px',
-        					width: '500px'
-     					}
-					});
-   				});
+				$('td.cell').each(function() {
+					$(this).qtip({ content: $(this).children('.tooltip'),
+     					show: { solo: true },
+     					hide: { delay: 200, fixed: true	},
+     					style: { padding: '5px 15px', width: '500px' } });
+				});
 			});
 		{/literal}
 	</script>
