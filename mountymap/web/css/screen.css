@@ -25,7 +25,12 @@ table td, table th {
 	background-color:#E0DDD9;
 }
 
-#map, #map td, #map img {
+#customize-map, #map {
+	float:left;
+}
+
+
+#map td, #map img {
 	padding:0;
 	margin:0;
 }
@@ -36,6 +41,7 @@ table td, table th {
 }
 
 #debug {
+	clear:both;
 	margin-top:40px;
 	font-size:0.8em;
 	border:1px dotted black;
@@ -61,4 +67,8 @@ table td, table th {
 	font-family: Verdana, Arial;
 	font-size: 10px;
 	display:none;
+}
+
+.lieu {
+	background-color:#AE88AE;
 }
