@@ -16,7 +16,11 @@ class Member extends DatabaseObject {
 	function getFormattedPosition() {
 		$trollFactory = TrollPositionFactory::getInstance();
 		$troll = $trollFactory->getInstanceFromObject($this);
-		return $troll->getFormattedPosition();
+		if (is_object($troll)) {
+			return $troll->getFormattedPosition();
+		} else {
+			return 'position inconnue';
+		}
 	}
 	
 	function getName() {

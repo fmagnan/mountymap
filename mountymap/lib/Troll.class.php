@@ -12,6 +12,14 @@ class Troll extends LocatedObject {
 		$this->data = array_merge($this->data, $identity->getAllData());
 	}
 	
+	function initPositionData() {
+		$trollPositionFactory = TrollPositionFactory::getInstance();
+		$position = $trollPositionFactory->getInstanceFromObject($this);
+		if (is_object($position)) {
+			$this->data = array_merge($this->data, $position->getAllData());
+		}
+	}
+	
 	function getName() {
 		return $this->getData('nom');	
 	}
@@ -46,7 +54,8 @@ class Troll extends LocatedObject {
 	}
 	
 	function output() {
-		return $this->getFormattedIdentity();
+		$this->initPositionData();
+		return parent::output();
 	}
 	
 }

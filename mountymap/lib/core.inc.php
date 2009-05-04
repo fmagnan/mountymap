@@ -21,23 +21,11 @@ function debugArray($array, $type='') {
 	}
 }
 
-/*function array_add_if_not_present($value, $array) {
-	if (!in_array($value, $array)) {
-		$array[] = $value;
-	}
-	return $array;
-}
-
-function getTimeStampFromTrollDate($dateCompilation) {
-	$date = explode('-', trim(substr($dateCompilation, 0, 10)));
-    $time = explode(':', trim(substr($dateCompilation,11,strlen($dateCompilation))));
-    return mktime($time[0], $time[1], $time[2], $date[1], $date[2], $date[0]);
-}*/
-
 function updateView($membre) {
-	/*$memberFactory = MemberFactory::getInstance();
-	$password = $memberFactory->getPasswordFrom($membre);*/
-	updateDataFromMountySite(new ViewParser(VIEW_FILE_PATH.intval($membre).'.txt', $membre));
+	$memberFactory = MemberFactory::getInstance();
+	$password = $memberFactory->getPasswordFrom($membre);
+	$parameters = '?Numero='.intval($membre).'&Motdepasse='.$password.'&Tresors=1&Lieux=1&Champignons=1';
+	updateDataFromMountySite(new ViewParser(VIEW_FILE_PATH.$parameters, $membre));
 }
 
 function updatePublicGuild() {
@@ -109,30 +97,5 @@ function redirectTo($page, $smartyTemplate) {
 		header('Location: '. $page);
 	}
 }
-
-/*function setFiltres($parameters, &$smarty) {
-	$filtres = array();
-	$params='';
-	foreach ($parameters AS $parameter) {
-		if (array_key_exists($parameter, $_REQUEST) && '' != $_REQUEST[$parameter]) {
-			$parameterValue = $_REQUEST[$parameter];
-			$filtres[$parameter] = $parameterValue;
-			$params .= '&amp;' . $parameter . '=' . $parameterValue;
-			$smarty->assign($parameter, $parameterValue);
-		}
-	}
-	$filtres['params']=$params;
-	return $filtres;
-}
-
-function replaceWordsBySymbol($inputString) {
-	$patternsToReplace = array(
-		'/entre/', '/ /', '/et/', '/supérieurà/', '/inférieurà/',
-	);
-	$replacements = array(
-		'', '', '-', '>', '<',
-	);
-	return preg_replace($patternsToReplace, $replacements, $inputString);
-}*/
 
 ?>
