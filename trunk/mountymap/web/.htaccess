@@ -1,0 +1,6 @@
+AuthUserFile /home/fmagnan/workspace/mountymap/.htpasswd
+AuthName "Identification obligatoire"
+AuthType Basic
+<limit GET POST>
+require valid-user
+</limit>
