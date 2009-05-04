@@ -6,5 +6,5 @@
 	$membre = $_GET['membre'];
 	updateView($membre);	
 	setDebugTrace($smarty);
-	redirectTo('index.php', $smarty);
+	redirectTo('membres.php', $smarty);
 ?>

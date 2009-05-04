@@ -5,5 +5,5 @@
 	$smarty = instantiateSmartyTemplate(dirname(__FILE__));
 	updatePublicTrolls();	
 	setDebugTrace($smarty);
-	redirectTo('index.php', $smarty);
+	redirectTo('membres.php', $smarty);
 ?>

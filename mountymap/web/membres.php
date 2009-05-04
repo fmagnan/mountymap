@@ -7,6 +7,7 @@
 	$memberFactory = MemberFactory::getInstance();
 	$membres = $memberFactory->getMembres();
 	$smarty->assign('membres', $membres);
+	
 	setDebugTrace($smarty);
 	setErrorTrace($smarty);
 	$smarty->display('liste_membres.tpl');
