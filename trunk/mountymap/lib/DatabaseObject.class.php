@@ -60,7 +60,13 @@ class DatabaseObject extends BaseObject {
 	
 	function fetchData() {
 		$query = $this->getSelectQueryWithWhereClause($this->getIdWhere());
-		$this->data = $this->db->executeRequeteAvecDonneeDeRetourUnique($query);
+		$assoc = $this->db->executeRequeteAvecDonneeDeRetourUnique($query);
+		if ($assoc) {
+			$this->data = $assoc;
+		} else {
+			$this->data = array();
+			$this->addError('L\'objet demandé n\'existe pas.');
+		}
 	}
 	
 	function filterOnUpdate($data) {
