@@ -8,8 +8,8 @@ class Troll extends LocatedObject {
 
 	function initIdentityData() {
 		$trollIdentityFactory = TrollIdentityFactory::getInstance();
-		$troll = $trollIdentityFactory->getInstanceFromObject($this);
-		$this->data = array_merge($this->data, $troll->getAllData());
+		$identity = $trollIdentityFactory->getInstanceFromObject($this);
+		$this->data = array_merge($this->data, $identity->getAllData());
 	}
 	
 	function getName() {
@@ -44,6 +44,11 @@ class Troll extends LocatedObject {
 	function getCellInfo() {
 		return parent::getFormattedPosition() . ' ' . $this->getFormattedIdentity();
 	}
+	
+	function output() {
+		return $this->getFormattedIdentity();
+	}
+	
 }
 
 ?>
