@@ -15,15 +15,16 @@
 	</thead>
 	<tbody>
 	{section name=numero loop=$membres}
+		{assign var=current_member value=$membres[numero]}
 		{if $smarty.section.numero.index is even}
 			<tr class="even">
 		{else}
    			<tr class="odd">
 		{/if}
-			<td>{$membres[numero]->getName()} ({$membres[numero]->getId()})</td>
-			<td>{$membres[numero]->getFormattedPosition()}</td>
-			<td>{$membres[numero]->getUpdate()}</td>
-			<td><a href="update_view.php?membre={$membres[numero]->getId()}">mettre à jour la vue</a></td>
+			<td>{$current_member->getName()} ({$current_member->getId()})</td>
+			<td>{$current_member->getFormattedPosition()}</td>
+			<td>{$current_member->getUpdate()}</td>
+			<td><a href="update_view.php?membre={$current_member->getId()}">mettre à jour la vue</a></td>
 		</tr>
 	{/section}
 	</tbody>

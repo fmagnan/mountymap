@@ -1,5 +1,9 @@
 {include file='header.tpl'}
 
+<ul>
+	<li><a href="map.php">afficher la carte</a></li>
+</ul>
+
 <form name="search_by_id" id="search_by_id" method="post">
 	<fieldset>
 		<legend>Recherche par numéro</legend>
@@ -16,6 +20,8 @@
 	</fieldset>
 </form>
 {if isset($unique_instance)}
-	{$unique_instance->output()}
+	<ul>
+		{$unique_instance->output()}
+	</ul>
 {/if}
 {include file='footer.tpl'}
