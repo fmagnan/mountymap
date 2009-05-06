@@ -2,15 +2,21 @@
 
 <form id="customize-map">
 	<fieldset>
-		<legend>Paramétrer la vue</legend>
-		<div>Origine de la vue</div>
+		<legend>Origine de la vue</legend>
 		<label for="start_x">X :</label><input type="text" name="start_x" value="{$start_x}" /><br />
 		<label for="start_y">Y :</label><input type="text" name="start_y" value="{$start_y}" /><br />
-		<label for="start_n">N :</label><input type="text" name="start_n" value="{$start_n}" />
-		<div>Portée</div>
-		<label for="range">Portée :</label><input type="text" name="range" value="{$range}" />
-		<input type="submit" value="Valider" />
+		<label for="start_n">N :</label><input type="text" name="start_n" value="{$start_n}" /><br />
+		<label for="range">Portée :</label><input type="text" name="range" value="{$range}" /><br />
 	</fieldset>
+	<fieldset>
+		<legend>Enlever</legend>
+		<input type="checkbox" name="trolls" {$trolls} /><label for="trolls">les trolls</label><br />
+		<input type="checkbox" name="monsters" {$monsters} /><label for="monsters">les monstres</label><br />
+		<input type="checkbox" name="treasures" {$treasures} /><label for="treasures">les trésors</label><br />
+		<input type="checkbox" name="places" {$places} /><label for="places">les lieux</label><br />
+		<input type="checkbox" name="mushrooms" {$mushrooms} /><label for="mushrooms">les champignons</label><br />
+	</fieldset>
+	<input type="submit" value="Valider" />
 </form>
 
 {if is_array($map) && count($map) > 0}
