@@ -33,7 +33,10 @@ abstract class LocatedObject extends DatabaseObject {
 	}
 	
 	function getLinkToMap() {
-		$href = 'map.php?start_x='.$this->getPositionX().'&start_y='.$this->getPositionY().'&start_n='.$this->getPositionN().'&range=10';
+		$range = 10;
+		$start_n = $this->getPositionN() + 5;
+		$end_n = $this->getPositionN() - 5; 
+		$href = 'map.php?position_x='.$this->getPositionX().'&position_y='.$this->getPositionY().'&start_n='.$start_n.'&end_n='.$end_n.'&range=10';
 		return '<a href="'.$href.'">visualiser sur la carte</a>';
 	}
 	

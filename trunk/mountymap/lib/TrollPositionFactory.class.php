@@ -1,9 +1,9 @@
 <?php
 
-require_once 'DatabaseObjectFactory.class.php';
+require_once 'LocatedObjectFactory.class.php';
 require_once 'Troll.class.php';
 
-class TrollPositionFactory extends DatabaseObjectFactory {
+class TrollPositionFactory extends LocatedObjectFactory {
 	
 	private static $instance;
 	

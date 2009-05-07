@@ -3,57 +3,70 @@
 class MapBuilder {
 	
 	var $range;
+	var $cells;
+	var $items = array(
+		'TrollPosition' => 'trolls', 'Monster' => 'monsters', 'Tresor' => 'treasures',
+		'Lieu' => 'places', 'Champignon' => 'mushrooms',
+	);
 	
 	function buildMap($parameters) {
 		$map = array();
+		$this->cells = array();
 		
-		$startX = array_key_exists('start_x', $parameters) ? $parameters['start_x'] : 0;
-		$startY = array_key_exists('start_y', $parameters) ? $parameters['start_y'] : 0;
-		$startN = array_key_exists('start_n', $parameters) ? $parameters['start_n'] : -30;
+		$position_x = array_key_exists('position_x', $parameters) ? $parameters['position_x'] : 0;
+		$position_y = array_key_exists('position_y', $parameters) ? $parameters['position_y'] : 0;
+		$start_n = array_key_exists('start_n', $parameters) ? $parameters['start_n'] : -30;
+		$end_n = array_key_exists('end_n', $parameters) ? $parameters['end_n'] : -30;
 		$range = array_key_exists('range', $parameters) ? $parameters['range'] : 10;
 		$this->range = $range;
-		$excludeTrolls = array_key_exists('exclude_trolls', $parameters);
-		$excludeMonsters = array_key_exists('exclude_monsters', $parameters);
-		$excludeTreasures = array_key_exists('exclude_treasures', $parameters);
-		$excludePlaces = array_key_exists('exclude_places', $parameters);
-		$excludeMushrooms = array_key_exists('exclude_mushrooms', $parameters);
 		
-		$beginX = $startX - $range;
-		$endX = $startX + $range;
-		$beginY = $startY - $range;
-		$endY = $startY + $range;
-		for($y = $endY; $y >= $beginY; $y--) {
-			for($x = $beginX; $x <= $endX; $x++) {
-				$cell_position = array('position_x' => $x, 'position_y' => $y);
-				$cell = array('position_x' => $x, 'position_y' => $y);
-				if (!$excludeMushrooms) {
-					$cell['info_champignons'] = $this->getInfoInCell($cell_position, 'ChampignonFactory');
+		$start_x = $position_x - $range;
+		$end_x = $position_x + $range;
+		$start_y = $position_y - $range;
+		$end_y = $position_y + $range;
+		foreach($this->items as $factory => $type) {
+			$this->fillCells($factory, $type, $start_x, $end_x, $start_y, $end_y, $start_n, $end_n);
+		}
+		
+		for($y = $end_y; $y >= $start_y; $y--) {
+			for($x = $start_x; $x <= $end_x; $x++) {
+				$key = $x . ',' . $y;
+				
+				$cell = array();
+				foreach ($this->items as $factory => $type) {
+					if (!$parameters['exclude_'.$type]) {
+						$cell[$type] = $this->getInfoInCell($key, $factory, $type);
+					}
 				}
-				if (!$excludePlaces) {
-					$cell['info_lieux'] = $this->getInfoInCell($cell_position, 'LieuFactory');
-				}
-				if (!$excludeMonsters) {
-					$cell['info_monstres'] = $this->getInfoInCell($cell_position, 'MonsterFactory');
-				}
-				if (!$excludeTreasures) {
-					$cell['info_tresors'] = $this->getInfoInCell($cell_position, 'TresorFactory');
-				}
-				if (!$excludeTrolls) {
-					$cell['info_trolls'] = $this->getInfoInCell($cell_position, 'TrollPositionFactory');
-				}
+				
 				$map[] = $cell;
 			}	
 		}
 		return $map;
 	}
 	
+	function fillCells($factory_name, $type, $start_x, $end_x, $start_y, $end_y, $start_n, $end_n) {
+		$factory = $this->getFactoryFromName($factory_name);
+		$items = $factory->getInstancesWithPosition($start_x, $end_x, $start_y, $end_y, $start_n, $end_n);
+		foreach($items as $item) {
+			$key = $item->getPositionX() . ',' . $item->getPositionY();
+			if (!array_key_exists($key, $this->cells)) {
+				$this->cells[$key] = array();
+				if (!array_key_exists($type, $this->cells[$key])) {
+					$this->cells[$key][$type] = array();
+				}
+			}
+			$this->cells[$key][$type][] = $item;
+		}
+	}
+	
 	function getRowSize() {
 		return (2 * $this->range) + 1;
 	}
 	
-	function getInfoInCell($cell, $factoryName) {
-		$factory = call_user_func(array($factoryName, 'getInstance'));
-		$objects = $factory->getInstancesFromArray($cell);
+	function getInfoInCell($key, $factory_name, $type) {
+		$factory = $this->getFactoryFromName($factory_name);
+		$objects = $this->cells[$key][$type];
 		if (empty($objects)) {
 			return false;
 		} else {
@@ -63,6 +76,10 @@ class MapBuilder {
 			}
 			return $objectsInfo;
 		}
+	}
+	
+	function getFactoryFromName($name) {
+		return call_user_func(array($name.'Factory', 'getInstance'));
 	}
 }
 ?>
