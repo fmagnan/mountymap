@@ -1,8 +1,9 @@
 <?php
 
 require_once 'NonPermanentDatabaseObjectFactory.class.php';
+require_once 'Place.class.php';
 
-class TresorFactory extends NonPermanentDatabaseObjectFactory {
+class PlaceFactory extends NonPermanentDatabaseObjectFactory {
 	
 	private static $instance;
 	
@@ -17,7 +18,7 @@ class TresorFactory extends NonPermanentDatabaseObjectFactory {
 	function getDataColumnsDescr() {
 		return array(
 			'mise_a_jour' => 'date',
-			'type' => 'string',
+			'nom' => 'string',
 			'position_x' => 'int',
 			'position_y' => 'int',
 			'position_n' => 'int',
@@ -31,11 +32,11 @@ class TresorFactory extends NonPermanentDatabaseObjectFactory {
 	}
 	
 	function getTableName() {
-		return 'tresor';
+		return 'lieu';
 	}
 	
 	function getCellHeader() {
-		return 'Trésors';
+		return 'Lieux';
 	}
 }
 ?>

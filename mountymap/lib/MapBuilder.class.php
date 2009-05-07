@@ -5,8 +5,8 @@ class MapBuilder {
 	var $range;
 	var $cells;
 	var $items = array(
-		'TrollPosition' => 'trolls', 'Monster' => 'monsters', 'Tresor' => 'treasures',
-		'Lieu' => 'places', 'Champignon' => 'mushrooms',
+		'TrollPosition' => 'trolls', 'Monster' => 'monsters', 'Treasure' => 'treasures',
+		'Place' => 'places', 'Mushroom' => 'mushrooms',
 	);
 	
 	function buildMap($parameters) {
