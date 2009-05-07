@@ -19,6 +19,11 @@ class MonsterFactory extends NonPermanentDatabaseObjectFactory {
 		return array(
 			'mise_a_jour' => 'date',
 			'nom' => 'string',
+			'template' => 'string',
+			'taille' => 'string',
+			'age' => 'string',
+			'marquage' => 'string',
+			'famille' => 'string',
 			'position_x' => 'int',
 			'position_y' => 'int',
 			'position_n' => 'int',
@@ -40,6 +45,7 @@ class MonsterFactory extends NonPermanentDatabaseObjectFactory {
 	}
 	
 	function getMonsterTypes() {
+		//$query = 'SELECT `nom`, COUNT(`id`) AS `occurrences` FROM ' . $this->getTableName() . ' GROUP BY `nom` ORDER BY `nom`';
 		return array();
 	}
 }
