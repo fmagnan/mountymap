@@ -11,5 +11,6 @@ define('TROLL_IDENTITY_DATA_FILE_PATH', dirname(__FILE__).'/../data/Public_Troll
 define('VIEW_FILE_PATH', 'http://sp.mountyhall.com/SP_Vue2.php');
 
 define('DEBUG_MODE', true);
+define('LOCAL_IMPORT_MODE', true);
 
 ?>
