@@ -1,9 +1,9 @@
 <?php
 
 require_once 'LocatedObject.class.php';
-require_once 'LieuFactory.class.php';
+require_once 'PlaceFactory.class.php';
 
-class Lieu extends LocatedObject {
+class Place extends LocatedObject {
 
 	function getNom() {
 		return $this->getData('nom');

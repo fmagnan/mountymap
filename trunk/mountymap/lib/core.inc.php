@@ -7,9 +7,9 @@ require_once 'TrollIdentityParser.class.php';
 require_once 'Guild.class.php';
 require_once 'Troll.class.php';
 require_once 'Monster.class.php';
-require_once 'Tresor.class.php';
-require_once 'Champignon.class.php';
-require_once 'Lieu.class.php';
+require_once 'Treasure.class.php';
+require_once 'Mushroom.class.php';
+require_once 'Place.class.php';
 require_once 'Member.class.php';
 
 function debugArray($array, $type='') {

@@ -2,7 +2,7 @@
 
 require_once 'NonPermanentDatabaseObjectFactory.class.php';
 
-class ChampignonFactory extends NonPermanentDatabaseObjectFactory {
+class MushroomFactory extends NonPermanentDatabaseObjectFactory {
 	
 	private static $instance;
 	

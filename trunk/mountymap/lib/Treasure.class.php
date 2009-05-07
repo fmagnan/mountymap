@@ -1,9 +1,9 @@
 <?php
 
 require_once 'LocatedObject.class.php';
-require_once 'TresorFactory.class.php';
+require_once 'TreasureFactory.class.php';
 
-class Tresor extends LocatedObject {
+class Treasure extends LocatedObject {
 
 	function getType() {
 		return $this->getData('type');
