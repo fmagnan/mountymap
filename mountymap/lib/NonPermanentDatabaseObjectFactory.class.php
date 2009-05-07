@@ -1,8 +1,8 @@
 <?php
 
-require_once 'DatabaseObjectFactory.class.php';
+require_once 'LocatedObjectFactory.class.php';
 
-abstract class NonPermanentDatabaseObjectFactory extends DatabaseObjectFactory {
+abstract class NonPermanentDatabaseObjectFactory extends LocatedObjectFactory {
 	
 	private static $instance;
 	

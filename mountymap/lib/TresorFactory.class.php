@@ -1,8 +1,8 @@
 <?php
 
-require_once 'DatabaseObjectFactory.class.php';
+require_once 'NonPermanentDatabaseObjectFactory.class.php';
 
-class TresorFactory extends DatabaseObjectFactory {
+class TresorFactory extends NonPermanentDatabaseObjectFactory {
 	
 	private static $instance;
 	
