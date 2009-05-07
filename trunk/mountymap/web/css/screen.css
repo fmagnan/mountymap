@@ -29,14 +29,16 @@ table td, table th {
 	float:left;
 }
 
-#map td, #map img {
-	padding:0;
-	margin:0;
-}
-
 #map td {
 	width:32px;
 	height:32px;
+	padding:0;
+	vertical-align:top;
+}
+
+#map td img {
+	float:left;
+	margin:0;
 }
 
 #debug {
@@ -70,4 +72,8 @@ table td, table th {
 
 .lieu {
 	background-color:#AE88AE;
+}
+
+fieldset#coordonnees input[type="text"] {
+	width:30px;
 }
