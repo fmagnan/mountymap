@@ -15,7 +15,17 @@
 			<option value="mushroom">Champignon</option>
 			<option value="place">Lieu</option>
 		</select>
-		<label for="id">numéro :</label><input type="text" name="id" value="{$id}" /><br />
+		<label for="id">numéro :</label><input type="text" name="id" value="{$id}" />
+		<input type="submit" name="submit" value="Valider" />
+	</fieldset>
+</form>
+<form name="search_by_monster" id="search_by_monster" method="post">
+	<fieldset>
+		<legend>Recherche par monstre</legend>
+		<label for="monster">Monstre :</label>
+		<select name="monster">
+			{$monsters_option}
+		</select>
 		<input type="submit" name="submit" value="Valider" />
 	</fieldset>
 </form>

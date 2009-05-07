@@ -7,9 +7,9 @@
 			'troll' => 'TrollPosition',
 			'guild' => 'Guild',
 			'monster' => 'Monster',
-			'treasure' => 'Tresor',
-			'mushroom' => 'Champignon',
-			'place' => 'Lieu',
+			'treasure' => 'Treasure',
+			'mushroom' => 'Mushroom',
+			'place' => 'Place',
 		);
 		$entityName = $_POST['type_entite'];
 		if (array_key_exists($entityName, $factories)) {
@@ -18,6 +18,11 @@
 		} else {
 			return false;
 		}
+	}
+	
+	function getMonsters() {
+		$monsterFactory = MonsterFactory::getInstance();
+		return $monsterFactory->getMonsterTypes();
 	}
 	
 	$smarty = instantiateSmartyTemplate(dirname(__FILE__));
@@ -32,6 +37,12 @@
 			}
 		}
 	}
+	
+	$monsters_option = '';
+	foreach (getMonsters() as $monster) {
+		$monsters_options .= '<option value=""></option>' . "\n";
+	}
+	$smarty->assign('monsters_option', $monsters_options);
 	
 	setDebugTrace($smarty);
 	setErrorTrace($smarty);

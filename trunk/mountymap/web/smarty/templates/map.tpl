@@ -26,11 +26,11 @@
 		{section name=numero loop=$map}
 			{assign var=num_cell value=$smarty.section.numero.index}
 			{assign var=trolls value=$map[$num_cell].trolls}
-			{assign var=monstres value=$map[$num_cell].monsters}
-			{assign var=tresors value=$map[$num_cell].treasures}
-			{assign var=champignons value=$map[$num_cell].mushrooms}
-			{assign var=lieux value=$map[$num_cell].places}
-			{if $trolls || $monstres || $tresors || $champignons || $lieux}
+			{assign var=monsters value=$map[$num_cell].monsters}
+			{assign var=treasures value=$map[$num_cell].treasures}
+			{assign var=mushrooms value=$map[$num_cell].mushrooms}
+			{assign var=places value=$map[$num_cell].places}
+			{if $trolls || $monsters || $treasures || $mushrooms || $places}
 				{assign var=is_content value=true}
 				{assign var=cell_class value='cell'}
 			{else} 
@@ -38,14 +38,14 @@
 				{assign var=cell_class value=''}
 			{/if}
 			
-			{if $lieux}
-				{assign var=type_lieu value='lieu'}
+			{if $places}
+				{assign var=place_type value='lieu'}
 			{else}
-				{assign var=type_lieu value=''}
+				{assign var=place_type value=''}
 			{/if}
 			
 			{if ($num_cell mod $row_size) eq 0}<tr>{/if}
-			<td class="{$cell_class} {$type_lieu}">{if $is_content}<div class="tooltip">{$trolls}{$monstres}{$tresors}{$champignons}{$lieux}</div>{/if}{if $trolls }<img src="/images/ico_troll_16.png" />{/if}{if $monstres }<img src="/images/ico_monstre_16.png" />{/if}{if $tresors }<img src="/images/ico_tresor_16.png" />{/if}{if $champignons }<img src="/images/ico_champignon_16.png" />{/if}</td>
+			<td class="{$cell_class} {$place_type}">{if $is_content}<div class="tooltip">{$trolls}{$monsters}{$treasures}{$mushrooms}{$places}</div>{/if}{if $trolls }<img src="/images/ico_troll_16.png" />{/if}{if $monsters }<img src="/images/ico_monstre_16.png" />{/if}{if $treasures }<img src="/images/ico_tresor_16.png" />{/if}{if $mushrooms }<img src="/images/ico_champignon_16.png" />{/if}</td>
 			{if ($num_cell mod $row_size) eq ($row_size - 1)}</tr>{/if}
 		{/section}
 	</table>
