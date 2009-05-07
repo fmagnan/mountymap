@@ -4,7 +4,7 @@ require_once 'Parser.class.php';
 
 class ViewParser extends Parser {
 
-	var $member_id, $origin;
+	var $member_id, $origin, $monsters_templates, $monsters_sizes;
 	
 	function __construct($file, $memberId) {
 		parent::__construct($file); 
@@ -14,6 +14,8 @@ class ViewParser extends Parser {
 		);
 		$this->member_id = $memberId;
 		$this->origin = array();
+		$this->monsters_templates = unserialize(MONSTERS_TEMPLATES);
+		$this->monsters_sizes = unserialize(MONSTERS_SIZES);
 	}
 	
 	function initSection($section) {
@@ -40,7 +42,7 @@ class ViewParser extends Parser {
 			$formattedData['position_x'] = $array[1];
 			$formattedData['position_y'] = $array[2];
 			$formattedData['position_n'] = $array[3];
-		} elseif($section == 'ORIGINE') {
+		} elseif ($section == 'ORIGINE') {
 			$this->origin['id'] = $this->member_id;
 			$this->origin['horizontal_range'] = $array[0];
 			$this->origin['position_x'] = $array[1];
@@ -50,10 +52,40 @@ class ViewParser extends Parser {
 			$formattedData['position_x'] = $array[2];
 			$formattedData['position_y'] = $array[3];
 			$formattedData['position_n'] = $array[4];
-			if (in_array($section, array('MONSTRES', 'LIEUX'))) {
+			if ($section == 'LIEUX') {
 				$formattedData['nom'] = utf8_encode($array[1]);
 			} elseif(in_array($section, array('TRESORS', 'CHAMPIGNONS'))) {
 				$formattedData['type'] = utf8_encode($array[1]);
+			} elseif($section == 'MONSTRES') {
+				$complete_monster_name = utf8_encode($array[1]);
+				preg_match('/(.*)\[(.*)\](.*)/', $complete_monster_name, $matches);
+				$monster_name = trim($matches[1]);
+				
+				foreach($this->monsters_sizes as $size) {
+					preg_match('/('.$size.') (.*)/', $monster_name, $size_matches);
+					$size = (trim($size_matches[1]) != '') ? trim($size_matches[1]) : '';
+					if (trim($size_matches[2]) != '') {
+						$monster_name = trim($size_matches[2]);
+					}
+				}
+				$template = '';
+				foreach($this->monsters_templates as $monster_template) {
+					preg_match('/(.*) ('.$monster_template.')/', $monster_name, $template_matches);
+					if (!empty($template_matches)) {
+						$monster_name = trim($template_matches[1]);
+						$template .= trim($template_matches[2]);
+					}
+					preg_match('/('.$monster_template.') (.*)/', $monster_name, $template_matches);
+					if (!empty($template_matches)) {
+						$monster_name = trim($template_matches[2]);
+						$template .= trim($template_matches[1]);
+					}
+				}
+				$formattedData['nom'] = $monster_name;
+				$formattedData['template'] = $template;
+				$formattedData['taille'] = $size;
+				$formattedData['age'] = trim($matches[2]);
+				$formattedData['marquage'] = trim($matches[3]);
 			}
 	 	} 
 		

@@ -24,15 +24,31 @@ function debugArray($array, $type='') {
 function updateView($membre) {
 	$memberFactory = MemberFactory::getInstance();
 	$password = $memberFactory->getPasswordFrom($membre);
-	$parameters = '?Numero='.intval($membre).'&Motdepasse='.$password.'&Tresors=1&Lieux=1&Champignons=1';
-	updateDataFromMountySite(new ViewParser(VIEW_FILE_PATH.$parameters, $membre));
+	$troll_number = intval($membre);
+	$parameters = '?Numero='.$troll_number.'&Motdepasse='.$password.'&Tresors=1&Lieux=1&Champignons=1';
+	if (LOCAL_IMPORT_MODE) {
+		$import_file = '../data/vue_'.$troll_number.'.txt';
+	} else {
+		$import_file = VIEW_FILE_PATH . $parameters;
+	}
+	updateDataFromMountySite(new ViewParser($import_file, $membre));
 }
 
 function updatePublicGuild() {
+	if (LOCAL_IMPORT_MODE) {
+		$import_file = '../data/Public_Guildes.txt';
+	} else {
+		$import_file = GUILD_DATA_FILE_PATH;
+	}
 	updateDataFromMountySite(new GuildParser(GUILD_DATA_FILE_PATH));
 }
 
 function updatePublicTrolls() {
+	if (LOCAL_IMPORT_MODE) {
+		$import_file = '../data/Public_Trolls.txt';
+	} else {
+		$import_file = TROLL_IDENTITY_DATA_FILE_PATH;
+	}
 	updateDataFromMountySite(new TrollIdentityParser(TROLL_IDENTITY_DATA_FILE_PATH));
 }
 
