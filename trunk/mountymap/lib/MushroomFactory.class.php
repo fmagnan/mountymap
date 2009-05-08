@@ -17,7 +17,7 @@ class MushroomFactory extends NonPermanentDatabaseObjectFactory {
 	function getDataColumnsDescr() {
 		return array(
 			'mise_a_jour' => 'date',
-			'type' => 'string',
+			'nom' => 'string',
 			'position_x' => 'int',
 			'position_y' => 'int',
 			'position_n' => 'int',

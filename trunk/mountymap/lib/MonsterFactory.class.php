@@ -44,9 +44,5 @@ class MonsterFactory extends NonPermanentDatabaseObjectFactory {
 		return 'Monstres';
 	}
 	
-	function getMonsterTypes() {
-		//$query = 'SELECT `nom`, COUNT(`id`) AS `occurrences` FROM ' . $this->getTableName() . ' GROUP BY `nom` ORDER BY `nom`';
-		return array();
-	}
 }
 ?>

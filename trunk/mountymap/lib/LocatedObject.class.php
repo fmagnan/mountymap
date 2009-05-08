@@ -28,7 +28,7 @@ abstract class LocatedObject extends DatabaseObject {
 	
 	function output() {
 		if ($this->isPositionKnown()) {
-			return '<li>'.$this->getCellInfo() . ' ' . $this->getLinkToMap().'</li>';
+			return $this->getCellInfo() . ' ' . $this->getLinkToMap();
 		}
 	}
 	
