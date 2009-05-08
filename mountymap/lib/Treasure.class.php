@@ -5,12 +5,12 @@ require_once 'TreasureFactory.class.php';
 
 class Treasure extends LocatedObject {
 
-	function getType() {
-		return $this->getData('type');
+	function getName() {
+		return $this->getData('nom');
 	}
 	
 	function getCellInfo() {
-		return $this->getFormattedPosition() . ' <a href="javascript:ETV('.$this->getId().')">'. $this->getType() . '</a>';
+		return $this->getFormattedPosition() . ' <a href="javascript:ETV('.$this->getId().')">'. $this->getName() . '</a>';
 	}
 	
 }

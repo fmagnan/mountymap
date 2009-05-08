@@ -4,7 +4,7 @@ require_once 'Parser.class.php';
 
 class ViewParser extends Parser {
 
-	var $member_id, $origin, $monsters_templates, $monsters_sizes;
+	var $member_id, $origin, $monsters_templates, $monsters_sizes, $places_types;
 	
 	function __construct($file, $memberId) {
 		parent::__construct($file); 
@@ -16,6 +16,7 @@ class ViewParser extends Parser {
 		$this->origin = array();
 		$this->monsters_templates = unserialize(MONSTERS_TEMPLATES);
 		$this->monsters_sizes = unserialize(MONSTERS_SIZES);
+		$this->places_types = unserialize(PLACES_TYPES);
 	}
 	
 	function initSection($section) {
@@ -52,10 +53,19 @@ class ViewParser extends Parser {
 			$formattedData['position_x'] = $array[2];
 			$formattedData['position_y'] = $array[3];
 			$formattedData['position_n'] = $array[4];
-			if ($section == 'LIEUX') {
+			if(in_array($section, array('TRESORS', 'CHAMPIGNONS'))) {
 				$formattedData['nom'] = utf8_encode($array[1]);
-			} elseif(in_array($section, array('TRESORS', 'CHAMPIGNONS'))) {
-				$formattedData['type'] = utf8_encode($array[1]);
+			} elseif($section == 'LIEUX') {
+				$place_name = utf8_encode($array[1]);
+				$place_type = 'Divers';
+				foreach($this->places_types as $type) {
+					preg_match('/('.$type.')(.*)/', $place_name, $type_matches);
+					if (!empty($type_matches) && trim($type_matches[1]) != '') {
+						$place_type = trim($type_matches[1]);
+					}
+				}
+				$formattedData['nom'] = $place_name;
+				$formattedData['type'] = $place_type;
 			} elseif($section == 'MONSTRES') {
 				$complete_monster_name = utf8_encode($array[1]);
 				preg_match('/(.*)\[(.*)\](.*)/', $complete_monster_name, $matches);
@@ -63,9 +73,11 @@ class ViewParser extends Parser {
 				
 				foreach($this->monsters_sizes as $size) {
 					preg_match('/('.$size.') (.*)/', $monster_name, $size_matches);
-					$size = (trim($size_matches[1]) != '') ? trim($size_matches[1]) : '';
-					if (trim($size_matches[2]) != '') {
-						$monster_name = trim($size_matches[2]);
+					if (!empty($size_matches)) {
+						$size = (trim($size_matches[1]) != '') ? trim($size_matches[1]) : '';
+						if (trim($size_matches[2]) != '') {
+							$monster_name = trim($size_matches[2]);
+						}
 					}
 				}
 				$template = '';

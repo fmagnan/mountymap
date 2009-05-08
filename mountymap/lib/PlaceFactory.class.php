@@ -19,6 +19,7 @@ class PlaceFactory extends NonPermanentDatabaseObjectFactory {
 		return array(
 			'mise_a_jour' => 'date',
 			'nom' => 'string',
+			'type' => 'string',
 			'position_x' => 'int',
 			'position_y' => 'int',
 			'position_n' => 'int',
@@ -37,6 +38,10 @@ class PlaceFactory extends NonPermanentDatabaseObjectFactory {
 	
 	function getCellHeader() {
 		return 'Lieux';
+	}
+
+	function getGroupByField() {
+		return 'type';
 	}
 }
 ?>

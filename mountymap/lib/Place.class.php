@@ -5,12 +5,12 @@ require_once 'PlaceFactory.class.php';
 
 class Place extends LocatedObject {
 
-	function getNom() {
+	function getName() {
 		return $this->getData('nom');
 	}
 	
 	function getCellInfo() {
-		return $this->getFormattedPosition().' '.$this->getNom().' ('.$this->getId().')';
+		return $this->getFormattedPosition().' '.$this->getName().' ('.$this->getId().')';
 	}
 	
 }
