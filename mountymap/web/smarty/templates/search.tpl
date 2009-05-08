@@ -50,15 +50,30 @@
 	</fieldset>
 </form>
 {if isset($unique_instance)}
-	<ul>
-		<li>{$unique_instance->output()}</li>
-	</ul>
+	<table id="search_results">
+		<tr>
+			<th>Id</th><th>Nom</th><th>X</th><th>Y</th><th>N</th><th>Date</th><th>Actions</th>
+		</tr>
+ 		{$unique_instance->getTableRow()}
+	</table>
 {/if}
 {if isset($multiple_instances)}
-	<ul>
+	<table id="search_results">
+		<tr>
+			<th>Id</th><th>Nom</th><th>X</th><th>Y</th><th>N</th><th>Date</th><th>Actions</th>
+		</tr>
  		{foreach from=$multiple_instances item=instance}
- 			<li>{$instance->output()}</li>
+ 			{cycle values='odd,even' assign='class'} 
+ 			<tr class="{$class}">
+				<td>{$instance->getId()}</td>
+				<td>{$instance->getFullName()}</td>
+				<td>{$instance->getPositionX()}</td>
+				<td>{$instance->getPositionY()}</td>
+				<td>{$instance->getPositionN()}</td>
+				<td>{$instance->getUpdate()}</td>
+				<td>{$instance->getLinkToMap()}</td>
+			</tr>
  		{/foreach}
-	</ul>
+	</table>
 {/if}
 {include file='footer.tpl'}
