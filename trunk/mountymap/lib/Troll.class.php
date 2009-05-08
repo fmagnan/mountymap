@@ -41,7 +41,7 @@ class Troll extends LocatedObject {
 		return $guildFactory->getInstanceFromArray(array('id' => $this->getNumeroGuilde()));	
 	}
 	
-	function getFormattedIdentity() {
+	function getFullName() {
 		$this->initIdentityData();
 		$identity = '<a href="javascript:EPV('.$this->getId().')">'. $this->getName() . '</a> (' . $this->getRace() . ' ' . $this->getLevel() . ') ';
 		$guild = $this->getGuild();
@@ -50,12 +50,12 @@ class Troll extends LocatedObject {
 	}
 	
 	function getCellInfo() {
-		return parent::getFormattedPosition() . ' ' . $this->getFormattedIdentity();
+		return parent::getFormattedPosition() . ' ' . $this->getFullName();
 	}
 	
-	function output() {
+	function getTableRow() {
 		$this->initPositionData();
-		return parent::output();
+		return parent::getTableRow();
 	}
 	
 }

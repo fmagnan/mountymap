@@ -9,10 +9,6 @@ class Member extends DatabaseObject {
 		return $this->getData('password');
 	}
 	
-	function getUpdate() {
-		return getDateEnFrancais($this->getData('mise_a_jour'));
-	}
-	
 	function getFormattedPosition() {
 		$trollFactory = TrollPositionFactory::getInstance();
 		$troll = $trollFactory->getInstanceFromObject($this);

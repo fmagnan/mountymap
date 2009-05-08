@@ -172,19 +172,9 @@ class DatabaseObject extends BaseObject {
 		return $this->getData('id');
 	}
 	
-	/*function serializePrimaryKey() {
-		ksort($this->idArray);
-		return implode(',', $this->idArray);
-	}*/
-	
-	/*function getWhereClauseBaseeSurClePrimaire() {
-		$champsDeLaClePrimaire = $this->getPrimaryKeyList();
-		$whereClause = 'WHERE 1=1';
-		foreach($champsDeLaClePrimaire AS $nomChamp) {
-			$whereClause .= ' AND ' . $nomChamp . '=\'' . $this->escape($this->getData($nomChamp)) . '\'';
-		}
-		return $whereClause;	
-	}*/
+	function getUpdate() {
+		return getDateEnFrancais($this->getData('mise_a_jour'));
+	}
 	
 }
 

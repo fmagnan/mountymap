@@ -70,11 +70,11 @@ class ViewParser extends Parser {
 				$complete_monster_name = utf8_encode($array[1]);
 				preg_match('/(.*)\[(.*)\](.*)/', $complete_monster_name, $matches);
 				$monster_name = trim($matches[1]);
-				
-				foreach($this->monsters_sizes as $size) {
-					preg_match('/('.$size.') (.*)/', $monster_name, $size_matches);
+				$size = '';
+				foreach($this->monsters_sizes as $monster_size) {
+					preg_match('/('.$monster_size.') (.*)/', $monster_name, $size_matches);
 					if (!empty($size_matches)) {
-						$size = (trim($size_matches[1]) != '') ? trim($size_matches[1]) : '';
+						$size = trim($size_matches[1]);
 						if (trim($size_matches[2]) != '') {
 							$monster_name = trim($size_matches[2]);
 						}
