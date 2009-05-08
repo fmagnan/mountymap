@@ -19,6 +19,15 @@ $monsters_templates = array(
 
 $monsters_sizes = array('Petit', 'Petite', 'Gros', 'Grosse',);
 
+$places_types = array(
+	'Sortie de Portail', 'Portail', 'Tanière de trõll', 'Tanière', 'Trou de Météorite',
+	'Petite Lice', 'Grande Lice', 'Lice', 'Croisée des cavernes', 'Caverne',
+	'Auberge', 'Agence', 'Armurerie', 'Boutique', 'Bureau', 'Cahute', 'Campement', 'Cocon', 'Couvoir', 
+	'Forge', 'Gouffre', 'Gowapier d\'Elevage', 'Gowapier de Dressage', 'Grotte', 'Lac souterrain', 'Maléfacterie', 'Marabouterie', 'Minéroll',
+	'Nid', 'Porte d\'Outre-Monde', 'Refuge', 'Rocher', 'Sanctuaire', 'Sépulcre', 'Source', 'Téléporteur', 'Terrier', 'Tombe',
+);
+
 define('MONSTERS_TEMPLATES', serialize($monsters_templates));
 define('MONSTERS_SIZES', serialize($monsters_sizes));
+define('PLACES_TYPES', serialize($places_types));
 ?>
