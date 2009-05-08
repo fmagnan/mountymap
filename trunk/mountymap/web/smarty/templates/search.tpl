@@ -24,14 +24,41 @@
 		<legend>Recherche par monstre</legend>
 		<label for="monster">Monstre :</label>
 		<select name="monster">
-			{$monsters_option}
+			{$monster_options}
+		</select>
+		<input type="submit" name="submit" value="Valider" />
+	</fieldset>
+</form>
+<form name="search_by_treasure" id="search_by_treasure" method="post">
+	<fieldset>
+		<legend>Recherche par trésor</legend>
+		<label for="treasure">Trésor :</label>
+		<select name="treasure">
+			{$treasure_options}
+		</select>
+		<input type="submit" name="submit" value="Valider" />
+	</fieldset>
+</form>
+<form name="search_by_place" id="search_by_place" method="post">
+	<fieldset>
+		<legend>Recherche par lieu</legend>
+		<label for="place">Lieu :</label>
+		<select name="place">
+			{$place_options}
 		</select>
 		<input type="submit" name="submit" value="Valider" />
 	</fieldset>
 </form>
 {if isset($unique_instance)}
 	<ul>
-		{$unique_instance->output()}
+		<li>{$unique_instance->output()}</li>
+	</ul>
+{/if}
+{if isset($multiple_instances)}
+	<ul>
+ 		{foreach from=$multiple_instances item=instance}
+ 			<li>{$instance->output()}</li>
+ 		{/foreach}
 	</ul>
 {/if}
 {include file='footer.tpl'}
