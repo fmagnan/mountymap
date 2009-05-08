@@ -4,7 +4,7 @@ DROP TABLE IF EXISTS `champignon`;
 CREATE TABLE IF NOT EXISTS `champignon` (
   `id` int(11) NOT NULL,
   `mise_a_jour` datetime NOT NULL,
-  `type` varchar(100) NOT NULL,
+  `nom` varchar(100) NOT NULL,
   `position_x` int(11) NOT NULL,
   `position_y` int(11) NOT NULL,
   `position_n` int(11) NOT NULL,
@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS `lieu` (
   `id` int(11) NOT NULL,
   `mise_a_jour` datetime NOT NULL,
   `nom` varchar(100) NOT NULL,
+  `type` varchar(100) NOT NULL,
   `position_x` int(11) NOT NULL,
   `position_y` int(11) NOT NULL,
   `position_n` int(11) NOT NULL,
@@ -58,7 +59,7 @@ DROP TABLE IF EXISTS `tresor`;
 CREATE TABLE IF NOT EXISTS `tresor` (
   `id` int(11) NOT NULL,
   `mise_a_jour` datetime NOT NULL,
-  `type` varchar(100) NOT NULL,
+  `nom` varchar(100) NOT NULL,
   `position_x` int(11) NOT NULL,
   `position_y` int(11) NOT NULL,
   `position_n` int(11) NOT NULL,
