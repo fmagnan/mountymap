@@ -26,18 +26,19 @@ abstract class LocatedObject extends DatabaseObject {
 		return $formattedPosition;
 	}
 	
-	function output() {
-		if ($this->isPositionKnown()) {
-			return $this->getCellInfo() . ' ' . $this->getLinkToMap();
-		}
-	}
-	
 	function getLinkToMap() {
 		$range = 10;
 		$start_n = $this->getPositionN() + 5;
 		$end_n = $this->getPositionN() - 5; 
 		$href = 'map.php?position_x='.$this->getPositionX().'&position_y='.$this->getPositionY().'&start_n='.$start_n.'&end_n='.$end_n.'&range=10';
 		return '<a href="'.$href.'">visualiser sur la carte</a>';
+	}
+	
+	function getTableRow() {
+		return '<tr><td>'.$this->getId().'</td><td>'.$this->getFullName().'</td>
+				<td>'.$this->getPositionX().'</td><td>'.$this->getPositionY().'</td>
+				<td>'.$this->getPositionN().'</td><td>'.$this->getUpdate().'</td>
+				<td>'.$this->getLinkToMap().'</td></tr>';
 	}
 	
 	abstract function getCellInfo();

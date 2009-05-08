@@ -10,7 +10,11 @@ class Treasure extends LocatedObject {
 	}
 	
 	function getCellInfo() {
-		return $this->getFormattedPosition() . ' <a href="javascript:ETV('.$this->getId().')">'. $this->getName() . '</a>';
+		return $this->getFormattedPosition() . $this->getFullName();
+	}
+	
+	function getFullName() {
+		return '<a href="javascript:ETV('.$this->getId().')">'. $this->getName() . '</a>';
 	}
 	
 }

@@ -13,6 +13,10 @@ class Place extends LocatedObject {
 		return $this->getFormattedPosition().' '.$this->getName().' ('.$this->getId().')';
 	}
 	
+	function getFullName() {
+		return $this->getName();
+	}
+	
 }
 
 ?>
