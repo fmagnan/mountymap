@@ -20,11 +20,6 @@
 		}
 	}
 	
-	function getMonsters() {
-		$monsterFactory = MonsterFactory::getInstance();
-		return $monsterFactory->getMonsterTypes();
-	}
-	
 	$smarty = instantiateSmartyTemplate(dirname(__FILE__));
 	
 	if (array_key_exists('submit', $_POST) && array_key_exists('id', $_POST)) {
@@ -38,11 +33,27 @@
 		}
 	}
 	
-	$monsters_option = '';
-	foreach (getMonsters() as $monster) {
-		$monsters_options .= '<option value=""></option>' . "\n";
+	$search_by_types = array('monster', 'treasure', 'place');
+	
+	foreach($search_by_types as $type) {
+		$factory = call_user_func(array($type.'Factory', 'getInstance'));
+		$options = '';
+		$selected_type = array_key_exists($type, $_POST) ? $_POST[$type] : '';
+		foreach ($factory->getInstancesByTypes() as $instance) {
+			$name = $instance['group_by_field'];
+			$options .= '<option value="'.$name.'"';
+			if ($selected_type == $name) {
+				$options .= ' selected="selected"';
+			}
+			$options .= '>'.$name.' ('.$instance['number'].')</option>' . "\n";
+		}
+		$smarty->assign($type.'_options', $options);
+	
+		if ($selected_type != '') {
+			$instances = $factory->getInstancesByGroupByField($selected_type);
+			$smarty->assign('multiple_instances', $instances);
+		}
 	}
-	$smarty->assign('monsters_option', $monsters_options);
 	
 	setDebugTrace($smarty);
 	setErrorTrace($smarty);
