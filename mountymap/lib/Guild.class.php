@@ -17,12 +17,15 @@ class Guild extends DatabaseObject {
 		return '<a href="javascript:EAV('.$this->getId().')">'. $this->getName() . '</a>';
 	}
 	
-	function getTableRow() {
+	function getTableRow($class='') {
 		$row = '';
 		$trollFactory = TrollIdentityFactory::getInstance();
 		$trolls = $trollFactory->getInstancesFromArray(array('id_guilde' => $this->getId()));
+		$counter = 0;
 		foreach($trolls as $troll) {
-			$row .= $troll->getTableRow();
+			$class = $counter % 2 == 0 ? 'even' : 'odd';
+			$row .= $troll->getTableRow($class);
+			$counter++;
 		}
 		return $row;
 	}

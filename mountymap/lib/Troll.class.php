@@ -53,9 +53,9 @@ class Troll extends LocatedObject {
 		return parent::getFormattedPosition() . ' ' . $this->getFullName();
 	}
 	
-	function getTableRow() {
+	function getTableRow($class='') {
 		$this->initPositionData();
-		return parent::getTableRow();
+		return parent::getTableRow($class);
 	}
 	
 }
