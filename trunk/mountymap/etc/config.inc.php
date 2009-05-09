@@ -11,6 +11,6 @@ define('TROLL_IDENTITY_DATA_FILE_PATH', 'http://www.mountyhall.com/ftp/Public_Tr
 define('VIEW_FILE_PATH', 'http://sp.mountyhall.com/SP_Vue2.php');
 
 define('DEBUG_MODE', true);
-define('LOCAL_IMPORT_MODE', false);
+define('LOCAL_IMPORT_MODE', true);
 
 ?>
