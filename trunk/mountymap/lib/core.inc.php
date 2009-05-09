@@ -21,17 +21,18 @@ function debugArray($array, $type='') {
 	}
 }
 
-function updateView($membre) {
+function updateView($membre_id) {
 	$memberFactory = MemberFactory::getInstance();
-	$password = $memberFactory->getPasswordFrom($membre);
-	$troll_number = intval($membre);
-	$parameters = '?Numero='.$troll_number.'&Motdepasse='.$password.'&Tresors=1&Lieux=1&Champignons=1';
+	$troll_number = intval($membre_id);
+	$member = $memberFactory->getInstanceFromArray(array('id' => $troll_number));
+	$parameters = '?Numero='.$troll_number.'&Motdepasse='.$member->getPassword().'&Tresors=1&Lieux=1&Champignons=1';
 	if (LOCAL_IMPORT_MODE) {
 		$import_file = '../data/vue_'.$troll_number.'.txt';
 	} else {
 		$import_file = VIEW_FILE_PATH . $parameters;
 	}
-	updateDataFromMountySite(new ViewParser($import_file, $membre));
+	updateDataFromMountySite(new ViewParser($import_file, $membre_id));
+	$member->update(array('mise_a_jour' => 'NOW()'));
 }
 
 function updatePublicGuild() {

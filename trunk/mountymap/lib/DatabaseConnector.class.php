@@ -108,25 +108,6 @@ class DatabaseConnector {
 		return $donneesDeRetour;
 	}
 	
-/*	function executeRequeteEtTransformeDates($query, $champsDate) {
-		$this->addQuery($query);
-		$donneesDeRetour = array();
-		$this->connectToDB();
-		$result = mysql_query($query) or $this->addMysqlError($query);
-		if ($result) {
-			while ($row = mysql_fetch_assoc($result)) {
-				foreach($champsDate AS $champ) {
-					if (array_key_exists($champ, $row)) {
-						$row[$champ] = getDateEnFrancais($row[$champ]);
-					}
-				}
-				$donneesDeRetour[] = $row;
-			}
-		}
-		$this->disconnectFromDB();
-		return $donneesDeRetour;
-	}*/
-	
 	function getValueByType($value, $type) {
 		if ($type == 'string') {
 			return '\'' . mysql_real_escape_string($value, $this->link) . '\'';
@@ -144,7 +125,6 @@ class DatabaseConnector {
 				$setClauseArray[] = "`".$key."`=".$this->getValueByType($value, $datatypes[$key]);
 			}
 		}
-		
 		$query = 'UPDATE `'.$tableName.'` SET '. implode(', ', $setClauseArray) . ' WHERE ' . $whereClause;
 		return $this->executeRequeteSansDonneesDeRetour($query);
 	}

@@ -36,11 +36,6 @@ class MemberFactory extends DatabaseObjectFactory {
 		return $this->getInstances('`mise_a_jour`', 'DESC');
 	}
 	
-	function getPasswordFrom($membre) {
-		$member = $this->getInstanceFromArray(array('id' => $membre));
-		return $member->getPassword();
-	}
-	
 }
 
 ?>

@@ -34,8 +34,8 @@ abstract class LocatedObject extends DatabaseObject {
 		return '<a href="'.$href.'">visualiser sur la carte</a>';
 	}
 	
-	function getTableRow() {
-		return '<tr><td>'.$this->getId().'</td><td>'.$this->getFullName().'</td>
+	function getTableRow($class='') {
+		return '<tr class="'.$class.'"><td>'.$this->getId().'</td><td>'.$this->getFullName().'</td>
 				<td>'.$this->getPositionX().'</td><td>'.$this->getPositionY().'</td>
 				<td>'.$this->getPositionN().'</td><td>'.$this->getUpdate().'</td>
 				<td>'.$this->getLinkToMap().'</td></tr>';
