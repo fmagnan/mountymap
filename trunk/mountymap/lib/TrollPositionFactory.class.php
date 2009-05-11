@@ -37,9 +37,5 @@ class TrollPositionFactory extends LocatedObjectFactory {
 	function getInstanceClassName() {
 		return 'troll';
 	}
-	
-	function getCellHeader() {
-		return 'Trolls';
-	}
 }
 ?>

@@ -49,14 +49,18 @@ class MapBuilder {
 		$factory = $this->getFactoryFromName($factory_name);
 		$items = $factory->getInstancesWithPosition($start_x, $end_x, $start_y, $end_y, $start_n, $end_n);
 		foreach($items as $item) {
-			$key = $item->getPositionX() . ',' . $item->getPositionY();
-			if (!array_key_exists($key, $this->cells)) {
-				$this->cells[$key] = array();
-				if (!array_key_exists($type, $this->cells[$key])) {
-					$this->cells[$key][$type] = array();
+			$level = $item->getPositionN();
+			$position = $item->getPositionX() . ',' . $item->getPositionY();
+			if (!array_key_exists($position, $this->cells)) {
+				$this->cells[$position] = array();
+				if (!array_key_exists($level, $this->cells[$position])) {
+					$this->cells[$position][$level] = array();
+				}
+				if (!array_key_exists($type, $this->cells[$position][$level])) {
+					$this->cells[$position][$level][$type] = array();
 				}
 			}
-			$this->cells[$key][$type][] = $item;
+			$this->cells[$position][$level][$type][] = $item;
 		}
 	}
 	
@@ -66,16 +70,25 @@ class MapBuilder {
 	
 	function getInfoInCell($key, $factory_name, $type) {
 		$factory = $this->getFactoryFromName($factory_name);
-		$objects = $this->cells[$key][$type];
-		if (empty($objects)) {
-			return false;
-		} else {
-			$objectsInfo = '<h3>'.$factory->getCellHeader().' : </h3>';
-			foreach ($objects as $object) {
-				$objectsInfo .= $object->getCellInfo().'<br />';
+		$cellInfo = '';
+		if (array_key_exists($key, $this->cells)) {
+			foreach($this->cells[$key] as $level => $level_content) {
+				echo 'level = ' . $level . '<br/>';
+				if (array_key_exists($type, $level_content)) {
+					$located_objects = $level_content[$type];
+					if (!empty($located_objects)) {
+						foreach ($located_objects as $located_object) {
+							if (is_object($located_object)) {
+								echo $located_object->getCellInfo() . '<br />';
+								$cellInfo .= $located_object->getCellInfo() . '<br />';
+							}
+						}
+					}
+				}
 			}
-			return $objectsInfo;
+			return $cellInfo;
 		}
+		return false;
 	}
 	
 	function getFactoryFromName($name) {

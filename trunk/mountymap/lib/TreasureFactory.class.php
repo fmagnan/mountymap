@@ -34,9 +34,5 @@ class TreasureFactory extends NonPermanentDatabaseObjectFactory {
 		return 'tresor';
 	}
 	
-	function getCellHeader() {
-		return 'Trésors';
-	}
-	
 }
 ?>

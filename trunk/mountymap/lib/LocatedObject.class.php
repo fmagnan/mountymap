@@ -4,6 +4,8 @@ require_once 'DatabaseObject.class.php';
 
 abstract class LocatedObject extends DatabaseObject {
 
+	abstract function getFullName();
+	
 	function isPositionKnown() {
 		return $this->getPositionX() != '' && $this->getPositionY() != '' && $this->getPositionN() != '';
 	}
@@ -41,7 +43,9 @@ abstract class LocatedObject extends DatabaseObject {
 				<td>'.$this->getLinkToMap().'</td></tr>';
 	}
 	
-	abstract function getCellInfo();
+	function getCellInfo() {
+		return $this->getFormattedPosition() . ' ' . $this->getFullName();
+	}
 }
 
 ?>

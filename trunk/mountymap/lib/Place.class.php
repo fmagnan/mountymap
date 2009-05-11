@@ -10,7 +10,7 @@ class Place extends LocatedObject {
 	}
 	
 	function getCellInfo() {
-		return $this->getFormattedPosition().' '.$this->getName().' ('.$this->getId().')';
+		return parent::getCellInfo() . ' ('.$this->getId().')';
 	}
 	
 	function getFullName() {
