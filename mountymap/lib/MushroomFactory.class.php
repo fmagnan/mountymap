@@ -34,8 +34,5 @@ class MushroomFactory extends NonPermanentDatabaseObjectFactory {
 		return 'champignon';
 	}
 	
-	function getCellHeader() {
-		return 'Champignons';
-	}
 }
 ?>

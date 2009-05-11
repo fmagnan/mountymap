@@ -35,10 +35,6 @@ class PlaceFactory extends NonPermanentDatabaseObjectFactory {
 	function getTableName() {
 		return 'lieu';
 	}
-	
-	function getCellHeader() {
-		return 'Lieux';
-	}
 
 	function getGroupByField() {
 		return 'type';

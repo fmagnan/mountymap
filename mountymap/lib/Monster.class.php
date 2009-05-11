@@ -5,10 +5,6 @@ require_once 'MonsterFactory.class.php';
 
 class Monster extends LocatedObject {
 
-	function getCellInfo() {
-		return $this->getFormattedPosition() . $this->getFullName();
-	}
-	
 	function getName() {
 		return $this->getData('nom');
 	}
