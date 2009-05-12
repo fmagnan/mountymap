@@ -30,16 +30,7 @@ class MapBuilder {
 		
 		for($y = $end_y; $y >= $start_y; $y--) {
 			for($x = $start_x; $x <= $end_x; $x++) {
-				$key = $x . ',' . $y;
-				
-				$cell = array();
-				foreach ($this->items as $factory => $type) {
-					if (!$parameters['exclude_'.$type]) {
-						$cell[$type] = $this->getInfoInCell($key, $factory, $type);
-					}
-				}
-				
-				$map[] = $cell;
+				$map[] = $this->getCell($x . ',' . $y);
 			}	
 		}
 		return $map;
@@ -56,11 +47,8 @@ class MapBuilder {
 				if (!array_key_exists($level, $this->cells[$position])) {
 					$this->cells[$position][$level] = array();
 				}
-				if (!array_key_exists($type, $this->cells[$position][$level])) {
-					$this->cells[$position][$level][$type] = array();
-				}
 			}
-			$this->cells[$position][$level][$type][] = $item;
+			$this->cells[$position][$level][] = $item;
 		}
 	}
 	
@@ -68,25 +56,23 @@ class MapBuilder {
 		return (2 * $this->range) + 1;
 	}
 	
-	function getInfoInCell($key, $factory_name, $type) {
-		$factory = $this->getFactoryFromName($factory_name);
+	function getCell($key) {
+		$cell = array();
 		$cellInfo = '';
 		if (array_key_exists($key, $this->cells)) {
-			foreach($this->cells[$key] as $level => $level_content) {
-				echo 'level = ' . $level . '<br/>';
-				if (array_key_exists($type, $level_content)) {
-					$located_objects = $level_content[$type];
-					if (!empty($located_objects)) {
-						foreach ($located_objects as $located_object) {
-							if (is_object($located_object)) {
-								echo $located_object->getCellInfo() . '<br />';
-								$cellInfo .= $located_object->getCellInfo() . '<br />';
-							}
+			$cellContentByLevel = $this->cells[$key];
+			foreach($cellContentByLevel as $level => $located_objects) {
+				if (is_array($located_objects) && is_numeric($level)) {
+					foreach ($located_objects as $located_object) {
+						if (is_object($located_object)) {
+							$cellInfo .= $located_object->getCellInfo() . '<br />';
+							$cell[$located_object->getFactory()->getTableName()] = true;
 						}
 					}
 				}
 			}
-			return $cellInfo;
+			$cell['content'] = $cellInfo;
+			return $cell;
 		}
 		return false;
 	}
