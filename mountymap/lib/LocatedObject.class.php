@@ -44,7 +44,7 @@ abstract class LocatedObject extends DatabaseObject {
 	}
 	
 	function getCellInfo() {
-		return $this->getFormattedPosition() . ' ' . $this->getFullName();
+		return '[' . $this->getId().'] ' . $this->getFullName();
 	}
 }
 
