@@ -33,14 +33,14 @@
 				{assign var=cell_class value=''}
 			{/if}
 			
-			{if $cell.lieu}
+			{if $cell.places}
 				{assign var=place_type value='lieu'}
 			{else}
 				{assign var=place_type value=''}
 			{/if}
 			
 			{if ($num_cell mod $row_size) eq 0}<tr>{/if}
-			<td class="{$cell_class} {$place_type}">{if $cell}<div class="tooltip">{$cell.content}</div>{/if}{if $cell.troll_position }<img src="/images/ico_troll_16.png" />{/if}{if $cell.monstre }<img src="/images/ico_monstre_16.png" />{/if}{if $cell.tresor }<img src="/images/ico_tresor_16.png" />{/if}{if $cell.champignon }<img src="/images/ico_champignon_16.png" />{/if}</td>
+			<td class="{$cell_class} {$place_type}">{if $cell}<div class="tooltip">{$cell.content}</div>{/if}{if $cell.trolls }<img src="/images/ico_troll_16.png" />{/if}{if $cell.monsters }<img src="/images/ico_monstre_16.png" />{/if}{if $cell.treasures }<img src="/images/ico_tresor_16.png" />{/if}{if $cell.mushrooms }<img src="/images/ico_champignon_16.png" />{/if}</td>
 			{if ($num_cell mod $row_size) eq ($row_size - 1)}</tr>{/if}
 		{/section}
 	</table>
