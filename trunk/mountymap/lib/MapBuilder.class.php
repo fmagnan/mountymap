@@ -27,10 +27,10 @@ class MapBuilder {
 		foreach($this->items as $factory => $type) {
 			$this->fillCells($factory, $type, $start_x, $end_x, $start_y, $end_y, $start_n, $end_n);
 		}
-		
+				
 		for($y = $end_y; $y >= $start_y; $y--) {
 			for($x = $start_x; $x <= $end_x; $x++) {
-				$map[] = $this->getCell($x . ',' . $y);
+				$map[] = $this->getCell($x, $y);
 			}	
 		}
 		return $map;
@@ -48,7 +48,8 @@ class MapBuilder {
 					$this->cells[$position][$level] = array();
 				}
 			}
-			$this->cells[$position][$level][] = $item;
+			$this->cells[$position][$level][] = $item->getCellInfo();
+			$this->cells[$position][$type] = true;
 		}
 	}
 	
@@ -56,19 +57,23 @@ class MapBuilder {
 		return (2 * $this->range) + 1;
 	}
 	
-	function getCell($key) {
+	function getCell($x, $y) {
 		$cell = array();
+		$key = $x . ',' . $y;
 		$cellInfo = '';
 		if (array_key_exists($key, $this->cells)) {
 			$cellContentByLevel = $this->cells[$key];
-			foreach($cellContentByLevel as $level => $located_objects) {
-				if (is_array($located_objects) && is_numeric($level)) {
-					foreach ($located_objects as $located_object) {
-						if (is_object($located_object)) {
-							$cellInfo .= $located_object->getCellInfo() . '<br />';
-							$cell[$located_object->getFactory()->getTableName()] = true;
+			ksort($cellContentByLevel);
+			foreach($cellContentByLevel as $level => $info) {
+				if (is_numeric($level)) {
+					if (is_array($info)) {
+						$cellInfo .= '<h4>X= '.$x.' | Y= '.$y.' | N = '.$level.'</h4>';
+						foreach ($info as $line) {
+							$cellInfo .= $line . '<br/>';
 						}
 					}
+				} else {
+					$cell[$level] = $info;
 				}
 			}
 			$cell['content'] = $cellInfo;

@@ -26,13 +26,19 @@ class Monster extends LocatedObject {
 	}
 
 	function getFullName() {
-		$name = $this->getName();
-		$template = $this->getTemplate();
-		$size = $this->getSize();
-		$age = $this->getAge();
-		$mark = $this->getMark();
-		$fullName = $size . ' '. $name . ' '. $template . ' ['.$age.']'.$mark;
-		return '<a href="javascript:EMV('.$this->getId().')">'.$fullName.'</a>';
+		$fullName = array();
+		if ($this->getSize() != '') {
+			$fullName[] = $this->getSize();
+		}
+		$fullName[] = $this->getName();
+		if ($this->getTemplate() != '') {
+			$fullName[] = $this->getTemplate();
+		}
+		$fullName[] = '[' . $this->getAge() . ']';
+		if ($this->getMark() != '') {
+			$fullName[] = $this->getMark();
+		}
+		return '<a href="javascript:EMV('.$this->getId().')">'.implode(' ', $fullName).'</a>';
 	}
 	
 }
