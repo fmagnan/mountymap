@@ -25,7 +25,9 @@ class MapBuilder {
 		$start_y = $position_y - $range;
 		$end_y = $position_y + $range;
 		foreach($this->items as $factory => $type) {
-			$this->fillCells($factory, $type, $start_x, $end_x, $start_y, $end_y, $start_n, $end_n);
+			if (!$parameters['exclude_'.$type]) {
+				$this->fillCells($factory, $type, $start_x, $end_x, $start_y, $end_y, $start_n, $end_n);
+			}
 		}
 				
 		for($y = $end_y; $y >= $start_y; $y--) {
