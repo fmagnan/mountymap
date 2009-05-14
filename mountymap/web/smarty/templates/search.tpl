@@ -2,6 +2,7 @@
 
 <ul>
 	<li><a href="map.php">afficher la carte</a></li>
+	<li><a href="members.php">liste des membres</a></li>
 </ul>
 
 <form name="search_by_id" id="search_by_id" method="post">
