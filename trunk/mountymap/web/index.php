@@ -55,6 +55,13 @@
 		}
 	}
 	
+	if (array_key_exists('min_level', $_POST) && is_numeric($_POST['min_level']) ||
+		array_key_exists('max_level', $_POST) && is_numeric($_POST['max_level'])) {
+		$trollFactory = TrollPositionFactory::getInstance();
+		$trolls = $trollFactory->getInstancesBetweenLevels($_POST['min_level'], $_POST['max_level']);
+		$smarty->assign('multiple_instances', $trolls);
+	}
+	
 	setDebugTrace($smarty);
 	setErrorTrace($smarty);
 	$smarty->display('search.tpl');
