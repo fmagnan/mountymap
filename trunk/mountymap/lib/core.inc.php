@@ -21,17 +21,15 @@ function debugArray($array, $type='') {
 	}
 }
 
-function updateView($membre_id) {
-	$memberFactory = MemberFactory::getInstance();
-	$troll_number = intval($membre_id);
-	$member = $memberFactory->getInstanceFromArray(array('id' => $troll_number));
-	$parameters = '?Numero='.$troll_number.'&Motdepasse='.$member->getPassword().'&Tresors=1&Lieux=1&Champignons=1';
+function updateView($member) {
+	$trollId = $member->getId();
+	$parameters = '?Numero='.$trollId.'&Motdepasse='.$member->getPassword().'&Tresors=1&Lieux=1&Champignons=1';
 	if (LOCAL_IMPORT_MODE) {
-		$import_file = '../data/vue_'.$troll_number.'.txt';
+		$import_file = '../data/vue_'.$trollId.'.txt';
 	} else {
 		$import_file = VIEW_FILE_PATH . $parameters;
 	}
-	updateDataFromMountySite(new ViewParser($import_file, $membre_id));
+	updateDataFromMountySite(new ViewParser($import_file, $trollId));
 	$member->update(array('mise_a_jour' => 'NOW()'));
 }
 

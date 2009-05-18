@@ -37,5 +37,13 @@ class TrollPositionFactory extends LocatedObjectFactory {
 	function getInstanceClassName() {
 		return 'troll';
 	}
+	
+	function getInstancesBetweenLevels($minLevel, $maxLevel) {
+		$min_level = is_numeric($minLevel) ? intval($minLevel) : 1;
+		$max_level = is_numeric($maxLevel) ? intval($maxLevel) : 80;
+		$query = 'SELECT `position`.`id` FROM `'.$this->getTableName(). '` AS `position`, `troll_identity` as `identity`
+		WHERE `position`.`id` = `identity`.`id` AND `identity`.`niveau` BETWEEN '.$min_level . ' AND ' . $max_level. ' ORDER BY `identity`.`niveau`';
+		return $this->getInstancesWithQuery($query);
+	}
 }
 ?>
