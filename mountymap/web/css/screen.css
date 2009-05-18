@@ -1,27 +1,23 @@
 @CHARSET "UTF-8";
 
 body {
-	background-image:url(/images/background.jpg);
+	/*background-image:url(/images/background.jpg);*/
 	background-repeat:repeat;
 }
 
-table {
+table#map {
 	border-collapse:collapse;
 }
 
-table, table td, table th {
+table#map, table#map td, table#map th {
 	border:1px solid black;
 }
 
-table td, table th {
+table#map td, table#map th {
 	padding:4px;
 }
 
-.odd {
-	background-color:#EFEBE7;
-}
-
-.even {
+div.even {
 	background-color:#E0DDD9;
 }
 
@@ -29,14 +25,15 @@ table td, table th {
 	float:left;
 }
 
-#map td {
+table#map td {
 	width:32px;
 	height:32px;
 	padding:0;
 	vertical-align:top;
+	background-color:#E0DDD9;
 }
 
-#map td img {
+table#map td img {
 	float:left;
 	margin:0;
 }
@@ -70,7 +67,7 @@ table td, table th {
 	display:none;
 }
 
-.lieu {
+table#map td.lieu {
 	background-color:#AE88AE;
 }
 
