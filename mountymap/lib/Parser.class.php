@@ -23,7 +23,7 @@ abstract class Parser {
 				$this->initSection($section);
 			}
 			
-			while (!feof($viewHandle) && ($line = trim(fgets($viewHandle))) != '') {
+			while (!feof($viewHandle) && ($line = trim(fgets($viewHandle))) != '' && substr($line, 0, 6) != 'Erreur') {
 				foreach ($this->sections AS $section => $object) {
 					$this->parseSection($section, $line);	
 				}
