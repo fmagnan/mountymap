@@ -3,7 +3,7 @@
 	<li><a href="map.php">afficher la carte</a></li>
 	<li><a href="index.php">lancer une recherche</a></li>
 </ul>
-<table>
+<table class="tablesorter">
 	<thead>
 		<tr>
 			<th>Nom</th>
