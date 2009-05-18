@@ -5,7 +5,7 @@
 	$smarty = instantiateSmartyTemplate(dirname(__FILE__));
 	
 	$membersFactory = MemberFactory::getInstance();
-	$whereClause = 'AND  TO_DAYS(NOW()) - TO_DAYS(`mise_a_jour`) > 1 ORDER BY `mise_a_jour` DESC';
+	$whereClause = 'AND  TO_DAYS(NOW()) - TO_DAYS(`mise_a_jour`) > 1 ORDER BY `mise_a_jour` ASC';
 	$members = $membersFactory->getInstancesWithWhereClause($whereClause);
 	if (!empty($members)) {
 		$firstMember = $members[0];
