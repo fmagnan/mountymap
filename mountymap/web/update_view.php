@@ -14,5 +14,5 @@
 		}
 	}
 	setDebugTrace($smarty);
-	redirectTo('membres.php', $smarty);
+	redirectTo('members.php', $smarty);
 ?>
