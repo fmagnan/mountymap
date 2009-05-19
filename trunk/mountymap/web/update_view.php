@@ -5,13 +5,11 @@
 	$smarty = instantiateSmartyTemplate(dirname(__FILE__));
 	
 	$membersFactory = MemberFactory::getInstance();
-	$whereClause = 'AND  TO_DAYS(NOW()) - TO_DAYS(`mise_a_jour`) > 1 ORDER BY `mise_a_jour` ASC';
-	$members = $membersFactory->getInstancesWithWhereClause($whereClause);
-	if (!empty($members)) {
-		$firstMember = $members[0];
-		if (is_object($firstMember)) {
-			updateView($firstMember);
-		}
+	$member = $membersFactory->getLastUpdatedMember();
+	if (is_object($member)) {
+		$trollId = $member->getId();
+		updateDataFromMountySite(new ViewParser($member));
+		$member->update(array('mise_a_jour' => 'NOW()'));
 	}
 	setDebugTrace($smarty);
 	redirectTo('members.php', $smarty);
