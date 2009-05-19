@@ -1,5 +1,5 @@
 {include file='header.tpl'}
-
+{include file='menu.tpl'}
 <form id="customize-map" method="post">
 	<fieldset id="coordonnees">
 		<legend>Origine de la vue</legend>
