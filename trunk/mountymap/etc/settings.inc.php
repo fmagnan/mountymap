@@ -2,8 +2,6 @@
 
 require_once dirname(__FILE__).'/../lib/core.inc.php';
 
-header('Content-type: text/html; charset=utf-8');
-
 $monsters_templates = array(
 	'Guerrier', 'Guerrière', 'Shaman', 'Scout', 'Malade', 'Voleur', 'Voleuse', 'Champion', 'Championne', 'Héros', 'Coriace',
 	'Paysan', 'Paysanne', 'Barbare', 'Implacable', 'Archaïque', 'des Abysses', 'Agressif', 'Agressive','Effrayé', 'Effrayée',
@@ -27,7 +25,23 @@ $places_types = array(
 	'Nid', 'Porte d\'Outre-Monde', 'Refuge', 'Rocher', 'Sanctuaire', 'Sépulcre', 'Source', 'Téléporteur', 'Terrier', 'Tombe',
 );
 
+$unprotected_scripts = array('/login.php', '/register.php', '/forgot_password.php');
+
 define('MONSTERS_TEMPLATES', serialize($monsters_templates));
 define('MONSTERS_SIZES', serialize($monsters_sizes));
 define('PLACES_TYPES', serialize($places_types));
+
+header('Content-type: text/html; charset=utf-8');
+
+session_start();
+if (!array_key_exists('logged_user_id', $_SESSION) && !in_array($_SERVER['PHP_SELF'], $unprotected_scripts)) {
+	header("Location: login.php");
+	exit();
+}
+/*elseif (isset($restrictPageToGroup) && $_SESSION['logged_user_group_id']<$restrictPageToGroup) {
+	header("Location: index.php");
+	exit();
+}*/
+
+
 ?>
