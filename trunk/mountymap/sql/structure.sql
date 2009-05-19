@@ -11,6 +11,17 @@ CREATE TABLE IF NOT EXISTS `champignon` (
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS `diplomacy`;
+CREATE TABLE IF NOT EXISTS `diplomacy` (
+  `id` int(11) NOT NULL,
+  `target_type` char(1) NOT NULL,
+  `target_id` int(11) NOT NULL,
+  `mise_a_jour` datetime NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `side` varchar(20) NOT NULL,
+  PRIMARY KEY  (`id`, `target_type`, `target_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
 DROP TABLE IF EXISTS `guilde`;
 CREATE TABLE IF NOT EXISTS `guilde` (
   `id` int(11) NOT NULL,
@@ -87,3 +98,14 @@ CREATE TABLE IF NOT EXISTS `troll_position` (
   `position_n` int(11) NOT NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `user` (
+  `id` int(10) NOT NULL,
+  `password` varchar(32) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `activation_code` varchar(8) NOT NULL,
+  `is_active` int(1) NOT NULL default '0',
+  `is_admin` int(1) NOT NULL default '0',
+  `diplomacy_id` int(11) NOT NULL default '1',
+  PRIMARY KEY  (`user_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
