@@ -150,7 +150,8 @@ abstract class DatabaseObjectFactory extends BaseObject {
 	}
 	
 	function getInstanceWithQuery($query, $dataName='') {
-		return $this->db->executeRequeteAvecDonneeDeRetourUnique($query, $dataName);
+		$uniqueResult = $this->db->executeRequeteAvecDonneeDeRetourUnique($query, $dataName);
+		return is_array($uniqueResult) ? $this->getInstanceFromArray($uniqueResult) : false;
 	}
 	
 	function getInstances($orderBy, $sort) {

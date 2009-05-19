@@ -1,11 +1,11 @@
 <?php
 
-require_once 'Parser.class.php';
+require_once 'PublicParser.class.php';
 
-class GuildParser extends Parser {
+class GuildParser extends PublicParser {
 
-	function __construct($file) {
-		parent::__construct($file); 
+	function __construct() {
+		parent::__construct('Public_Guildes.txt'); 
 		$this->sections = array('UNIQUE' => 'Guild');
 	}
 	

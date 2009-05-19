@@ -6,13 +6,15 @@ class ViewParser extends Parser {
 
 	var $member_id, $origin, $monsters_templates, $monsters_sizes, $places_types;
 	
-	function __construct($file, $memberId) {
+	function __construct($member) {
+		$this->member_id = $member->getId();
+		$parameters = '?Numero='.$this->member_id.'&Motdepasse='.$member->getPassword().'&Tresors=1&Lieux=1&Champignons=1';
+		$file = LOCAL_IMPORT_MODE ? '../data/vue_'.$this->member_id.'.txt' : VIEW_FILE_PATH . $parameters;
 		parent::__construct($file); 
 		$this->sections = array(
 			'TROLLS' => 'TrollPosition', 'MONSTRES' => 'Monster', 'TRESORS' => 'Treasure',
 			'LIEUX' => 'Place', 'CHAMPIGNONS' => 'Mushroom', 'ORIGINE' => false,
 		);
-		$this->member_id = $memberId;
 		$this->origin = array();
 		$this->monsters_templates = unserialize(MONSTERS_TEMPLATES);
 		$this->monsters_sizes = unserialize(MONSTERS_SIZES);
