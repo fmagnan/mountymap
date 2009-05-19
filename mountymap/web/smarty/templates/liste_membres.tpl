@@ -1,8 +1,5 @@
 {include file='header.tpl'}
-<ul>
-	<li><a href="map.php">afficher la carte</a></li>
-	<li><a href="index.php">lancer une recherche</a></li>
-</ul>
+{include file='menu.tpl'}
 <table class="tablesorter">
 	<thead>
 		<tr>
