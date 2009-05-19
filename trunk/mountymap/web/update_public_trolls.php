@@ -3,7 +3,7 @@
 	require_once dirname(__FILE__).'/../Smarty/Smarty.class.php';
 	
 	$smarty = instantiateSmartyTemplate(dirname(__FILE__));
-	updatePublicTrolls();	
+	updateDataFromMountySite(new TrollIdentityParser());
 	setDebugTrace($smarty);
 	redirectTo('index.php', $smarty);
 ?>
