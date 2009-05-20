@@ -27,9 +27,7 @@
 	<fieldset>
 		<legend>Recherche de monstres</legend>
 		<label for="monster">Monstre :</label>
-		<select name="monster" id="monster">
-			{$monster_options}
-		</select>
+		{$monster_options}
 		<input type="submit" name="submit" value="Valider" />
 	</fieldset>
 </form>
@@ -37,9 +35,7 @@
 	<fieldset>
 		<legend>Recherche de trésors</legend>
 		<label for="treasure">Trésor :</label>
-		<select name="treasure" id="treasure">
-			{$treasure_options}
-		</select>
+		{$treasure_options}
 		<input type="submit" name="submit" value="Valider" />
 	</fieldset>
 </form>
@@ -47,9 +43,7 @@
 	<fieldset>
 		<legend>Recherche de lieux</legend>
 		<label for="place">Lieu :</label>
-		<select name="place" id="place">
-			{$place_options}
-		</select>
+		{$place_options}
 		<input type="submit" name="submit" value="Valider" />
 	</fieldset>
 </form>
