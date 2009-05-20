@@ -176,6 +176,10 @@ class DatabaseObject extends BaseObject {
 		return getDateEnFrancais($this->getData('mise_a_jour'));
 	}
 	
+	function getName() {
+		return htmlspecialchars($this->getData('nom'));
+	}
+	
 }
 
 ?>

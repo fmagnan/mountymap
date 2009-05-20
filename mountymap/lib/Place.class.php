@@ -5,10 +5,6 @@ require_once 'PlaceFactory.class.php';
 
 class Place extends LocatedObject {
 
-	function getName() {
-		return $this->getData('nom');
-	}
-	
 	function getCellInfo() {
 		return parent::getCellInfo() . ' ('.$this->getId().')';
 	}

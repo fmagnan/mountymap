@@ -5,10 +5,6 @@ require_once 'MonsterFactory.class.php';
 
 class Monster extends LocatedObject {
 
-	function getName() {
-		return $this->getData('nom');
-	}
-	
 	function getSize() {
 		return $this->getData('taille');
 	}

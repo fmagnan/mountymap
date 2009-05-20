@@ -57,8 +57,6 @@ function instantiateSmartyTemplate($path) {
 	$smarty->config_dir = $path.'/smarty/configs';
 	$smarty->caching = 0;
 	
-	$user = UserFactory::getInstance()->getInstanceFromArray(array('id' => $_SESSION['logged_user_id']));
-	$smarty->assign('logged_user', $user);
 	$smarty->assign('server_root_path', SERVER_ROOT_PATH);
 	$smarty->assign('debug_mode', DEBUG_MODE);
 	return $smarty;
@@ -86,6 +84,13 @@ function redirectTo($page, $smartyTemplate) {
 	} else {
 		header('Location: '. $page);
 	}
+}
+
+function getLoggedInUser() {
+	if (array_key_exists('logged_user_id', $_SESSION)) {
+		return UserFactory::getInstance()->getInstanceFromArray(array('id' => $_SESSION['logged_user_id']));
+	}
+	return false;
 }
 
 ?>
