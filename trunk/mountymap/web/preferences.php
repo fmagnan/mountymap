@@ -9,7 +9,7 @@
 		$user->update(array('diplomacy_id' => $_POST['diplomacy']));
 	} 
 	
-	$all_guilds = GuildFactory::getInstance()->getInstancesWithWhereClause(' ORDER BY nom');
+	$all_guilds = GuildFactory::getInstance()->getInstancesWithWhereClause(' ORDER BY `nom`');
 	$htmlTool = HtmlTool::getInstance();
 	$smarty->assign('diplomacy_options', $htmlTool->getHTMLSelect('diplomacy', $all_guilds));
 	$smarty->assign('logged_user', $user);

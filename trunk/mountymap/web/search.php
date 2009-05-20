@@ -1,6 +1,7 @@
 <?php
 	require_once dirname(__FILE__).'/../etc/settings.inc.php';
 	require_once dirname(__FILE__).'/../Smarty/Smarty.class.php';
+	require_once dirname(__FILE__).'/../lib/HtmlTool.class.php';
 	
 	function getFactory() {
 		$factories = array(
@@ -37,18 +38,10 @@
 	
 	foreach($search_by_types as $type) {
 		$factory = call_user_func(array($type.'Factory', 'getInstance'));
-		$options = '';
-		$selected_type = array_key_exists($type, $_POST) ? $_POST[$type] : '';
-		foreach ($factory->getInstancesByTypes() as $instance) {
-			$name = $instance['group_by_field'];
-			$options .= '<option value="'.$name.'"';
-			if ($selected_type == $name) {
-				$options .= ' selected="selected"';
-			}
-			$options .= '>'.$name.' ('.$instance['number'].')</option>' . "\n";
-		}
+		$options = HtmlTool::getInstance()->getHTMLSelect($type, $factory->getInstancesByTypes());
 		$smarty->assign($type.'_options', $options);
-	
+		
+		$selected_type = array_key_exists($type, $_POST) ? $_POST[$type] : '';
 		if ($selected_type != '') {
 			$instances = $factory->getInstancesByGroupByField($selected_type);
 			$smarty->assign('multiple_instances', $instances);
