@@ -25,6 +25,23 @@ class User extends DatabaseObject {
 		return GuildFactory::getInstance()->getInstanceFromArray(array('id' => $this->getDiplomacyId()));
 	}
 	
+	function getDiplomacySideFor($troll) {
+		$diplomacyFactory = DiplomacyFactory::getInstance();
+		$trollData = array('id' => $this->getDiplomacyId(), 'target_type' => 'T', 'target_id' => $troll->getId());
+		$diplomacy = $diplomacyFactory->getInstanceFromArray($trollData);
+		if (!$diplomacy->isError()) {
+			return $diplomacy->getSide();
+		} else {
+			$troll->initIdentityData();
+			$guildData = array('id' => $this->getDiplomacyId(), 'target_type' => 'G', 'target_id' => $troll->getGuildNumber());
+			$diplomacy = $diplomacyFactory->getInstanceFromArray($guildData);
+			if (!$diplomacy->isError()) {
+				return $diplomacy->getSide();
+			}
+		}
+		return false;		
+	}
+	
 }
 
 ?>

@@ -29,18 +29,20 @@ class MapBuilder {
 				$this->fillCells($factory, $type, $start_x, $end_x, $start_y, $end_y, $start_n, $end_n);
 			}
 		}
-				
+
 		for($y = $end_y; $y >= $start_y; $y--) {
 			for($x = $start_x; $x <= $end_x; $x++) {
 				$map[] = $this->getCell($x, $y);
 			}	
 		}
+		
 		return $map;
 	}
 	
 	function fillCells($factory_name, $type, $start_x, $end_x, $start_y, $end_y, $start_n, $end_n) {
 		$factory = $this->getFactoryFromName($factory_name);
 		$items = $factory->getInstancesWithPosition($start_x, $end_x, $start_y, $end_y, $start_n, $end_n);
+		$class='none';
 		foreach($items as $item) {
 			$level = $item->getPositionN();
 			$position = $item->getPositionX() . ',' . $item->getPositionY();
@@ -50,8 +52,21 @@ class MapBuilder {
 					$this->cells[$position][$level] = array();
 				}
 			}
+			
+			if ('Place' == get_class($item) && $class=='none') {
+				$class='lieu';
+			}
+			
+			if ('Troll' == get_class($item)) {
+				$diplomacy_side = getLoggedInUser()->getDiplomacySideFor($item);
+				if ($diplomacy_side) {
+					$class = $diplomacy_side;
+				}
+			}
+			
 			$this->cells[$position][$level][] = $item->getCellInfo();
 			$this->cells[$position][$type] = true;
+			$this->cells[$position]['class'] = $class;
 		}
 	}
 	
@@ -66,6 +81,7 @@ class MapBuilder {
 		if (array_key_exists($key, $this->cells)) {
 			$cellContentByLevel = $this->cells[$key];
 			ksort($cellContentByLevel);
+			
 			foreach($cellContentByLevel as $level => $info) {
 				if (is_numeric($level)) {
 					if (is_array($info)) {
