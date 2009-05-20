@@ -9,14 +9,12 @@ class Troll extends LocatedObject {
 	function initIdentityData() {
 		$trollIdentityFactory = TrollIdentityFactory::getInstance();
 		$identity = $trollIdentityFactory->getInstanceFromObject($this);
-		$this->data = array_merge($this->data, $identity->getAllData());
-	}
-	
-	function initPositionData() {
-		$trollPositionFactory = TrollPositionFactory::getInstance();
-		$position = $trollPositionFactory->getInstanceFromObject($this);
-		if (is_object($position)) {
-			$this->data = array_merge($this->data, $position->getAllData());
+		if (is_object($identity)) {
+			foreach($identity->getAllData() as $key => $value) {
+				if (!array_key_exists($key, $this->data)) {
+					$this->data[$key] = $value;
+				}
+			}
 		}
 	}
 	
@@ -38,16 +36,13 @@ class Troll extends LocatedObject {
 	}
 	
 	function getFullName() {
-		$this->initIdentityData();
+		if ('' == $this->getName()) {
+			$this->initIdentityData();
+		}
 		$identity = '<a href="javascript:EPV('.$this->getId().')">'. $this->getName() . '</a> (' . $this->getRace() . ' ' . $this->getLevel() . ') ';
 		$guild = $this->getGuild();
 		$identity .= $guild->getFormattedIdentity(); 
 		return $identity;
-	}
-	
-	function getTableRow($class='') {
-		$this->initPositionData();
-		return parent::getTableRow($class);
 	}
 	
 }

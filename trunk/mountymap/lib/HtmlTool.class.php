@@ -21,19 +21,21 @@ class HtmlTool {
 		} else {
 			$selected_value = '';
 		}
-		foreach ($options as $option) {
-			if (is_object($option)) {
+		
+		while($option=current($options)) {
+        	if (is_object($option)) {
 				$name = $option->getName();
 				$value = $option->getId();
 			} else {
-				$name = key($options);
-				$value = $option;
+				$name = $option;
+				$value = key($options);
 			}
 			$html_select .= '<option value="'.$value.'"';
 			if ($selected_value == $value) {
 				$html_select .= ' selected="selected"';
 			}
 			$html_select .= '>'.$name.'</option>' . "\n";
+			next($options);
 		}
 		$html_select .= '</select>';
 		return $html_select;
