@@ -101,7 +101,11 @@ class DatabaseConnector {
 		$result = mysql_query($query) or $this->addMysqlError($query);
 		if ($result) {
 			while ($row = mysql_fetch_assoc($result)) {
-				$donneesDeRetour[] = $row;	
+				if (array_key_exists('key', $row)) {
+					$donneesDeRetour[$row['key']] = $row['value'];
+				} else {
+					$donneesDeRetour[] = $row;
+				}	
 			}
 		}
 		$this->disconnectFromDB();

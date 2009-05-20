@@ -36,7 +36,9 @@ abstract class NonPermanentDatabaseObjectFactory extends LocatedObjectFactory {
 	
 	function getInstancesByTypes() {
 		$field = $this->getGroupByField();
-		$query = 'SELECT `'.$field.'` AS `group_by_field` , COUNT(`id`) AS `number` FROM ' . $this->getTableName() . ' GROUP BY `'.$field.'` ORDER BY `'.$field.'`';
+		$query = 'SELECT `'.$field.'` AS `key`,
+			CONCAT(`'.$field.'`, \' (\', COUNT(`id`), \')\') AS `value`
+			FROM ' . $this->getTableName() . ' GROUP BY `'.$field.'` ORDER BY `'.$field.'`';
 		return $this->db->executeRequeteAvecDonneesDeRetourMultiples($query);
 	}
 	
