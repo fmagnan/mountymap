@@ -9,7 +9,7 @@
 	Le mot de passe demandé est le mot de passe que vous choisissez pour ce site. Evitez de choisir un mot de passe trop simple et
 	évitez de choisir le même mot de passe que le mot de passe de votre troll <span class="surbrillance">in-game</span>.
 </div>
-<form method="post" action="register.php" name="register" id="register">
+<form method="post" action="register.php">
 	<fieldset>
 		<legend>Inscription</legend>
 		<label for="login">Identifiant (votre numéro de troll) : </label>

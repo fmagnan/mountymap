@@ -1,14 +1,14 @@
 {include file='header.tpl'}
-<div class="disclaimer" id="login">
+<div class="disclaimer">
 	<h3>Bienvenue sur la Mountyvision</h3>
 </div>
 <form method="post" action="login.php">
 	<fieldset>
 		<legend>Saisissez vos identifiants</legend>
 		<label for="login">Identifiant : </label>
-		<input id="login" type="text" name="login" value="{$login}" /><br/>
+		<input type="text" name="login" id="login" value="{$login}" /><br/>
 		<label for="password">Mot de passe : </label>
-		<input id="pass" type="password" name="password" value="{$password}" />
+		<input type="password" name="password" id="password" value="{$password}" />
 		<div class="buttons">
 			<input id="submit" type="submit" name="submit" value="Valider" />
 		</div>
