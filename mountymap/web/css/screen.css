@@ -1,7 +1,6 @@
 @CHARSET "UTF-8";
 
 body {
-	/*background-image:url(/images/background.jpg);*/
 	background-repeat:repeat;
 }
 
@@ -69,6 +68,14 @@ table#map td img {
 
 table#map td.lieu {
 	background-color:#AE88AE;
+}
+
+table#map td.ami {
+	background-color:green;
+}
+
+table#map td.ennemi {
+	background-color:red;
 }
 
 fieldset#coordonnees input[type="text"] {
