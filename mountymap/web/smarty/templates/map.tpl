@@ -36,18 +36,14 @@
 			
 			{if $cell}
 				{assign var=cell_class value='cell'}
+				{assign var=extra_class value=$cell.class}
 			{else}
 				{assign var=cell_class value=''}
-			{/if}
-			
-			{if $cell.places}
-				{assign var=place_type value='lieu'}
-			{else}
-				{assign var=place_type value=''}
+				{assign var=extra_class value=''}
 			{/if}
 			
 			{if ($num_cell mod $row_size) eq 0}<tr>{/if}
-			<td class="{$cell_class} {$place_type}">{if $cell}<div class="tooltip">{$cell.content}</div>{/if}{if $cell.trolls }<img src="/images/ico_troll_16.png" alt="troll" />{/if}{if $cell.monsters }<img src="/images/ico_monstre_16.png" alt="monstre" />{/if}{if $cell.treasures }<img src="/images/ico_tresor_16.png" alt="tresor" />{/if}{if $cell.mushrooms }<img src="/images/ico_champignon_16.png" alt="champignon" />{/if}</td>
+			<td class="{$cell_class} {$extra_class}">{if $cell}<div class="tooltip">{$cell.content}</div>{/if}{if $cell.trolls }<img src="/images/ico_troll_16.png" alt="troll" />{/if}{if $cell.monsters }<img src="/images/ico_monstre_16.png" alt="monstre" />{/if}{if $cell.treasures }<img src="/images/ico_tresor_16.png" alt="tresor" />{/if}{if $cell.mushrooms }<img src="/images/ico_champignon_16.png" alt="champignon" />{/if}</td>
 			{if ($num_cell mod $row_size) eq ($row_size - 1)}</tr>{/if}
 		{/section}
 	</table>
