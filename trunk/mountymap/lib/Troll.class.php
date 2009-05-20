@@ -20,10 +20,6 @@ class Troll extends LocatedObject {
 		}
 	}
 	
-	function getName() {
-		return $this->getData('nom');	
-	}
-	
 	function getRace() {
 		return $this->getData('race');	
 	}

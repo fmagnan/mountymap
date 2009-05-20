@@ -10,7 +10,14 @@ class GuildParser extends PublicParser {
 	}
 	
 	function getFormattedData($section, $array) {
-		return array('id' => $array[0], 'nom' => utf8_encode($array[1]));
+		$patterns = array('/\x83/', '/\x92/', '/\x95/', '/\x99/');
+		$replacements = array('f', '\'', '.', 'tm');
+		
+		$data = array(
+			'id' => $array[0],
+			'nom' => utf8_encode(preg_replace($patterns, $replacements, $array[1])),
+		); 
+		return $data;
 	}
 
 }
