@@ -15,7 +15,7 @@ class DiplomacyParser extends PublicParser {
 			'target_type' => $array[1],
 			'target_id' => $array[2],
 			'name' => utf8_encode($array[3]),
-			'side' => $array[4],
+			'side' => strtolower($array[4]),
 		);
 		return $data;
 	}

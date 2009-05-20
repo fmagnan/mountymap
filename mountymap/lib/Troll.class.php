@@ -26,13 +26,13 @@ class Troll extends LocatedObject {
 		return $this->getData('niveau');	
 	}
 	
-	function getNumeroGuilde() {
+	function getGuildNumber() {
 		return $this->getData('id_guilde');
 	}
 	
 	function getGuild() {
 		$guildFactory = GuildFactory::getInstance();
-		return $guildFactory->getInstanceFromArray(array('id' => $this->getNumeroGuilde()));	
+		return $guildFactory->getInstanceFromArray(array('id' => $this->getGuildNumber()));	
 	}
 	
 	function getFullName() {

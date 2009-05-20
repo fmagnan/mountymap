@@ -88,7 +88,9 @@ function redirectTo($page, $smartyTemplate) {
 
 function getLoggedInUser() {
 	if (array_key_exists('logged_user_id', $_SESSION)) {
-		return UserFactory::getInstance()->getInstanceFromArray(array('id' => $_SESSION['logged_user_id']));
+		$userFactory = UserFactory::getInstance();
+		$userData = array('id' => $_SESSION['logged_user_id']);
+		return $userFactory->getInstanceFromArray($userData);
 	}
 	return false;
 }

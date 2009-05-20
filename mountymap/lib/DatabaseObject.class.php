@@ -179,7 +179,7 @@ class DatabaseObject extends BaseObject {
 	function getName() {
 		return htmlspecialchars($this->getData('nom'));
 	}
-	
+		
 }
 
 ?>
