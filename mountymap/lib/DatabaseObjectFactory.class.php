@@ -31,7 +31,7 @@ abstract class DatabaseObjectFactory extends BaseObject {
 			}
 		}
 
-		if($this->db->create($this->getTableName(), $data, $this->getAllColumnsDescr())) {
+		if($this->db->executeRequeteSansDonneesDeRetour($this->getInsertQuery($data))) {
 			if($autoIncrement) {
 				return array($keyName => mysql_insert_id());
 			} else {
@@ -44,7 +44,7 @@ abstract class DatabaseObjectFactory extends BaseObject {
 	}
 		
 	function emptyTable($whereClause = '') {
-		return mysql_query('DELETE FROM `'.$this->getTableName().'` '.$whereClause);
+		return $this->deleteWithWhereClause($whereClause);
 	}
 	
 	function extractIdArray($data) {
@@ -163,7 +163,7 @@ abstract class DatabaseObjectFactory extends BaseObject {
 		foreach($array as $key => $value) {
 			$columnsDescr = $this->getAllColumnsDescr();
 			if (array_key_exists($key, $columnsDescr)) {
-				$whereClause .= ' AND `'.$key.'` = ' . $this->db->getValueByType($value, $columnsDescr[$key]);	
+				$whereClause .= ' AND `'.$key.'` = ' . $this->getFactory()->getValueByType($value, $columnsDescr[$key]);	
 			}
 		}
 		return $this->getInstancesWithWhereClause($whereClause);
@@ -210,7 +210,7 @@ abstract class DatabaseObjectFactory extends BaseObject {
 	}
 	
 	function deleteWithWhereClause($whereClause) {
-		return $this->db->delete($this->getTableName(), $whereClause);
+		return $this->db->executeRequeteSansDonneesDeRetour($this->getDeleteQuery($whereClause));
 	}
 	
 	abstract function getTableName();
@@ -219,16 +219,55 @@ abstract class DatabaseObjectFactory extends BaseObject {
 		//do nothing
 	}
 	
+	function getValueByType($value, $type) {
+		if ($type == 'string') {
+			return '\'' . mysql_real_escape_string($value, $this->db->getLink()) . '\'';
+		} elseif ($type == 'int') {
+			return intval($value);
+		} else {
+			return $value;
+		}
+	}
+	
+	function getInsertQuery($data) {
+		$keys = array_map('add_backquotes', array_keys($data));
+		$datatypes = $this->getAllColumnsDescr();
+		$values = array();
+		foreach ($data as $key => $value) {
+			if (array_key_exists($key, $datatypes)) {
+				$values[] = $this->getValueByType($value, $datatypes[$key]);
+			}
+		}
+		$query = 'INSERT INTO `'.$this->getTableName().'` ('.implode(',',$keys).') VALUES ('.implode(',', $values).')';
+		$query .= ' ON DUPLICATE KEY UPDATE '.$this->getSetClauseForUpdateQuery($data);
+		return $query;
+	}
+	
+	function getSetClauseForUpdateQuery($data) {
+		$datatypes = $this->getDataColumnsDescr();
+		$setClauseArray = array();
+		foreach ($data as $key => $value) {
+			if (array_key_exists($key, $datatypes)) {
+				$setClauseArray[] = "`".$key."`=".$this->getValueByType($value, $datatypes[$key]);
+			}
+		}
+		return implode(', ', $setClauseArray);
+	}
+	
+	function getUpdateQuery($data, $whereClause) {
+		$setClause = $this->getSetClauseForUpdateQuery($data);
+		return 'UPDATE `'.$this->getTableName().'` SET '. $setClause . ' WHERE ' . $whereClause;
+	}
+	
+	function getDeleteQuery($whereClause) {
+		return 'DELETE FROM `'.$this->getTableName().'` WHERE ' . $whereClause;
+	}
+	
 	function publicImport($multipleData, $extraData = false) {
 		$this->deleteInArea($extraData);
 		foreach($multipleData as $data) {
-			$databaseObject = $this->getInstanceFromArray($data);
 			$data['mise_a_jour'] = 'NOW()';
-			if (is_object($databaseObject) && $databaseObject->exists()) {
-				$databaseObject->update($data);
-			} else {
-				$this->create($data);
-			}
+			$this->db->executeRequeteSansDonneesDeRetour($this->getInsertQuery($data));
 		}
 	}
 }

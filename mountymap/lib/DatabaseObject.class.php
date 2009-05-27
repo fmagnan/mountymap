@@ -38,12 +38,22 @@ class DatabaseObject extends BaseObject {
 			trigger_error('Suppression d\'un élément non existant', E_USER_ERROR);
 			return false;
 		}
-		if($this->db->delete($this->getTableName(), $this->getIdWhere())) {
+		if($this->db->executeRequeteSansDonneesDeRetour($this->getFactory()->getDeleteQuery($this->getIdWhere()))) {
 			$this->data = array();
 			return true;
 		} else {
 			return false;
 		}
+	}
+	
+	function getIdWhere() {
+		$factory = $this->getFactory();
+		$primary_key_datatypes = $this->getPrimaryKeyDescr();
+		$where = '1=1';
+		foreach($this->idArray AS $key => $value) {
+			$where .= ' AND `'.$key.'`='.$factory->getValueByType($value, $primary_key_datatypes[$key]);
+		}
+		return $where;
 	}
 	
 	function display() {
@@ -123,15 +133,6 @@ class DatabaseObject extends BaseObject {
 		return $this->idArray;
 	}
 	
-	function getIdWhere() {
-		$primary_key_datatypes = $this->getFactory()->getPrimaryKeyDescr();
-		$where = '1=1';
-		foreach($this->idArray AS $key => $value) {
-			$where .= ' AND `'.$key.'`='.$this->db->getValueByType($value, $primary_key_datatypes[$key]);
-		}
-		return $where;
-	}
-	
 	function getPrimaryKeyDescr() {
 		return $this->getFactory()->getPrimaryKeyDescr();
 	}
@@ -159,7 +160,7 @@ class DatabaseObject extends BaseObject {
 			$updatedData = $this->filterOnUpdate($updatedData);
 		}
 		if(!empty($updatedData)) {
-			if($this->db->update($this->getTableName(), $this->getIdWhere(), $updatedData, $factory->getDataColumnsDescr())) {
+			if($this->db->excuteRequeteSansDonneesDeRetour($factory->getUpdateQuery($updatedData, $this->getIdWhere()))) {
 				$this->fetchData();
 				return true;
 			} else {
