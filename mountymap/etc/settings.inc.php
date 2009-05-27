@@ -2,6 +2,8 @@
 
 require_once dirname(__FILE__).'/../lib/core.inc.php';
 
+getTime();
+
 $monsters_templates = array(
 	'Guerrier', 'Guerrière', 'Shaman', 'Scout', 'Malade', 'Voleur', 'Voleuse', 'Champion', 'Championne', 'Héros', 'Coriace',
 	'Paysan', 'Paysanne', 'Barbare', 'Implacable', 'Archaïque', 'des Abysses', 'Agressif', 'Agressive','Effrayé', 'Effrayée',
