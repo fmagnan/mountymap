@@ -1,6 +1,9 @@
 {include file='header.tpl'}
-<div class="disclaimer">
-	<h3>Bienvenue sur la Mountyvision</h3>
+<div id="flash-player">
+	<object type="application/x-shockwave-flash" data="flashs/player_flv.swf" width="640" height="480">
+    	<param name="movie" value="flashs/player_flv.swf" />
+    	<param name="FlashVars" value="flv=/flashs/mountyvision.flv&amp;autoplay=1&amp;loop=1&amp;buffer=9" />
+	</object>
 </div>
 <form method="post" action="login.php">
 	<fieldset>
