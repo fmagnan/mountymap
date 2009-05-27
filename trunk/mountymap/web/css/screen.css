@@ -81,3 +81,7 @@ table#map td.ennemi {
 fieldset#coordonnees input[type="text"] {
 	width:30px;
 }
+
+#flash-player {
+	margin:auto;
+}
