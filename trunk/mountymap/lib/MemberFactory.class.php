@@ -37,7 +37,7 @@ class MemberFactory extends DatabaseObjectFactory {
 	}
 	
 	function getLastUpdatedMember() {
-		$whereClause = 'AND  TO_DAYS(NOW()) - TO_DAYS(`mise_a_jour`) > 0 ORDER BY `mise_a_jour` DESC';
+		$whereClause = 'AND CURDATE() <> DATE(`mise_a_jour`) ORDER BY `mise_a_jour` ASC';
 		return $this->getInstanceWithWhereClause($whereClause);
 	}
 	

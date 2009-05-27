@@ -59,14 +59,16 @@ function instantiateSmartyTemplate($path) {
 	
 	$smarty->assign('server_root_path', SERVER_ROOT_PATH);
 	$smarty->assign('debug_mode', DEBUG_MODE);
+	$smarty->assign('sql_debug', SQL_DEBUG);
 	return $smarty;
 }
 
 function setDebugTrace($smartyTemplate) {
 	if (DEBUG_MODE) {
 		$databaseConnector = DatabaseConnector::getInstance();
-		$smartyTemplate->assign('all_sql_queries', $databaseConnector->getAllSqlQueries());
-		$smartyTemplate->assign('nb_queries', count($databaseConnector->getAllSqlQueries()));
+		$allSqlQueries = $databaseConnector->getAllSqlQueries();
+		$smartyTemplate->assign('all_sql_queries', $allSqlQueries);
+		$smartyTemplate->assign('nb_queries', count($allSqlQueries));
 	}
 }
 
@@ -93,6 +95,19 @@ function getLoggedInUser() {
 		return $userFactory->getInstanceFromArray($userData);
 	}
 	return false;
+}
+
+function getTime() {
+    static $timer = false, $start;
+    if ($timer === false) {
+        $start = array_sum(explode(' ',microtime()));
+        $timer = true;
+        return NULL;
+    } else {
+        $timer = false;
+        $end = array_sum(explode(' ',microtime()));
+        return round(($end - $start), 3);
+    }
 }
 
 ?>
