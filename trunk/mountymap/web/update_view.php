@@ -4,7 +4,9 @@
 	
 	$smarty = instantiateSmartyTemplate(dirname(__FILE__));
 	$membersFactory = MemberFactory::getInstance();
-	$member = $membersFactory->getLastUpdatedMember($_GET['id']);
+	
+	$id = (array_key_exists('id', $_GET) && is_numeric($_GET['id'])) ? intval($_GET['id']) : false; 
+	$member = $membersFactory->getLastUpdatedMember($id);
 	
 	if (is_object($member)) {
 		$trollId = $member->getId();
