@@ -107,5 +107,5 @@ CREATE TABLE IF NOT EXISTS `user` (
   `is_active` int(1) NOT NULL default '0',
   `is_admin` int(1) NOT NULL default '0',
   `diplomacy_id` int(11) NOT NULL default '1',
-  PRIMARY KEY  (`user_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
