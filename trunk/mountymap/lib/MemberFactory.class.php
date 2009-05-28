@@ -36,8 +36,12 @@ class MemberFactory extends DatabaseObjectFactory {
 		return $this->getInstances('`mise_a_jour`', 'DESC');
 	}
 	
-	function getLastUpdatedMember() {
-		$whereClause = 'AND CURDATE() <> DATE(`mise_a_jour`) ORDER BY `mise_a_jour` ASC';
+	function getLastUpdatedMember($id=false) {
+		if (is_numeric($id)) {
+			$whereClause = 'AND `id`='.intval($id);
+		}
+		$whereClause .= ' AND CURDATE() <> DATE(`mise_a_jour`)';
+		$whereClause .= ' ORDER BY `mise_a_jour` ASC';
 		return $this->getInstanceWithWhereClause($whereClause);
 	}
 	
