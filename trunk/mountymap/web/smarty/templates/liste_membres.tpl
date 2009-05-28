@@ -6,9 +6,7 @@
 			<th>Nom</th>
 			<th>Position</th>
 			<th>Dernière mise à jour de sa vue</th>
-			{if $is_admin}
-				<th>Actions</th>
-			{/if}
+			<th>Actions</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -22,11 +20,10 @@
 			<td>{$current_member->getName()} ({$current_member->getId()})</td>
 			<td>{$current_member->getFormattedPosition()}</td>
 			<td>{$current_member->getUpdate()}</td>
-			{if $is_admin}
-				<td><a href="update_view.php?id={$current_member->getId()}">mettre la vue à jour</a></td>
-			{/if}
+			<td><a href="update_view.php?id={$current_member->getId()}">mettre la vue à jour</a></td>
 		</tr>
 	{/section}
 	</tbody>
 </table>
+<div><a href="update_view.php">Mettre à jour la vue la plus ancienne</a> [Attention, 1 seul appel au script public de la vue n'est autorisé pour chacun des membres du table ci-dessus]</div>
 {include file='footer.tpl'}
