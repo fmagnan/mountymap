@@ -4,9 +4,11 @@
 	require_once dirname(__FILE__).'/../Smarty/Smarty.class.php';
 	
 	$smarty = instantiateSmartyTemplate(dirname(__FILE__));
+	$user = getLoggedInUser();
 	$memberFactory = MemberFactory::getInstance();
 	$membres = $memberFactory->getMembres();
 	$smarty->assign('membres', $membres);
+	$smarty->assign('is_admin', $user->isAdmin());
 	
 	setDebugTrace($smarty);
 	setErrorTrace($smarty);
