@@ -160,7 +160,7 @@ class DatabaseObject extends BaseObject {
 			$updatedData = $this->filterOnUpdate($updatedData);
 		}
 		if(!empty($updatedData)) {
-			if($this->db->excuteRequeteSansDonneesDeRetour($factory->getUpdateQuery($updatedData, $this->getIdWhere()))) {
+			if($this->db->executeRequeteSansDonneesDeRetour($factory->getUpdateQuery($updatedData, $this->getIdWhere()))) {
 				$this->fetchData();
 				return true;
 			} else {
