@@ -6,6 +6,9 @@
 			<th>Nom</th>
 			<th>Position</th>
 			<th>Dernière mise à jour de sa vue</th>
+			{if $is_admin}
+				<th>Actions</th>
+			{/if}
 		</tr>
 	</thead>
 	<tbody>
@@ -19,6 +22,9 @@
 			<td>{$current_member->getName()} ({$current_member->getId()})</td>
 			<td>{$current_member->getFormattedPosition()}</td>
 			<td>{$current_member->getUpdate()}</td>
+			{if $is_admin}
+				<td><a href="update_view.php?id={$current_member->getId()}">mettre la vue à jour</a></td>
+			{/if}
 		</tr>
 	{/section}
 	</tbody>
