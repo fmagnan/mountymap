@@ -3,15 +3,9 @@
 	require_once dirname(__FILE__).'/../Smarty/Smarty.class.php';
 	
 	$smarty = instantiateSmartyTemplate(dirname(__FILE__));
-	$user = getLoggedInUser();
 	$membersFactory = MemberFactory::getInstance();
+	$member = $membersFactory->getLastUpdatedMember($_GET['id']);
 	
-	if (array_key_exists('id', $_GET) && is_numeric($_GET['id']) && $user->isAdmin()) {
-		$member = $membersFactory->getInstanceFromArray(array('id' => intval($_GET['id'])));	
-	} else {
-		$member = $membersFactory->getLastUpdatedMember();
-	}
-
 	if (is_object($member)) {
 		$trollId = $member->getId();
 		updateDataFromMountySite(new ViewParser($member));
