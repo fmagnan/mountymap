@@ -37,8 +37,9 @@ class MemberFactory extends DatabaseObjectFactory {
 	}
 	
 	function getLastUpdatedMember($id=false) {
-		if (is_numeric($id)) {
-			$whereClause = 'AND `id`='.intval($id);
+		$whereClause = '';
+		if ($id && is_numeric($id)) {
+			$whereClause .= 'AND `id`='.intval($id);
 		}
 		$whereClause .= ' AND CURDATE() <> DATE(`mise_a_jour`)';
 		$whereClause .= ' ORDER BY `mise_a_jour` ASC';
