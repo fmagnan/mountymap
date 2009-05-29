@@ -110,4 +110,47 @@ function getTime() {
     }
 }
 
+function isValidEmail($email) {
+	return eregi("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$", $email);
+}
+
+function isValidLogin($login) {
+	return is_numeric($login);
+}
+
+function cancelValidation(&$smarty, $error) {
+	$smarty->assign('erreur_globale', $error);
+	return false;
+}
+
+function generateActivationCode() {
+	$list = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	mt_srand((double)microtime()*1000000);
+	$activationCode="";
+	while(strlen($activationCode) < 8) {
+		$activationCode .= $list[mt_rand(0, strlen($list)-1)];
+	}
+	return $activationCode;
+}
+
+function getMailHeaders($copiesCachees='') {
+	$headers = 'Mime-Version: 1.0'."\r\n";
+ 	$headers .= 'Content-type: text/html; charset="utf-8"'."\r\n";
+ 	$headers .= 'From: "Herb\'"<herb.mh@gmail.com>'."\n";
+ 	$headers .= 'Reply-To: herb.mh@gmail.com'."\n";
+ 	if ('' != $copiesCachees) {
+ 		$headers .= 'Bcc: ' . $copiesCachees; 
+ 	}
+	return $headers;
+}
+
+function envoiMailNouvelInscrit($activationCode, $email) {
+	$subject = "Inscription au site des AAs";
+	$message = "Bonjour, \nVous voilà désormais inscrit au site des AAs. \nVeuillez noter votre code d'activation : ".$activationCode
+	."\nVotre compte n'est pas encore activé. Vous ne pouvez pas vous connecter au site tant que votre compte n'est pas activé.\n".
+	"Afin que votre compte soit activé, vous devez envoyer le code d'activation par MP au troll Herb' (6807).\n".
+	"Je me chargerai d'activer votre compte.\n\nA très bientôt sur le site des AAs.\n\nHerb'";
+	return mail($email, $subject, $message, getMailHeaders());
+}
+
 ?>
