@@ -15,6 +15,7 @@ $email = $_POST['email'];
 $validation = true;
 
 if ($submit) {
+	$userFactory = UserFactory::getInstance();
 	if (!$login || !$pass || !$confirmation || !$email) {
 		$validation = cancelValidation($smarty, 'Tous les champs sont obligatoires');
 	}
@@ -27,13 +28,13 @@ if ($submit) {
 	elseif ($pass != $confirmation) {
 		$validation = cancelValidation($smarty, 'Les 2 mots de passes saisis sont différents');
 	}
-	elseif ($erreur = !isValidEmail($email)) {
-		$validation = cancelValidation($smarty, $erreur);
+	elseif (!isValidEmail($email)) {
+		$validation = cancelValidation($smarty, 'L\'adresse mail saisie n\'est pas valide');
 	}
-	elseif (isUserAlreadyRegistered(intval($login))) {
+	elseif ($userFactory->isUserAlreadyRegistered(intval($login))) {
 		$validation = cancelValidation($smarty, 'Ce troll est déjà inscrit');
 	}
-	elseif (isEmailAlreadyExists($email)) {
+	elseif ($userFactory->isEmailAlreadyExists($email)) {
 		$validation = cancelValidation($smarty, 'Cette adresse email est déjà utilisée');
 	}
 	
@@ -44,8 +45,14 @@ if ($submit) {
 }
 
 if ($submit && $validation) {
-	$activationCode = registerUser(intval($login), $pass, $email);
-	if ($activationCode) {
+	$activationCode = generateActivationCode();
+	$userData = array(
+		'id' => intval($login), 'password' => md5($pass),
+		'email' => $email, 'activation_code' => $activationCode,
+		'is_active' => 0, 'is_admin' => 0, 'diplomacy_id' => 0,
+	);
+	$user_id = $userFactory->create($userData);
+	if ($user_id) {
 		$result = envoiMailNouvelInscrit($activationCode, $email);
 		if ($result) {
 			$submissionMessage = "Votre inscription a bien été prise en compte. Vous allez prochainement recevoir un email contenant
@@ -58,7 +65,7 @@ if ($submit && $validation) {
 		}
 	}
 	else {
-		$smarty->assign('submissionMessage', 'Un problème est survenu lors de la génération de votre code d\'activation, aucun compte n\'a été créé');
+		$smarty->assign('submissionMessage', 'Un problème est survenu lors de la création de votre compte, aucun compte n\'a été créé');
 	}
 	$smarty->display('register_validation.tpl');
 }
