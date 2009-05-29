@@ -57,6 +57,27 @@ class UserFactory extends DatabaseObjectFactory {
 		header("Location: index.php");
 	}
 	
+	function isUserAlreadyRegistered($numeroTroll) {
+		$user = $this->getInstanceFromArray(array('id' => intval($numeroTroll)));
+		return !$user->isError();
+	}
+
+	function isEmailAlreadyExists($email) {
+		$user = $this->getInstanceFromArray(array('id' => mysql_escape_string($email)));
+		return !$user->isError();
+	}
+	
+	function registerUser($numeroTroll, $pass, $email) {
+		$activationCode = generateActivationCode();
+		$query = "INSERT INTO `".USERS_TABLE_NAME."` VALUES (".intval($numeroTroll).", '".md5($pass)."', '$email', '$activationCode', 0, 'defaut', 1, 10, 0)";
+		$result = executeRequeteSansDonneesDeRetour($query, 'registerUser');
+		if ($result) {
+			return $activationCode;
+		} else {
+			return false;
+		}
+	}
+	
 }
 
 ?>
