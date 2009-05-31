@@ -14,11 +14,12 @@ abstract class LocatedObjectFactory extends DatabaseObjectFactory {
 	    return self::$instance;
 	}
 	
-	function getInstancesWithPosition($start_x, $end_x, $start_y, $end_y, $start_n, $end_n) {
-		$whereClause = ' AND (`position_x` BETWEEN '.intval($start_x). ' AND ' .intval($end_x). ') 
-						 AND (`position_y` BETWEEN '.intval($start_y). ' AND ' .intval($end_y). ')
-						 AND (`position_n` BETWEEN ' . intval($end_n). ' AND ' .intval($start_n) . ')';
-		return $this->getInstancesWithWhereClause($whereClause);
+	function getDataWithPosition($start_x, $end_x, $start_y, $end_y, $start_n, $end_n) {
+		$query = '	SELECT * FROM `'.$this->getTableName().'` 
+					WHERE (`position_x` BETWEEN '.intval($start_x). ' AND ' .intval($end_x). ') 
+					AND (`position_y` BETWEEN '.intval($start_y). ' AND ' .intval($end_y). ')
+					AND (`position_n` BETWEEN ' . intval($end_n). ' AND ' .intval($start_n) . ')';
+		return $this->db->executeRequeteAvecDonneesDeRetourMultiples($query);
 	}
 }
 ?>

@@ -2,6 +2,7 @@
 
 require_once 'LocatedObject.class.php';
 require_once 'MonsterFactory.class.php';
+require_once 'HtmlTool.class.php';
 
 class Monster extends LocatedObject {
 
@@ -22,19 +23,7 @@ class Monster extends LocatedObject {
 	}
 
 	function getFullName() {
-		$fullName = array();
-		if ($this->getSize() != '') {
-			$fullName[] = $this->getSize();
-		}
-		$fullName[] = $this->getName();
-		if ($this->getTemplate() != '') {
-			$fullName[] = $this->getTemplate();
-		}
-		$fullName[] = '[' . $this->getAge() . ']';
-		if ($this->getMark() != '') {
-			$fullName[] = $this->getMark();
-		}
-		return '<a href="javascript:EMV('.$this->getId().')">'.implode(' ', $fullName).'</a>';
+		return HtmlTool::getInstance()->getMonsterLink($this->getId(), $this->getSize(), $this->getName(), $this->getTemplate(), $this->getAge(), $this->getMark());
 	}
 	
 }

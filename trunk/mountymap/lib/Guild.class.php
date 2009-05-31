@@ -2,11 +2,12 @@
 
 require_once 'DatabaseObject.class.php';
 require_once 'GuildFactory.class.php';
+require_once 'HtmlTool.class.php';
 
 class Guild extends DatabaseObject {
 	
 	function getFormattedIdentity() {
-		return '<a href="javascript:EAV('.$this->getId().')">'. $this->getName() . '</a>';
+		return HtmlTool::getInstance()->getGuildLink($this->getId(), $this->getName());
 	}
 	
 	function getTableRow($class='') {

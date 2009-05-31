@@ -3,6 +3,7 @@
 require_once 'LocatedObject.class.php';
 require_once 'TrollPositionFactory.class.php';
 require_once 'TrollIdentityFactory.class.php';
+require_once 'HtmlTool.class.php';
 
 class Troll extends LocatedObject {
 
@@ -39,9 +40,9 @@ class Troll extends LocatedObject {
 		if ('' == $this->getName()) {
 			$this->initIdentityData();
 		}
-		$identity = '<a href="javascript:EPV('.$this->getId().')">'. $this->getName() . '</a> (' . $this->getRace() . ' ' . $this->getLevel() . ') ';
+		$identity = HtmlTool::getInstance()->getTrollLink($this->getId(), $this->getName(), $this->getRace(), $this->getLevel());
 		$guild = $this->getGuild();
-		$identity .= $guild->getFormattedIdentity(); 
+		$identity .= $guild->getFormattedIdentity();
 		return $identity;
 	}
 	
