@@ -70,14 +70,17 @@ table#map td.lieu {
 	background-color:#AE88AE;
 }
 
-table#map td.ami {
-	background-color:green;
+.ami, .ami a, .ennemi, .ennemi a{
+	font-weight:bold;
 }
 
-table#map td.ennemi {
-	background-color:red;
+.ami, .ami a {
+	color:green;
 }
-
+.ennemi, .ennemi a {
+	color:red;
+}
+	
 fieldset#coordonnees input[type="text"] {
 	width:30px;
 }
