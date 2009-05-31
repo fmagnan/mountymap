@@ -27,7 +27,10 @@ $places_types = array(
 	'Nid', 'Porte d\'Outre-Monde', 'Refuge', 'Rocher', 'Sanctuaire', 'Sépulcre', 'Source', 'Téléporteur', 'Terrier', 'Tombe',
 );
 
-$unprotected_scripts = array('/login.php', '/register.php', '/forgot_password.php');
+$unprotected_scripts = array(
+	'/login.php', '/register.php', '/forgot_password.php',
+	'/update_public_trolls.php', '/update_public_guild.php', '/update_public_diplomacy.php',
+);
 
 define('MONSTERS_TEMPLATES', serialize($monsters_templates));
 define('MONSTERS_SIZES', serialize($monsters_sizes));
