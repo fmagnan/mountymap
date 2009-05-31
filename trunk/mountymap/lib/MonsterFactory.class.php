@@ -40,5 +40,16 @@ class MonsterFactory extends NonPermanentDatabaseObjectFactory {
 		return 'monstre';
 	}
 	
+	function getMonsterFamilies() {
+		$query = 'SELECT `famille` AS `key`,
+			CONCAT(`famille`, \' (\', COUNT(`id`), \')\') AS `value`
+			FROM ' . $this->getTableName() . ' GROUP BY `famille` ORDER BY `famille`';
+		return $this->db->executeRequeteAvecDonneesDeRetourMultiples($query);
+	}
+	
+	function getInstancesByFamily($family) {
+		return $this->getInstancesFromArray(array('famille' => $family));
+	}
+	
 }
 ?>
