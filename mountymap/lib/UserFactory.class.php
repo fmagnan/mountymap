@@ -42,7 +42,6 @@ class UserFactory extends DatabaseObjectFactory {
 		if ($login && $md5pass) {
 			$user = $this->getInstanceFromArray(array('id' => $login, 'password' => $md5pass, 'is_active' => 1));
 			if (is_object($user) && $md5pass == $user->getPassword()) {
-				session_start();
 				$_SESSION['logged_user_id'] = $login;
 				header("Location: index.php");
 			}
