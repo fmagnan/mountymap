@@ -1,5 +1,7 @@
 <?php
 
+require_once 'HtmlTool.class.php';
+
 class MapBuilder {
 	
 	var $range;
@@ -40,12 +42,13 @@ class MapBuilder {
 	}
 	
 	function fillCells($factory_name, $type, $start_x, $end_x, $start_y, $end_y, $start_n, $end_n) {
+		$htmlTool = HtmlTool::getInstance();
 		$factory = $this->getFactoryFromName($factory_name);
-		$items = $factory->getInstancesWithPosition($start_x, $end_x, $start_y, $end_y, $start_n, $end_n);
-		$class='none';
+		$items = $factory->getDataWithPosition($start_x, $end_x, $start_y, $end_y, $start_n, $end_n);
+		
 		foreach($items as $item) {
-			$level = $item->getPositionN();
-			$position = $item->getPositionX() . ',' . $item->getPositionY();
+			$level = $item['position_n'];
+			$position = $item['position_x'] . ',' . $item['position_y'];
 			if (!array_key_exists($position, $this->cells)) {
 				$this->cells[$position] = array();
 				if (!array_key_exists($level, $this->cells[$position])) {
@@ -53,18 +56,11 @@ class MapBuilder {
 				}
 			}
 			
-			if ('Place' == get_class($item) && $class=='none') {
+			if ('Place' == $factory_name) {
 				$class='lieu';
 			}
 			
-			if ('Troll' == get_class($item)) {
-				$diplomacy_side = getLoggedInUser()->getDiplomacySideFor($item);
-				if ($diplomacy_side) {
-					$class = $diplomacy_side;
-				}
-			}
-			
-			$this->cells[$position][$level][] = $item->getCellInfo();
+			$this->cells[$position][$level][] = $htmlTool->getCellInfo($factory_name, $item);
 			$this->cells[$position][$type] = true;
 			$this->cells[$position]['class'] = $class;
 		}
@@ -103,5 +99,6 @@ class MapBuilder {
 	function getFactoryFromName($name) {
 		return call_user_func(array($name.'Factory', 'getInstance'));
 	}
+	
 }
 ?>

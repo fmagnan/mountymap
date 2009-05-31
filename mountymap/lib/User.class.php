@@ -25,7 +25,7 @@ class User extends DatabaseObject {
 		return GuildFactory::getInstance()->getInstanceFromArray(array('id' => $this->getDiplomacyId()));
 	}
 	
-	function getDiplomacySideFor($troll) {
+	/*function getDiplomacySideFor($troll) {
 		$diplomacyFactory = DiplomacyFactory::getInstance();
 		$trollData = array('id' => $this->getDiplomacyId(), 'target_type' => 'T', 'target_id' => $troll->getId());
 		$diplomacy = $diplomacyFactory->getInstanceFromArray($trollData);
@@ -40,7 +40,7 @@ class User extends DatabaseObject {
 			}
 		}
 		return false;		
-	}
+	}*/
 	
 }
 

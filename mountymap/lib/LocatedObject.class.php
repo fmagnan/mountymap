@@ -43,9 +43,6 @@ abstract class LocatedObject extends DatabaseObject {
 				<td>'.$this->getLinkToMap().'</td></tr>';
 	}
 	
-	function getCellInfo() {
-		return '[' . $this->getId().'] ' . $this->getFullName();
-	}
 }
 
 ?>
