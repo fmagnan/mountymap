@@ -163,7 +163,7 @@ abstract class DatabaseObjectFactory extends BaseObject {
 		foreach($array as $key => $value) {
 			$columnsDescr = $this->getAllColumnsDescr();
 			if (array_key_exists($key, $columnsDescr)) {
-				$whereClause .= ' AND `'.$key.'` = ' . $this->getFactory()->getValueByType($value, $columnsDescr[$key]);	
+				$whereClause .= ' AND `'.$key.'` = ' . $this->getValueByType($value, $columnsDescr[$key]);	
 			}
 		}
 		return $this->getInstancesWithWhereClause($whereClause);

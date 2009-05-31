@@ -4,7 +4,7 @@
 	require_once dirname(__FILE__).'/../Smarty/Smarty.class.php';
 
 	$smarty = instantiateSmartyTemplate(dirname(__FILE__));
-	if ('' != $_POST['submit']) {
+	if (array_key_exists('submit', $_POST) && '' != $_POST['submit']) {
 		$userFactory = UserFactory::getInstance(); 
 		$isLoginOk = $userFactory->login($_POST['login'], $_POST['password']);
 		if (!$isLoginOk) {
