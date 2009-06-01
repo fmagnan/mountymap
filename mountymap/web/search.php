@@ -34,16 +34,25 @@
 		}
 	}
 	
-	$search_by_types = array('monster', 'treasure', 'place');
+	$search_by_types = array('monster' => 'Monster', 'treasure' => 'Treasure', 'place' => 'Place', 'monster_family' => 'Monster');
 	
-	foreach($search_by_types as $type) {
-		$factory = call_user_func(array($type.'Factory', 'getInstance'));
-		$options = HtmlTool::getInstance()->getHTMLSelect($type, $factory->getInstancesByTypes());
-		$smarty->assign($type.'_options', $options);
+	foreach($search_by_types as $type => $factoryName) {
+		$factory = call_user_func(array($factoryName.'Factory', 'getInstance'));
+		if ($type == 'monster_family') {
+			$options = $factory->getMonsterFamilies();
+		} else {
+			$options = $factory->getInstancesByTypes();
+		}
+		$html_select = HtmlTool::getInstance()->getHTMLSelect($type, $options);
+		$smarty->assign($type.'_options', $html_select);
 		
 		$selected_type = array_key_exists($type, $_POST) ? $_POST[$type] : '';
 		if ($selected_type != '') {
-			$instances = $factory->getInstancesByGroupByField($selected_type);
+			if ($type == 'monster_family') {
+				$instances = $factory->getInstancesByFamily($selected_type);
+			} else {
+				$instances = $factory->getInstancesByGroupByField($selected_type);
+			}
 			$smarty->assign('multiple_instances', $instances);
 		}
 	}
