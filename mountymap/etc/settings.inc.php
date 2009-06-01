@@ -28,8 +28,7 @@ $places_types = array(
 );
 
 $unprotected_scripts = array(
-	'/login.php', '/register.php', '/forgot_password.php',
-	'/update_public_trolls.php', '/update_public_guild.php', '/update_public_diplomacy.php',
+	'/login.php', '/register.php', '/forgot_password.php', '/update_public_data.php',
 );
 
 define('MONSTERS_TEMPLATES', serialize($monsters_templates));
