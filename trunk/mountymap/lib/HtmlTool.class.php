@@ -86,5 +86,9 @@ class HtmlTool {
 	public static function getGuildLink($id, $name) {
 		return '<a href="javascript:EAV('.$id.')">'. $name . '</a>';
 	}
+	
+	public static function getPostParameter($parameter) {
+		return array_key_exists($parameter, $_POST) ? $_POST[$parameter] : false;
+	}
 }
 ?>

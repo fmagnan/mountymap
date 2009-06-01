@@ -42,7 +42,6 @@ class MapBuilder {
 	}
 	
 	function fillCells($factory_name, $type, $start_x, $end_x, $start_y, $end_y, $start_n, $end_n) {
-		$htmlTool = HtmlTool::getInstance();
 		$factory = $this->getFactoryFromName($factory_name);
 		$items = $factory->getDataWithPosition($start_x, $end_x, $start_y, $end_y, $start_n, $end_n);
 		
@@ -60,7 +59,7 @@ class MapBuilder {
 				$class='lieu';
 			}
 			
-			$this->cells[$position][$level][] = $htmlTool->getCellInfo($factory_name, $item);
+			$this->cells[$position][$level][] = HtmlTool::getCellInfo($factory_name, $item);
 			$this->cells[$position][$type] = true;
 			$this->cells[$position]['class'] = $class;
 		}

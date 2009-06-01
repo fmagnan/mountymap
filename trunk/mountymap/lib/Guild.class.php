@@ -7,7 +7,7 @@ require_once 'HtmlTool.class.php';
 class Guild extends DatabaseObject {
 	
 	function getFormattedIdentity() {
-		return HtmlTool::getInstance()->getGuildLink($this->getId(), $this->getName());
+		return HtmlTool::getGuildLink($this->getId(), $this->getName());
 	}
 	
 	function getTableRow($class='') {
