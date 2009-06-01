@@ -31,14 +31,14 @@
 		<input type="submit" name="submit" value="Valider" />
 	</fieldset>
 </form>
-<!-- <form id="search_by_monster_family" method="post" action="search.php">
+<form id="search_by_monster_family" method="post" action="search.php">
 	<fieldset>
 		<legend>Recherche de monstres</legend>
 		<label for="monster_family">Famille :</label>
 		{$monster_family_options}
 		<input type="submit" name="submit" value="Valider" />
 	</fieldset>
-</form>-->
+</form>
 <form id="search_by_treasure" method="post" action="search.php">
 	<fieldset>
 		<legend>Recherche de trésors</legend>
