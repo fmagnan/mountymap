@@ -153,4 +153,15 @@ function envoiMailNouvelInscrit($activationCode, $email) {
 	return mail($email, $subject, $message, getMailHeaders());
 }
 
+function generateNewPasswordAndSendItTo($user, $email) {
+	$trollNumber = $user->getId();
+	$nouveauMotDePasse = generateActivationCode();
+	$user->update(array('password' => md5($nouveauMotDePasse)));
+	$subject = "Oubli de mot de passe du site des AAs";
+	$message = "Bonjour n°$trollNumber,\nVous recevez cet e-mail parce que vous avez demandé à ce qu'un nouveau mot de passe vous soit envoyé pour votre compte sur le site des AAs\n".
+	"Ce nouveau mot de passe est le suivant : " . $nouveauMotDePasse . "\nVous pouvez bien sûr changer vous-même ce mot de passe via les préférences du site des AAs\n".
+	"Si vous rencontrez des difficultés, veuillez me contacter à cette adresse : herb.mh@gmail.com.\n\nHerb'";
+	return mail($email, $subject, $message, getMailHeaders());
+}
+
 ?>
