@@ -4,7 +4,8 @@ require_once 'Parser.class.php';
 
 class ViewParser extends Parser {
 
-	var $member_id, $origin, $monsters_templates, $monsters_sizes, $places_types;
+	var $member_id, $origin, $monsters_data, $giant_female_monsters, $giant_male_monsters, $giant_monsters; 
+	var $monsters_templates, $monsters_sizes, $places_types;
 	
 	function __construct($member) {
 		$this->member_id = $member->getId();
@@ -16,6 +17,10 @@ class ViewParser extends Parser {
 			'LIEUX' => 'Place', 'CHAMPIGNONS' => 'Mushroom', 'ORIGINE' => false,
 		);
 		$this->origin = array();
+		$this->monsters_data = unserialize(MONSTERS_DATA);
+		$this->giant_female_monsters = unserialize(GIANT_FEMALE_MONSTERS);
+		$this->giant_male_monsters = unserialize(GIANT_MALE_MONSTERS);
+		$this->giant_monsters = array_merge($this->giant_female_monsters, $this->giant_male_monsters);
 		$this->monsters_templates = unserialize(MONSTERS_TEMPLATES);
 		$this->monsters_sizes = unserialize(MONSTERS_SIZES);
 		$this->places_types = unserialize(PLACES_TYPES);
@@ -72,40 +77,79 @@ class ViewParser extends Parser {
 				$complete_monster_name = utf8_encode($array[1]);
 				preg_match('/(.*)\[(.*)\](.*)/', $complete_monster_name, $matches);
 				$monster_name = trim($matches[1]);
-				$size = '';
-				foreach($this->monsters_sizes as $monster_size) {
-					preg_match('/('.$monster_size.') (.*)/', $monster_name, $size_matches);
-					if (!empty($size_matches)) {
-						$size = trim($size_matches[1]);
-						if (trim($size_matches[2]) != '') {
-							$monster_name = trim($size_matches[2]);
-						}
-					}
-				}
-				$template = '';
-				foreach($this->monsters_templates as $monster_template) {
-					preg_match('/(.*) ('.$monster_template.')/', $monster_name, $template_matches);
-					if (!empty($template_matches)) {
-						$monster_name = trim($template_matches[1]);
-						$template .= trim($template_matches[2]);
-					}
-					preg_match('/('.$monster_template.') (.*)/', $monster_name, $template_matches);
-					if (!empty($template_matches)) {
-						$monster_name = trim($template_matches[2]);
-						$template .= trim($template_matches[1]);
-					}
-				}
-				$formattedData['nom'] = $monster_name;
-				$formattedData['template'] = $template;
-				$formattedData['taille'] = $size;
 				$formattedData['age'] = trim($matches[2]);
 				$formattedData['marquage'] = trim($matches[3]);
+				
+				$extract = $this->extractTemplateFromMonsterName($monster_name);
+				$formattedData['template'] = $extract['template'];
+				$monster_name = $extract['name'];
+				
+				$extract = $this->extractSizeFromMonsterName($monster_name);
+				$formattedData['taille'] = $extract['size'];
+				$monster_name = $extract['name'];
+				
+				$formattedData['nom'] = $monster_name;
+				if (array_key_exists($monster_name, $this->monsters_data)) {
+					$formattedData['famille'] = $this->monsters_data[$monster_name]['family'];
+				}
 			}
 	 	} 
 		
 		return $formattedData;
 	}
 
+	function extractSizeFromMonsterName($monster_name) {
+		$size = '';
+		
+		foreach($this->monsters_sizes as $monster_size) {
+			if (0 != preg_match('/('.$monster_size.') (.*)/', $monster_name, $size_matches)) {
+				$size = trim($size_matches[1]);
+				if (trim($size_matches[2]) != '') {
+					$monster_name = trim($size_matches[2]);
+					break;
+				}
+			}
+		}
+		if (0 != preg_match('/(.*) (Gigantesque)/', $monster_name, $exception_matches)) {
+			if (trim($exception_matches[1]) != '') {
+				$monster_name = trim($exception_matches[1]);
+			}
+			if (in_array($monster_name, $this->giant_female_monsters)) {
+				$size = 'Grosse';
+				$monster_name .= ' Géante';
+			} else {
+				$size = 'Gros';
+				$monster_name .= ' Géant';
+			}
+		}
+		if (in_array($monster_name, $this->giant_female_monsters)) {
+			$size = 'Petite';
+			$monster_name .= ' Géante';
+		} elseif(in_array($monster_name, $this->giant_male_monsters)) {
+			$size = 'Petit';
+			$monster_name .= ' Géant';
+		}
+		return array('size' => $size, 'name' => $monster_name);
+	}
+	
+	function extractTemplateFromMonsterName($monster_name) {
+		$template = '';
+		foreach($this->monsters_templates as $monster_template) {
+			$results = preg_match('/^(.*) ('.$monster_template.')$/', $monster_name, $template_matches);
+			if ($results != 0) {
+				$monster_name = trim($template_matches[1]);
+				$template .= trim($template_matches[2]);
+			} else {
+				$results = preg_match('/^('.$monster_template.') (.*)$/', $monster_name, $template_matches);
+				if ($results != 0) {
+					$monster_name = trim($template_matches[2]);
+					$template .= trim($template_matches[1]);
+				}
+			}
+		}
+		return array('template' => $template, 'name' => $monster_name);
+	}
+	
 	function getOrigin() {
 		return $this->origin;
 	}
