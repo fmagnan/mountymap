@@ -4,6 +4,10 @@ body {
 	background-repeat:repeat;
 }
 
+img {
+	border:none;
+}
+
 table#map {
 	border-collapse:collapse;
 }
