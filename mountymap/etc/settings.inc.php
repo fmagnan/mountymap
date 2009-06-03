@@ -265,10 +265,6 @@ $places_types = array(
 	'Nid', 'Porte d\'Outre-Monde', 'Refuge', 'Rocher', 'Sanctuaire', 'Sépulcre', 'Source', 'Téléporteur', 'Terrier', 'Tombe',
 );
 
-$unprotected_scripts = array(
-	'/login.php', '/register.php', '/forgot_password.php', '/update_public_data.php',
-);
-
 define('MONSTERS_DATA', serialize($monsters_data));
 define('GIANT_FEMALE_MONSTERS', serialize($giant_female_monsters));
 define('GIANT_MALE_MONSTERS', serialize($giant_male_monsters));
@@ -276,6 +272,19 @@ define('MONSTERS_TEMPLATES', serialize($monsters_templates));
 define('MONSTERS_SIZES', serialize($monsters_sizes));
 define('PLACES_TYPES', serialize($places_types));
 
+$unprotected_scripts = array(
+	'/login.php', '/register.php', '/forgot_password.php', '/update_public_data.php',
+);
+
+$menu_items = array(
+	'/map.php' => array('title' => 'La carte', 'admin' => false),
+	'/members.php' => array('title' => 'Liste des membres', 'admin' => false),
+	'/search.php' => array('title' => 'Lancer une recherche', 'admin' => false),
+	'/preferences.php' => array('title' => 'Préférences', 'admin' => false),
+	'/users.php' => array('title' => 'Gérer les utilisateurs', 'admin' => true),
+	'/logout.php' => array('title' => 'Déconnexion', 'admin' => false),
+);
+define('MENU_ITEMS', serialize($menu_items));
 
 header('Content-type: text/html; charset=utf-8');
 
@@ -284,10 +293,10 @@ if (!array_key_exists('logged_user_id', $_SESSION) && !in_array($_SERVER['PHP_SE
 	header("Location: login.php");
 	exit();
 }
-/*elseif (isset($restrictPageToGroup) && $_SESSION['logged_user_group_id']<$restrictPageToGroup) {
+
+if (array_key_exists($script = $_SERVER['SCRIPT_NAME'], $menu_items) && $menu_items[$script]['admin'] && !getLoggedInUser()->isAdmin()) {
 	header("Location: index.php");
 	exit();
-}*/
-
+}
 
 ?>
