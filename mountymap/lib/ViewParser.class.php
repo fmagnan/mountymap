@@ -75,8 +75,10 @@ class ViewParser extends Parser {
 				$formattedData['type'] = $place_type;
 			} elseif($section == 'MONSTRES') {
 				$complete_monster_name = utf8_encode($array[1]);
+				//echo '0 ' . $complete_monster_name;
 				preg_match('/(.*)\[(.*)\](.*)/', $complete_monster_name, $matches);
 				$monster_name = trim($matches[1]);
+				//echo ' => 1 ' . $monster_name;
 				$formattedData['age'] = trim($matches[2]);
 				$formattedData['marquage'] = trim($matches[3]);
 				
@@ -84,10 +86,13 @@ class ViewParser extends Parser {
 				$formattedData['template'] = $extract['template'];
 				$monster_name = $extract['name'];
 				
+				//echo ' => 2 ' . $monster_name;
+				
 				$extract = $this->extractSizeFromMonsterName($monster_name);
 				$formattedData['taille'] = $extract['size'];
 				$monster_name = $extract['name'];
 				
+				//echo ' => 3 ' . $monster_name . '<br/>';
 				$formattedData['nom'] = $monster_name;
 				if (array_key_exists($monster_name, $this->monsters_data)) {
 					$formattedData['famille'] = $this->monsters_data[$monster_name]['family'];
@@ -134,7 +139,7 @@ class ViewParser extends Parser {
 	
 	function extractTemplateFromMonsterName($monster_name) {
 		$template = '';
-		foreach($this->monsters_templates as $monster_template) {
+		foreach($this->monsters_templates as $monster_template => $level) {
 			$results = preg_match('/^(.*) ('.$monster_template.')$/', $monster_name, $template_matches);
 			if ($results != 0) {
 				$monster_name = trim($template_matches[1]);

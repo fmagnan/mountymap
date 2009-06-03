@@ -154,7 +154,7 @@ abstract class DatabaseObjectFactory extends BaseObject {
 		return is_array($uniqueResult) ? $this->getInstanceFromArray($uniqueResult) : false;
 	}
 	
-	function getInstances($orderBy, $sort) {
+	function getInstances($orderBy='', $sort='') {
 		return $this->getInstancesWithQuery($this->getSelectQuery($orderBy, $sort));
 	}
 	

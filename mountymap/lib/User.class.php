@@ -13,8 +13,13 @@ class User extends DatabaseObject {
 		return $this->getData('is_admin') == 1;
 	}
 	
+	function isActive() {
+		return $this->getData('is_active') == 1;
+	}
+	
 	function getName() {
-		return TrollIdentityFactory::getInstance()->getInstanceFromObject($this)->getName();
+		$identity = TrollIdentityFactory::getInstance()->getInstanceFromObject($this);
+		return (is_object($identity) && !$identity->isError()) ? $identity->getName() : 'inconnu';
 	}
 	
 	function getDiplomacyId() {
@@ -25,23 +30,21 @@ class User extends DatabaseObject {
 		return GuildFactory::getInstance()->getInstanceFromArray(array('id' => $this->getDiplomacyId()));
 	}
 	
-	/*function getDiplomacySideFor($troll) {
-		$diplomacyFactory = DiplomacyFactory::getInstance();
-		$trollData = array('id' => $this->getDiplomacyId(), 'target_type' => 'T', 'target_id' => $troll->getId());
-		$diplomacy = $diplomacyFactory->getInstanceFromArray($trollData);
-		if (!$diplomacy->isError()) {
-			return $diplomacy->getSide();
-		} else {
-			$troll->initIdentityData();
-			$guildData = array('id' => $this->getDiplomacyId(), 'target_type' => 'G', 'target_id' => $troll->getGuildNumber());
-			$diplomacy = $diplomacyFactory->getInstanceFromArray($guildData);
-			if (!$diplomacy->isError()) {
-				return $diplomacy->getSide();
-			}
-		}
-		return false;		
-	}*/
+	function setIsActive($value) {
+		$this->update(array('is_active' => $value));
+	}
 	
+	function activate() {
+		$this->setIsActive(1);
+	}
+	
+	function deactivate() {
+		$this->setIsActive(0);
+	}
+	
+	function getActivationCode() {
+		return $this->getData('activation_code');
+	}
 }
 
 ?>
