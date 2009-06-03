@@ -1,8 +1,7 @@
 <ul>
-	<li><a href="map.php">afficher la carte</a></li>
-	<li><a href="members.php">liste des membres</a></li>
-	<li><a href="search.php">lancer une recherche</a></li>
-	<li><a href="preferences.php">préférences</a></li>
-	<li><a href="users.php">gérer les utilisateurs</a></li>
-	<li><a href="logout.php">déconnexion</a></li>
+	{foreach from=$menu_items item=data key=url}
+		{if $logged_in_user->isAdmin() || !$data.admin}
+			<li><a href="{$url}">{$data.title}</a></li>
+		{/if}
+	{/foreach}
 </ul>
