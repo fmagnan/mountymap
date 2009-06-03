@@ -55,9 +55,7 @@ class MapBuilder {
 				}
 			}
 			
-			if ('Place' == $factory_name) {
-				$class='lieu';
-			}
+			$class = ('Place' == $factory_name) ? $class='lieu' : '';
 			
 			$this->cells[$position][$level][] = HtmlTool::getCellInfo($factory_name, $item);
 			$this->cells[$position][$type] = true;

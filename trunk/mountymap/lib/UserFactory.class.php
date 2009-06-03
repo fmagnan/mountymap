@@ -44,6 +44,7 @@ class UserFactory extends DatabaseObjectFactory {
 			if (is_object($user) && $md5pass == $user->getPassword()) {
 				$_SESSION['logged_user_id'] = $login;
 				header("Location: index.php");
+				exit();
 			}
 		}
 		return false;
