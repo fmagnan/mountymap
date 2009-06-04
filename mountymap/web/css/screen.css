@@ -92,3 +92,8 @@ fieldset#coordonnees input[type="text"] {
 #flash-player {
 	margin:auto;
 }
+
+legend {
+	border-width:1px;
+	border-style:solid;
+}
