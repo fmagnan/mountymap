@@ -8,12 +8,14 @@ require_once 'HtmlTool.class.php';
 class Troll extends LocatedObject {
 
 	function initIdentityData() {
-		$trollIdentityFactory = TrollIdentityFactory::getInstance();
-		$identity = $trollIdentityFactory->getInstanceFromObject($this);
-		if (is_object($identity)) {
-			foreach($identity->getAllData() as $key => $value) {
-				if (!array_key_exists($key, $this->data)) {
-					$this->data[$key] = $value;
+		if ('' == $this->getName()) {
+			$trollIdentityFactory = TrollIdentityFactory::getInstance();
+			$identity = $trollIdentityFactory->getInstanceFromObject($this);
+			if (is_object($identity)) {
+				foreach($identity->getAllData() as $key => $value) {
+					if (!array_key_exists($key, $this->data)) {
+						$this->data[$key] = $value;
+					}
 				}
 			}
 		}
@@ -31,19 +33,26 @@ class Troll extends LocatedObject {
 		return $this->getData('id_guilde');
 	}
 	
+	function getGuildIdentity() {
+		return $this->getGuild()->getFormattedIdentity();
+	}
+	
+	function getLink() {
+		return HtmlTool::getInstance()->getTrollLink($this->getId(), $this->getName());
+	}
+	
 	function getGuild() {
-		$guildFactory = GuildFactory::getInstance();
-		return $guildFactory->getInstanceFromArray(array('id' => $this->getGuildNumber()));	
+		return GuildFactory::getInstance()->getInstanceFromArray(array('id' => $this->getGuildNumber()));	
+	}
+	
+	function getSimpleIdentity() {
+		$this->initIdentityData();
+		return $this->getLink();
 	}
 	
 	function getFullName() {
-		if ('' == $this->getName()) {
-			$this->initIdentityData();
-		}
-		$identity = HtmlTool::getInstance()->getTrollLink($this->getId(), $this->getName(), $this->getRace(), $this->getLevel());
-		$guild = $this->getGuild();
-		$identity .= $guild->getFormattedIdentity();
-		return $identity;
+		$this->initIdentityData();
+		return $this->getLink() . ' (' . $this->getRace() . ' ' . $this->getLevel() . ') ' . $this->getGuild()->getFormattedIdentity();
 	}
 	
 }

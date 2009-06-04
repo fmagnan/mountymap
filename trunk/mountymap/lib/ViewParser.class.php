@@ -5,7 +5,7 @@ require_once 'Parser.class.php';
 class ViewParser extends Parser {
 
 	var $member_id, $origin, $monsters_data, $giant_female_monsters, $giant_male_monsters, $giant_monsters; 
-	var $monsters_templates, $monsters_sizes, $places_types;
+	var $monsters_templates, $monsters_sizes, $monsters_ages, $places_types;
 	
 	function __construct($member) {
 		$this->member_id = $member->getId();
@@ -23,6 +23,7 @@ class ViewParser extends Parser {
 		$this->giant_monsters = array_merge($this->giant_female_monsters, $this->giant_male_monsters);
 		$this->monsters_templates = unserialize(MONSTERS_TEMPLATES);
 		$this->monsters_sizes = unserialize(MONSTERS_SIZES);
+		$this->monsters_ages = unserialize(MONSTERS_AGES);
 		$this->places_types = unserialize(PLACES_TYPES);
 	}
 	
@@ -74,29 +75,47 @@ class ViewParser extends Parser {
 				$formattedData['nom'] = $place_name;
 				$formattedData['type'] = $place_type;
 			} elseif($section == 'MONSTRES') {
+				$level = 0;
 				$complete_monster_name = utf8_encode($array[1]);
-				//echo '0 ' . $complete_monster_name;
 				preg_match('/(.*)\[(.*)\](.*)/', $complete_monster_name, $matches);
 				$monster_name = trim($matches[1]);
-				//echo ' => 1 ' . $monster_name;
-				$formattedData['age'] = trim($matches[2]);
-				$formattedData['marquage'] = trim($matches[3]);
+				$age = trim($matches[2]);
+				$mark = trim($matches[3]);
 				
 				$extract = $this->extractTemplateFromMonsterName($monster_name);
-				$formattedData['template'] = $extract['template'];
 				$monster_name = $extract['name'];
-				
-				//echo ' => 2 ' . $monster_name;
+				$template = $extract['template'];
+				if ('' != $template && array_key_exists($template, $this->monsters_templates)) {
+					$level += $this->monsters_templates[$template];
+				}
 				
 				$extract = $this->extractSizeFromMonsterName($monster_name);
-				$formattedData['taille'] = $extract['size'];
 				$monster_name = $extract['name'];
+				$size = $extract['size'];
+				if ('' != $size && array_key_exists($size, $this->monsters_sizes)) {
+					$level += $this->monsters_sizes[$size];
+				} 
 				
-				//echo ' => 3 ' . $monster_name . '<br/>';
-				$formattedData['nom'] = $monster_name;
 				if (array_key_exists($monster_name, $this->monsters_data)) {
-					$formattedData['famille'] = $this->monsters_data[$monster_name]['family'];
+					$family = $this->monsters_data[$monster_name]['family'];
+					$level += $this->monsters_data[$monster_name]['level'];
 				}
+				
+				if ('' != $age && array_key_exists($age, $this->monsters_ages)) {
+					if (is_array($this->monsters_ages[$age])) { 
+						$level += $this->monsters_ages[$age][$family];
+					} else {
+						$level += $this->monsters_ages[$age];
+					}
+				}
+				
+				$formattedData['nom'] = $monster_name;
+				$formattedData['age'] = $age;
+				$formattedData['marquage'] = $mark;
+				$formattedData['template'] = $template;
+				$formattedData['taille'] = $size;
+				$formattedData['famille'] = $family;
+				$formattedData['niveau'] = $level < 1 ? 1 : $level;				
 			}
 	 	} 
 		
@@ -106,7 +125,7 @@ class ViewParser extends Parser {
 	function extractSizeFromMonsterName($monster_name) {
 		$size = '';
 		
-		foreach($this->monsters_sizes as $monster_size) {
+		foreach($this->monsters_sizes as $monster_size => $level_adjust) {
 			if (0 != preg_match('/('.$monster_size.') (.*)/', $monster_name, $size_matches)) {
 				$size = trim($size_matches[1]);
 				if (trim($size_matches[2]) != '') {
@@ -115,6 +134,7 @@ class ViewParser extends Parser {
 				}
 			}
 		}
+		
 		if (0 != preg_match('/(.*) (Gigantesque)/', $monster_name, $exception_matches)) {
 			if (trim($exception_matches[1]) != '') {
 				$monster_name = trim($exception_matches[1]);

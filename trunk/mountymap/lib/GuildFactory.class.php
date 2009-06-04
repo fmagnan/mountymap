@@ -32,5 +32,9 @@ class GuildFactory extends DatabaseObjectFactory {
 		return 'guilde';
 	}
 	
+	function getSearchTableHeaders() {
+		return TrollPositionFactory::getInstance()->getSearchTableHeaders();
+	}
+	
 }
 ?>

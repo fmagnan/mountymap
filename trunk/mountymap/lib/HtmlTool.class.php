@@ -43,24 +43,20 @@ class HtmlTool {
 	
 	public static function getCellInfo($factory_name, $item) {
 		if ('Monster' == $factory_name) {
-			$cellInfo = '['.$item['id'].'] '. self::getMonsterLink($item['id'], $item['taille'], $item['nom'], $item['template'], $item['age'], $item['marquage']);
+			$cellInfo = '['.$item['id'].'] '. self::getMonsterLink($item['id'], $item['taille'], $item['nom'], $item['template'], $item['age'], $item['marquage']) . ' ' . $item['niveau'];
 		} elseif('Treasure' == $factory_name) {
-			$cellInfo = '['.$item['id'].'] '. self::getTreasureLink($item['id'], $item['nom']);
+			$cellInfo = '['.$item['id'].'] '. $item['nom'];
 		} elseif('TrollPosition' == $factory_name) {
 			if (array_key_exists('side', $item)) {
 				$class = 'class="'.$item['side'].'"';
 			} else {
 				$class='';
 			}
-			$cellInfo = '<span '.$class.'>['.$item['id'].'] '. self::getTrollLink($item['id'], $item['nom'], $item['race'], $item['niveau']) . ' ' . self::getGuildLink($item['id_guilde'], $item['nom_guilde']).'</span>';
+			$cellInfo = '<span '.$class.'>['.$item['id'].'] '. self::getTrollLink($item['id'], $item['nom']) . ' ('.  $item['race'] .' '. $item['niveau'] . ') ' . self::getGuildLink($item['id_guilde'], $item['nom_guilde']).'</span>';
 		} else {
 			$cellInfo = '['.$item['id'].'] '. $item['nom'];
 		}
 		return $cellInfo;
-	}
-	
-	public static function getTreasureLink($id, $name) {
-		return '<a href="javascript:ETV('.$id.')">'. $name . '</a>';
 	}
 	
 	public static function getMonsterLink($id, $size, $name, $template, $age, $mark) {
@@ -79,8 +75,8 @@ class HtmlTool {
 		return '<a href="javascript:EMV('.$id.')">'.implode(' ', $fullName).'</a>';
 	}
 	
-	public static function getTrollLink($id, $name, $race, $level) {
-		return '<a href="javascript:EPV('.$id.')">'. $name . '</a> (' . $race . ' ' . $level . ') ';
+	public static function getTrollLink($id, $name) {
+		return  '<a href="javascript:EPV('.$id.')">'. $name . '</a>';
 	}
 	
 	public static function getGuildLink($id, $name) {
