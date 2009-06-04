@@ -60,6 +60,7 @@ CREATE TABLE IF NOT EXISTS `monstre` (
   `age` varchar(100) NOT NULL,
   `marquage` varchar(100) NOT NULL,
   `famille` varchar(100) NOT NULL,
+  `niveau` int(11) NOT NULL,
   `position_x` int(11) NOT NULL,
   `position_y` int(11) NOT NULL,
   `position_n` int(11) NOT NULL,
