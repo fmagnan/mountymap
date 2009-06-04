@@ -244,6 +244,7 @@ $monsters_templates = array(
 	'Petit' => -1,
 	'Prince' => 8, 'Princesse' => 8,
 	'Psychophage' => 2,
+	'Reine' => 11,
 	'Scout' => 2,
 	'Shaman' => 0,
 	'Soldat' => 2,
@@ -255,7 +256,59 @@ $monsters_templates = array(
 	'Sorcier' => 0, 'Sorcière' => 0,
 );
 
-$monsters_sizes = array('Petit', 'Petite', 'Gros', 'Grosse', 'Reine');
+$monsters_sizes = array('Petit' => -1, 'Petite' => -1, 'Gros' => 1, 'Grosse' => 1);
+
+$monsters_ages = array(
+	'Accompli' => 6,
+	'Accomplie' => 6,
+	'Achevé' => 7,
+	'Achevée' => 7,
+	'Adulte' => array('Monstre' => 2, 'Animal' => 3),
+	'Ancestral' => 6,
+	'Ancêtre' => 7,
+	'Ancien' => array('Mort-Vivant' => 2, 'Animal' => 6),
+	'Antédiluvien' => 7,
+	'Antique' => 5,
+	'Bébé' => 0,
+	'Briscard' => 4,
+	'Chef de harde' => 5,
+	'Développé' => 4,
+	'Développée' => 4,
+	'Doyen' => 5,
+	'Doyenne' => 5,
+	'Enfançon' => 1,
+	'Favori' => 3,
+	'Favorite' => 3,
+	'Imago' => 3,
+	'Immature' => 1,
+	'Initial' => 0,
+	'Initiale' => 0,
+	'Jeune' => array('Monstre'=> 1, 'Animal' => 2),
+	'Juvénile' => 2,
+	'Larve' => 0,
+	'Légendaire' => 6,
+	'Majeur' => 4,
+	'Majeure' => 4,
+	'Mature' => 4,
+	'Mineur' => 2,
+	'Mineure' => 2,
+	'Mûr' => 5,
+	'Mûre' => 5,
+	'Mythique' => 7,
+	'Naissant' => 0,
+	'Naissante' => 0,
+	'Nouveau' => 0,
+	'Nouvelle' => 0,
+	'Novice' => 1,
+	'Récent' => 1,
+	'Séculaire' => 4,
+	'Supérieur' => 5,
+	'Supérieure' => 5,
+	'Suprême' => 6,
+	'Ultime' => 7,
+	'Vénérable' => 3,
+	'Vétéran' => 3,
+);
 
 $places_types = array(
 	'Sortie de Portail', 'Portail', 'Tanière de trõll', 'Tanière', 'Trou de Météorite',
@@ -271,6 +324,7 @@ define('GIANT_MALE_MONSTERS', serialize($giant_male_monsters));
 define('MONSTERS_TEMPLATES', serialize($monsters_templates));
 define('MONSTERS_SIZES', serialize($monsters_sizes));
 define('PLACES_TYPES', serialize($places_types));
+define('MONSTERS_AGES', serialize($monsters_ages));
 
 $unprotected_scripts = array(
 	'/login.php', '/register.php', '/forgot_password.php', '/update_public_data.php',
