@@ -24,6 +24,7 @@ class MonsterFactory extends NonPermanentDatabaseObjectFactory {
 			'age' => 'string',
 			'marquage' => 'string',
 			'famille' => 'string',
+			'niveau' => 'int',
 			'position_x' => 'int',
 			'position_y' => 'int',
 			'position_n' => 'int',
@@ -49,6 +50,20 @@ class MonsterFactory extends NonPermanentDatabaseObjectFactory {
 	
 	function getInstancesByFamily($family) {
 		return $this->getInstancesFromArray(array('famille' => $family));
+	}
+	
+	function getSearchTableHeaders() {
+		return array(
+			'Id' => 'getId', 'Nom' => 'getFullName', 'Niveau' => 'getLevel',
+			'X' => 'getPositionX', 'Y' => 'getPositionY', 'N' => 'getPositionN', 'Date' => 'getUpdate', 'Actions' => 'getLinkToMap'
+		);
+	}
+	
+	function getInstancesBetweenLevels($minLevel, $maxLevel) {
+		$min_level = is_numeric($minLevel) ? intval($minLevel) : 1;
+		$max_level = is_numeric($maxLevel) ? intval($maxLevel) : 80;
+		$where_clause = ' AND `niveau` BETWEEN '.$min_level . ' AND ' . $max_level. ' ORDER BY `niveau` LIMIT 300';
+		return $this->getInstancesWithWhereClause($where_clause);
 	}
 	
 }

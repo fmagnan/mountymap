@@ -76,5 +76,13 @@ class TrollPositionFactory extends LocatedObjectFactory {
 		}
 		return $trolls;
 	}
+	
+	function getSearchTableHeaders() {
+		return array(
+			'Id' => 'getId', 'Nom' => 'getSimpleIdentity', 'Race' => 'getRace', 'Niveau' => 'getLevel', 'Guilde' => 'getGuildIdentity',
+			'X' => 'getPositionX', 'Y' => 'getPositionY', 'N' => 'getPositionN', 'Date' => 'getUpdate', 'Actions' => 'getLinkToMap'
+		);
+	}
+	
 }
 ?>

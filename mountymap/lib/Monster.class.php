@@ -22,6 +22,10 @@ class Monster extends LocatedObject {
 		return $this->getData('marquage');
 	}
 
+	function getLevel() {
+		return $this->getData('niveau');
+	}
+	
 	function getFullName() {
 		return HtmlTool::getInstance()->getMonsterLink($this->getId(), $this->getSize(), $this->getName(), $this->getTemplate(), $this->getAge(), $this->getMark());
 	}

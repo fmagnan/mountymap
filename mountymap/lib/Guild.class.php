@@ -10,17 +10,16 @@ class Guild extends DatabaseObject {
 		return HtmlTool::getGuildLink($this->getId(), $this->getName());
 	}
 	
-	function getTableRow($class='') {
-		$row = '';
-		$trollFactory = TrollIdentityFactory::getInstance();
-		$trolls = $trollFactory->getInstancesFromArray(array('id_guilde' => $this->getId()));
-		$counter = 0;
+	function getAllTrolls() {
+		$trollsWithPosition = array();
+		$trolls = TrollIdentityFactory::getInstance()->getInstancesFromArray(array('id_guilde' => $this->getId()));
 		foreach($trolls as $troll) {
-			$class = $counter % 2 == 0 ? 'even' : 'odd';
-			$row .= $troll->getTableRow($class);
-			$counter++;
+			$position = TrollPositionFactory::getInstance()->getInstanceFromArray(array('id' => $troll->getId()));
+			if (is_object($position) && !$position->isError()) {
+				$trollsWithPosition[] = $position;
+			}
 		}
-		return $row;
+		return $trollsWithPosition;
 	}
 	
 }

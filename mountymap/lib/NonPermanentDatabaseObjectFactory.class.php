@@ -45,5 +45,13 @@ abstract class NonPermanentDatabaseObjectFactory extends LocatedObjectFactory {
 	function getInstancesByGroupByField($name) {
 		return $this->getInstancesFromArray(array($this->getGroupByField() => $name));
 	}
+	
+	function getSearchTableHeaders() {
+		return array(
+			'Id' => 'getId', 'Nom' => 'getName', 'X' => 'getPositionX', 'Y' => 'getPositionY',
+			'N' => 'getPositionN', 'Date' => 'getUpdate', 'Actions' => 'getLinkToMap'
+		);
+	}
+	
 }
 ?>
