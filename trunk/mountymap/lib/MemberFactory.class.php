@@ -41,7 +41,9 @@ class MemberFactory extends DatabaseObjectFactory {
 		if ($id && is_numeric($id)) {
 			$whereClause .= 'AND `id`='.intval($id);
 		}
-		$whereClause .= ' AND CURDATE() <> DATE(`mise_a_jour`)';
+		if (!LOCAL_IMPORT_MODE) {
+			$whereClause .= ' AND CURDATE() <> DATE(`mise_a_jour`)';
+		}
 		$whereClause .= ' ORDER BY `mise_a_jour` ASC';
 		return $this->getInstanceWithWhereClause($whereClause);
 	}
