@@ -3,7 +3,7 @@
 	<head>
 		<title>Vue globale</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<link rel="shortcut icon" type="image/gif" href="/images/favicon.gif" />
+		<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
 		<link rel="stylesheet" type="text/css" href="/css/screen.css" media="screen" title="Normal" />
 		<link rel="stylesheet" type="text/css" href="/css/tablesorter.css" media="screen" title="Normal" />
 		<base href="{$server_root_path}" />
