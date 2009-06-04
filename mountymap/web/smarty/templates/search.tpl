@@ -18,27 +18,29 @@
 <form id="search_by_troll" method="post" action="search.php">
 	<fieldset>
 		<legend>Recherche de trolls</legend>
-		<label for="min_level">Niveau du troll entre</label> <input type="text" name="min_level" id="min_level" />
-		<label for="max_level">et</label> <input type="text" name="max_level" id="max_level" />
+		<label for="troll_min_level">Niveau du troll entre</label> <input type="text" name="troll_min_level" id="troll_min_level" />
+		<label for="troll_max_level">et</label> <input type="text" name="troll_max_level" id="troll_max_level" />
 		<input type="submit" name="submit" value="Valider" />
 	</fieldset>
 </form>
-<form id="search_by_monster" method="post" action="search.php">
-	<fieldset>
-		<legend>Recherche de monstres</legend>
+<fieldset>
+	<legend>Recherche de monstres</legend>
+	<form id="search_by_monster" method="post" action="search.php">
 		<label for="monster">Monstre :</label>
 		{$monster_options}
 		<input type="submit" name="submit" value="Valider" />
-	</fieldset>
-</form>
-<form id="search_by_monster_family" method="post" action="search.php">
-	<fieldset>
-		<legend>Recherche de monstres</legend>
+	</form>
+	<form id="search_by_monster_family" method="post" action="search.php">
 		<label for="monster_family">Famille :</label>
 		{$monster_family_options}
 		<input type="submit" name="submit" value="Valider" />
-	</fieldset>
-</form>
+	</form>
+	<form id="search_by_monster_level" method="post" action="search.php">
+		<label for="monster_min_level">Niveau du monstre entre</label> <input type="text" name="monster_min_level" id="monster_min_level" />
+		<label for="monster_max_level">et</label> <input type="text" name="monster_max_level" id="monster_max_level" />
+		<input type="submit" name="submit" value="Valider" />
+	</form>
+</fieldset>
 <form id="search_by_treasure" method="post" action="search.php">
 	<fieldset>
 		<legend>Recherche de trésors</legend>
@@ -59,11 +61,15 @@
 	<table id="search_results" class="tablesorter">
 		<thead>
 			<tr>
-				<th>Id</th><th>Nom</th><th>X</th><th>Y</th><th>N</th><th>Date</th><th>Actions</th>
+				{foreach from=$table_headers key=header item=function}
+					<th>{$header}</th>
+				{/foreach}
 			</tr>
 		</thead>
  		<tbody>
- 			{$unique_instance->getTableRow()}
+ 			{foreach from=$table_headers key=header item=function}
+				<td>{$unique_instance->$function()}</td>
+			{/foreach}
  		</tbody>
 	</table>
 {/if}
@@ -71,20 +77,18 @@
 	<table id="search_results" class="tablesorter">
 		<thead>
 			<tr>
-				<th>Id</th><th>Nom</th><th>X</th><th>Y</th><th>N</th><th>Date</th><th>Actions</th>
+				{foreach from=$table_headers key=header item=function}
+					<th>{$header}</th>
+				{/foreach}
 			</tr>
 		</thead>
 		<tbody>
 	 		{foreach from=$multiple_instances item=instance}
 	 			{cycle values='odd,even' assign='class'} 
 	 			<tr class="{$class}">
-					<td>{$instance->getId()}</td>
-					<td>{$instance->getFullName()}</td>
-					<td>{$instance->getPositionX()}</td>
-					<td>{$instance->getPositionY()}</td>
-					<td>{$instance->getPositionN()}</td>
-					<td>{$instance->getUpdate()}</td>
-					<td>{$instance->getLinkToMap()}</td>
+	 				{foreach from=$table_headers key=header item=function}
+						<td>{$instance->$function()}</td>
+					{/foreach}
 				</tr>
 	 		{/foreach}
 	 	</tbody>
