@@ -48,8 +48,7 @@
 		{/section}
 	</table>
 	
-	<script type="text/javascript" src="/js/qTip/jquery-1.3.2.min.js"></script>
-	<script type="text/javascript" src="/js/qTip/jquery.qtip.js"></script>
+	<script type="text/javascript" src="/js/jquery/jquery.qtip.js"></script>
 	<script type="text/javascript">
 		{literal}
 			$(document).ready(function() {
