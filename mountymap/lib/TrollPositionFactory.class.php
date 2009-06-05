@@ -38,11 +38,19 @@ class TrollPositionFactory extends LocatedObjectFactory {
 		return 'troll';
 	}
 	
-	function getInstancesBetweenLevels($minLevel, $maxLevel) {
+	function getInstancesBetweenLevels($minLevel, $maxLevel, $race) {
 		$min_level = is_numeric($minLevel) ? intval($minLevel) : 1;
 		$max_level = is_numeric($maxLevel) ? intval($maxLevel) : 80;
-		$query = 'SELECT `position`.`id` FROM `'.$this->getTableName(). '` AS `position`, `troll_identity` as `identity`
-		WHERE `position`.`id` = `identity`.`id` AND `identity`.`niveau` BETWEEN '.$min_level . ' AND ' . $max_level. ' ORDER BY `identity`.`niveau`';
+		if ($race) {
+			$troll_races = unserialize(TROLLS_RACES);
+			$race_clause = ' AND `identity`.`race`=\''.mysql_real_escape_string($troll_races[$race-1], $this->db->getLink()).'\'';
+		} else {
+			$race_clause = '';
+		}
+		$query = '	SELECT `position`.`id` FROM `'.$this->getTableName(). '` AS `position`, `troll_identity` as `identity`
+					WHERE `position`.`id` = `identity`.`id` AND `identity`.`niveau` BETWEEN '.$min_level . ' AND ' . $max_level.
+					$race_clause .
+					' ORDER BY `identity`.`niveau`';
 		return $this->getInstancesWithQuery($query);
 	}
 	

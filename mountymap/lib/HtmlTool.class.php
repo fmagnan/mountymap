@@ -22,21 +22,21 @@ class HtmlTool {
 			$selected_value = '';
 		}
 		
-		while($option=current($options)) {
+		while(list($key, $option) = each($options)) {
         	if (is_object($option)) {
 				$name = $option->getName();
 				$value = $option->getId();
 			} else {
 				$name = $option;
-				$value = key($options);
+				$value = $key;
 			}
 			$html_select .= '<option value="'.$value.'"';
 			if ($selected_value == $value) {
 				$html_select .= ' selected="selected"';
 			}
 			$html_select .= '>'.$name.'</option>' . "\n";
-			next($options);
 		}
+	
 		$html_select .= '</select>';
 		return $html_select;
 	}
