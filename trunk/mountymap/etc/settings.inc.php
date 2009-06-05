@@ -318,6 +318,8 @@ $places_types = array(
 	'Nid', 'Porte d\'Outre-Monde', 'Refuge', 'Rocher', 'Sanctuaire', 'Sépulcre', 'Source', 'Téléporteur', 'Terrier', 'Tombe',
 );
 
+$trolls_races = array('Durakuir', 'Kastar', 'Skrim', 'Tomawak');
+
 define('MONSTERS_DATA', serialize($monsters_data));
 define('GIANT_FEMALE_MONSTERS', serialize($giant_female_monsters));
 define('GIANT_MALE_MONSTERS', serialize($giant_male_monsters));
@@ -325,6 +327,7 @@ define('MONSTERS_TEMPLATES', serialize($monsters_templates));
 define('MONSTERS_SIZES', serialize($monsters_sizes));
 define('PLACES_TYPES', serialize($places_types));
 define('MONSTERS_AGES', serialize($monsters_ages));
+define('TROLLS_RACES', serialize($trolls_races));
 
 $unprotected_scripts = array(
 	'/login.php', '/register.php', '/forgot_password.php', '/update_public_data.php',
