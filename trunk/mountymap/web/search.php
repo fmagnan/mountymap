@@ -20,6 +20,7 @@
 	
 	if (array_key_exists('submit', $_POST) && array_key_exists('id', $_POST)) {
 		$id = intval($_POST['id']);
+		$smarty->assign('id', $id);
 		$factory = getFactory();
 		if ($factory) {
 			$table_headers = $factory->getSearchTableHeaders();
@@ -35,11 +36,10 @@
 	}
 	
 	$search_by_types = array('monster' => 'Monster', 'treasure' => 'Treasure', 'place' => 'Place', 'monster_family' => 'Monster');
-	
 	foreach($search_by_types as $type => $factoryName) {
 		$factory = call_user_func(array($factoryName.'Factory', 'getInstance'));
 		$options = ($type == 'monster_family') ? $factory->getMonsterFamilies() : $factory->getInstancesByTypes();
-		$html_select = HtmlTool::getInstance()->getHTMLSelect($type, $options);
+		$html_select = HtmlTool::getHTMLSelect($type, $options);
 		$smarty->assign($type.'_options', $html_select);
 		
 		$selected_type = array_key_exists($type, $_POST) ? $_POST[$type] : '';
@@ -49,11 +49,19 @@
 		}
 	}
 	
-	if (array_key_exists('troll_min_level', $_POST) && is_numeric($_POST['troll_min_level']) ||
-		array_key_exists('troll_max_level', $_POST) && is_numeric($_POST['troll_max_level'])) {
+	$troll_race = array_key_exists('troll_race', $_POST) ? intval($_POST['troll_race']) : false;
+	$troll_min_level = array_key_exists('troll_min_level', $_POST) && is_numeric($_POST['troll_min_level']) ? intval($_POST['troll_min_level']) : 1;
+	$troll_max_level = array_key_exists('troll_max_level', $_POST) && is_numeric($_POST['troll_max_level']) ? intval($_POST['troll_max_level']) : 80;
+	$smarty->assign('troll_min_level', $troll_min_level);
+	$smarty->assign('troll_max_level', $troll_max_level);
+	$smarty->assign('troll_race', $troll_race);
+	$troll_races = array_merge(array(false), unserialize(TROLLS_RACES));
+	$troll_race_options = HtmlTool::getHTMLSelect('troll_race', $troll_races);
+	$smarty->assign('troll_race_options', $troll_race_options);
+	if(array_key_exists('search_by_troll', $_POST)) {
 		$trollFactory = TrollPositionFactory::getInstance();
 		$table_headers = $trollFactory->getSearchTableHeaders();
-		$instances = $trollFactory->getInstancesBetweenLevels($_POST['troll_min_level'], $_POST['troll_max_level']);
+		$instances = $trollFactory->getInstancesBetweenLevels($troll_min_level, $troll_max_level, $troll_race);
 	}
 	
 	if (array_key_exists('monster_min_level', $_POST) && is_numeric($_POST['monster_min_level']) ||
