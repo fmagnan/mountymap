@@ -69,9 +69,11 @@ function instantiateSmartyTemplate($path) {
 	$smarty->config_dir = $path.'/smarty/configs';
 	$smarty->caching = 0;
 	
-	$smarty->assign('logged_in_user', $loggedInUser);
+	if ($loggedInUser) {
+		$smarty->assign('logged_in_user', $loggedInUser);
+		$smarty->assign('menu_items', buildMenu($loggedInUser));
+	}
 	$smarty->assign('server_root_path', SERVER_ROOT_PATH);
-	$smarty->assign('menu_items', buildMenu($loggedInUser));
 	$smarty->assign('debug_mode', DEBUG_MODE);
 	$smarty->assign('sql_debug', SQL_DEBUG);
 	return $smarty;
