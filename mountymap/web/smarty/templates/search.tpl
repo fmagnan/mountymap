@@ -18,8 +18,16 @@
 <form id="search_by_troll" method="post" action="search.php">
 	<fieldset>
 		<legend>Recherche de trolls</legend>
-		<label for="troll_min_level">Niveau du troll entre</label> <input type="text" name="troll_min_level" id="troll_min_level" />
-		<label for="troll_max_level">et</label> <input type="text" name="troll_max_level" id="troll_max_level" />
+		<label for="troll_min_level">Niveau du troll entre</label> <input type="text" name="troll_min_level" id="troll_min_level" value="{$troll_min_level}" />
+		<label for="troll_max_level">et</label> <input type="text" name="troll_max_level" id="troll_max_level" value="{$troll_max_level}" /><br/>
+		<label for="troll_race">Race :</label>
+		<select id="troll_race" name="troll_race">
+			<option value=""></option>
+			<option value="Durakuir">Durakuir</option>
+			<option value="Kastar">Kastar</option>
+			<option value="Skrim">Skrim</option>
+			<option value="Tomawak">Tomawak</option>
+		</select>		
 		<input type="submit" name="submit" value="Valider" />
 	</fieldset>
 </form>
