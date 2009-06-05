@@ -49,7 +49,19 @@ function getDateEnFrancais($dateEnAnglais) {
 	return $dateEnFrancais;
 }
 
+function buildMenu($loggedInUser) {
+	$menu = array();
+	$items = unserialize(MENU_ITEMS);
+	foreach ($items as $key => $value) {
+		if ($loggedInUser->isAdmin() || !$value['admin']) {
+			$menu[$key] = $value['title'];
+		}
+	}
+	return $menu;
+}
+
 function instantiateSmartyTemplate($path) {
+	$loggedInUser = getLoggedInUser();
 	$smarty = new Smarty();
 	$smarty->template_dir = $path.'/smarty/templates';
 	$smarty->compile_dir = $path.'/smarty/templates_c';
@@ -57,9 +69,9 @@ function instantiateSmartyTemplate($path) {
 	$smarty->config_dir = $path.'/smarty/configs';
 	$smarty->caching = 0;
 	
-	$smarty->assign('logged_in_user', getLoggedInUser());
+	$smarty->assign('logged_in_user', $loggedInUser);
 	$smarty->assign('server_root_path', SERVER_ROOT_PATH);
-	$smarty->assign('menu_items', unserialize(MENU_ITEMS));
+	$smarty->assign('menu_items', buildMenu($loggedInUser));
 	$smarty->assign('debug_mode', DEBUG_MODE);
 	$smarty->assign('sql_debug', SQL_DEBUG);
 	return $smarty;
