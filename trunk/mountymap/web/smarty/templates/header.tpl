@@ -8,6 +8,7 @@
 		<link rel="stylesheet" type="text/css" href="/css/tablesorter.css" media="screen" title="Normal" />
 		<base href="{$server_root_path}" />
 		<script type="text/javascript" src="/js/functions_MH.js"></script>
-		
+		<script type="text/javascript" src="/js/jquery/jquery-1.3.2.min.js"></script>
+		<script type="text/javascript" src="/js/jquery/jquery.tablesorter.min.js"></script>
 	</head>
 <body>
