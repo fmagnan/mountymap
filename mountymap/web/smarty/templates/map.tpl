@@ -62,4 +62,11 @@
 		{/literal}
 	</script>
 {/if}
+<div id="navigator">
+	<a href="{$up_link}"><img id="up" src="/images/arrow_up.png" /></a>
+	<div id="left_and_right">
+		<a href="{$left_link}"><img src="/images/arrow_left.png" /></a><a href="{$right_link}"><img id="right" src="/images/arrow_right.png" /></a>
+	</div>
+	<a href="{$down_link}"><img id="down" src="/images/arrow_down.png" /></a>
+</div>
 {include file='footer.tpl'}
