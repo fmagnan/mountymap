@@ -24,8 +24,16 @@ div.even {
 	background-color:#E0DDD9;
 }
 
-.left-column, #map {
+.left-column, #search_forms, #search_results, #map {
 	float:left;
+}
+
+#search_forms input[type=text] {
+	width:40px;
+}
+
+#search_forms select {
+	max-width:140px;
 }
 
 table#map td {
