@@ -11,18 +11,16 @@
 	function getNavigatorLink($parameters, $side) {
 		$inline_parameters = array();
 		foreach($parameters as $key => $value) {
-			if ($value) {
-				if ($side == 'up' && $key == 'position_y') {
-					$value = $value + 5;
-				} elseif($side == 'down' && $key == 'position_y') {
-					$value = $value - 5;
-				} elseif($side == 'left' && $key == 'position_x') {
-					$value = $value - 5;
-				} elseif($side == 'right' && $key == 'position_x') {
-					$value = $value + 5;
-				} 
-				$inline_parameters[] = $key . '=' . $value;
+			if ($side == 'up' && $key == 'position_y') {
+				$value = $value + 5;
+			} elseif($side == 'down' && $key == 'position_y') {
+				$value = $value - 5;
+			} elseif($side == 'left' && $key == 'position_x') {
+				$value = $value - 5;
+			} elseif($side == 'right' && $key == 'position_x') {
+				$value = $value + 5;
 			}
+			$inline_parameters[] = $key . '=' . $value;
 		}
 		return 'map.php?'.implode('&amp;', $inline_parameters);
 	}
@@ -52,7 +50,7 @@
 			$map_parameters[$name] = $value;
 			$smarty->assign($name, $value);
 		} elseif($type == 'bool') {
-			$value = array_key_exists($name, $_REQUEST);
+			$value = array_key_exists($name, $_REQUEST) ? $_REQUEST[$name] == true : false;
 			$map_parameters[$name] = $value;
 			$smarty->assign($name, getCheckStatus($value));
 		}

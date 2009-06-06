@@ -24,7 +24,7 @@ div.even {
 	background-color:#E0DDD9;
 }
 
-#customize-map, #map {
+.left-column, #map {
 	float:left;
 }
 
@@ -99,11 +99,9 @@ legend {
 }
 
 #navigator {
-	border-width:1px;
-	border-style:dotted;
 	padding:6px;
-	float:left;
-	margin-left:15px;
+	margin-top:20px;
+	margin-left:20px;	
 }
 
 #navigator img {
