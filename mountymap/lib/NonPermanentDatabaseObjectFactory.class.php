@@ -42,8 +42,8 @@ abstract class NonPermanentDatabaseObjectFactory extends LocatedObjectFactory {
 		return $this->db->executeRequeteAvecDonneesDeRetourMultiples($query);
 	}
 	
-	function getInstancesByGroupByField($name) {
-		return $this->getInstancesFromArray(array($this->getGroupByField() => $name));
+	function getInstancesByGroupByField($name, $limit=false) {
+		return $this->getInstancesFromArray(array($this->getGroupByField() => $name), $limit);
 	}
 	
 	function getSearchTableHeaders() {

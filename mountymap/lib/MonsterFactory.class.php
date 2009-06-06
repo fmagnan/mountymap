@@ -48,8 +48,8 @@ class MonsterFactory extends NonPermanentDatabaseObjectFactory {
 		return $this->db->executeRequeteAvecDonneesDeRetourMultiples($query);
 	}
 	
-	function getInstancesByFamily($family) {
-		return $this->getInstancesFromArray(array('famille' => $family));
+	function getInstancesByFamily($family, $limit=false) {
+		return $this->getInstancesFromArray(array('famille' => $family), $limit);
 	}
 	
 	function getSearchTableHeaders() {
@@ -59,10 +59,13 @@ class MonsterFactory extends NonPermanentDatabaseObjectFactory {
 		);
 	}
 	
-	function getInstancesBetweenLevels($minLevel, $maxLevel) {
+	function getInstancesBetweenLevels($minLevel, $maxLevel, $limit=false) {
 		$min_level = is_numeric($minLevel) ? intval($minLevel) : 1;
 		$max_level = is_numeric($maxLevel) ? intval($maxLevel) : 80;
-		$where_clause = ' AND `niveau` BETWEEN '.$min_level . ' AND ' . $max_level. ' ORDER BY `niveau` LIMIT 300';
+		$where_clause = ' AND `niveau` BETWEEN '.$min_level . ' AND ' . $max_level. ' ORDER BY `niveau`';
+		if (is_numeric($limit)) {
+			$where_clause .= ' LIMIT ' . $limit;
+		}
 		return $this->getInstancesWithWhereClause($where_clause);
 	}
 	
