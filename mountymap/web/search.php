@@ -71,8 +71,12 @@
 		$instances = $monsterFactory->getInstancesBetweenLevels($_POST['monster_min_level'], $_POST['monster_max_level']);
 	}
 	
-	$smarty->assign('multiple_instances', $instances);
-	$smarty->assign('table_headers', $table_headers);
+	if (isset($instances) && is_array($instances)) {
+		$smarty->assign('multiple_instances', $instances);
+	}
+	if (isset($table_headers)) {
+		$smarty->assign('table_headers', $table_headers);
+	}
 	setDebugTrace($smarty);
 	setErrorTrace($smarty);
 	$smarty->display('search.tpl');
