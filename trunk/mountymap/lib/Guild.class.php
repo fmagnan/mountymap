@@ -10,9 +10,9 @@ class Guild extends DatabaseObject {
 		return HtmlTool::getGuildLink($this->getId(), $this->getName());
 	}
 	
-	function getAllTrolls() {
+	function getAllTrolls($limit=false) {
 		$trollsWithPosition = array();
-		$trolls = TrollIdentityFactory::getInstance()->getInstancesFromArray(array('id_guilde' => $this->getId()));
+		$trolls = TrollIdentityFactory::getInstance()->getInstancesFromArray(array('id_guilde' => $this->getId()), $limit);
 		foreach($trolls as $troll) {
 			$position = TrollPositionFactory::getInstance()->getInstanceFromArray(array('id' => $troll->getId()));
 			if (is_object($position) && !$position->isError()) {

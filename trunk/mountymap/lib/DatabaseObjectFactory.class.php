@@ -158,13 +158,16 @@ abstract class DatabaseObjectFactory extends BaseObject {
 		return $this->getInstancesWithQuery($this->getSelectQuery($orderBy, $sort));
 	}
 	
-	function getInstancesFromArray($array) {
+	function getInstancesFromArray($array, $limit=false) {
 		$whereClause = '';
 		foreach($array as $key => $value) {
 			$columnsDescr = $this->getAllColumnsDescr();
 			if (array_key_exists($key, $columnsDescr)) {
 				$whereClause .= ' AND `'.$key.'` = ' . $this->getValueByType($value, $columnsDescr[$key]);	
 			}
+		}
+		if (is_numeric($limit)) {
+			$whereClause .= ' LIMIT '.$limit;
 		}
 		return $this->getInstancesWithWhereClause($whereClause);
 	}

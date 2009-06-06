@@ -38,7 +38,7 @@ class TrollPositionFactory extends LocatedObjectFactory {
 		return 'troll';
 	}
 	
-	function getInstancesBetweenLevels($minLevel, $maxLevel, $race) {
+	function getInstancesBetweenLevels($minLevel, $maxLevel, $race, $limit=false) {
 		$min_level = is_numeric($minLevel) ? intval($minLevel) : 1;
 		$max_level = is_numeric($maxLevel) ? intval($maxLevel) : 80;
 		if ($race) {
@@ -51,6 +51,9 @@ class TrollPositionFactory extends LocatedObjectFactory {
 					WHERE `position`.`id` = `identity`.`id` AND `identity`.`niveau` BETWEEN '.$min_level . ' AND ' . $max_level.
 					$race_clause .
 					' ORDER BY `identity`.`niveau`';
+		if (is_numeric($limit)) {
+			$query .= ' LIMIT ' . $limit;
+		}
 		return $this->getInstancesWithQuery($query);
 	}
 	
