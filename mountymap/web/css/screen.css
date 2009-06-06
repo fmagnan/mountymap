@@ -97,3 +97,27 @@ legend {
 	border-width:1px;
 	border-style:solid;
 }
+
+#navigator {
+	border-width:1px;
+	border-style:dotted;
+	padding:6px;
+	float:left;
+	margin-left:15px;
+}
+
+#navigator img {
+	border:1px solid white;
+}
+
+#navigator img:hover {
+	border:1px solid #509a48;
+}
+
+#navigator #up, #navigator #down {
+	margin-left:12px;
+}
+
+#navigator #right {
+	margin-left:8px;
+}
