@@ -33,8 +33,14 @@ class Troll extends LocatedObject {
 		return $this->getData('id_guilde');
 	}
 	
-	function getGuildIdentity() {
-		return $this->getGuild()->getFormattedIdentity();
+	function getGuildLinks() {
+		$guild = $this->getGuild();
+		if (is_object($guild) && !$guild->isError()) {
+			$guildIdentity = $guild->getFormattedIdentity();
+			$guildSearch = '<a href="search.php?type_entite=guild&amp;id='.$guild->getId().'">voir guilde</a>';
+			$links = $guildIdentity . ' / ' . $guildSearch;
+		}
+		return $links;
 	}
 	
 	function getLink() {

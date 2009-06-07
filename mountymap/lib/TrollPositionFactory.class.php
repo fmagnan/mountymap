@@ -90,7 +90,7 @@ class TrollPositionFactory extends LocatedObjectFactory {
 	
 	function getSearchTableHeaders() {
 		return array(
-			'Id' => 'getId', 'Nom' => 'getSimpleIdentity', 'Race' => 'getRace', 'Niveau' => 'getLevel', 'Guilde' => 'getGuildIdentity',
+			'Id' => 'getId', 'Nom' => 'getSimpleIdentity', 'Race' => 'getRace', 'Niveau' => 'getLevel', 'Guilde' => 'getGuildLinks',
 			'X' => 'getPositionX', 'Y' => 'getPositionY', 'N' => 'getPositionN', 'Date' => 'getUpdate', 'Actions' => 'getLinkToMap'
 		);
 	}

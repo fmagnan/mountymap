@@ -13,12 +13,10 @@ table.tablesorter thead tr th, table.tablesorter tfoot tr th {
 	border: 2px solid #CDCDCD;
 	font-size: 9pt;
 	padding: 2px;
-	min-width:60px;
+	vertical-align:bottom;
 }
 table.tablesorter thead tr .header {
-	background-image: url(../images/bg.gif);
 	background-repeat: no-repeat;
-	background-position: center right;
 	cursor: pointer;
 }
 table.tablesorter tbody td {
@@ -33,9 +31,11 @@ table.tablesorter tbody tr.odd td, div.odd {
 }
 table.tablesorter thead tr .headerSortUp {
 	background-image: url(../images/asc.gif);
+	background-position: right top;
 }
 table.tablesorter thead tr .headerSortDown {
 	background-image: url(../images/desc.gif);
+	background-position: right bottom;
 }
 table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSortUp {
 	background-color: #8dbdd8;
