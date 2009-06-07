@@ -12,14 +12,14 @@
 			'mushroom' => 'Mushroom',
 			'place' => 'Place',
 		);
-		$entityName = array_key_exists('type_entite', $_POST) ? $_POST['type_entite'] : '';
+		$entityName = array_key_exists('type_entite', $_REQUEST) ? $_REQUEST['type_entite'] : '';
 		return (array_key_exists($entityName, $factories)) ? call_user_func(array($factories[$entityName].'Factory', 'getInstance')) : false;
 	}
 	
 	$smarty = instantiateSmartyTemplate(dirname(__FILE__));
 	
-	if (array_key_exists('submit', $_POST) && array_key_exists('id', $_POST)) {
-		$id = intval($_POST['id']);
+	if (array_key_exists('id', $_REQUEST)) {
+		$id = intval($_REQUEST['id']);
 		$smarty->assign('id', $id);
 		$factory = getFactory();
 		if ($factory) {
