@@ -12,16 +12,12 @@ class Member extends DatabaseObject {
 	function getFormattedPosition() {
 		$trollFactory = TrollPositionFactory::getInstance();
 		$troll = $trollFactory->getInstanceFromObject($this);
-		if (is_object($troll)) {
-			return $troll->getFormattedPosition();
-		} else {
-			return 'position inconnue';
-		}
+		return is_object($troll) ? $troll->getFormattedPosition() : 'position inconnue';
 	}
 	
 	function getName() {
-		$trollFactory = TrollIdentityFactory::getInstance();
-		return $trollFactory->getInstanceFromObject($this)->getName();
+		$identity = TrollIdentityFactory::getInstance()->getInstanceFromObject($this);
+		return (is_object($identity) && !$identity->isError()) ? $identity->getName() : 'nom inconnu';
 	}
 }
 

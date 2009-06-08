@@ -111,12 +111,7 @@ abstract class DatabaseObjectFactory extends BaseObject {
 			$idsArray = $this->extractIdArray($data);
 			if(count($primaryKeyList) == count($idsArray)) {
 				$instanceName = $this->getInstanceClassName();
-				if(count(array_diff($allDataDescr, array_keys($data))) == 0) {
-					$instance = new $instanceName($this, $idsArray, $data);
-				} else {
-					$instance = new $instanceName($this, $idsArray);
-				}
-				return $instance;
+				return new $instanceName($this, $idsArray, $data);
 			}
 		}
 		$this->db->disconnectFromDB();
@@ -181,9 +176,10 @@ abstract class DatabaseObjectFactory extends BaseObject {
 		$instanceName = $this->getInstanceClassName();
 		$instances = array();
 		$multipleData = $this->db->executeRequeteAvecDonneesDeRetourMultiples($query);
-		foreach($multipleData as $data) {
-			$idsArray = array_intersect_key($data, $this->getPrimaryKeyDescr());
-			$instances[] = new $instanceName($this, $idsArray);
+		foreach($multipleData as $row) {
+			$idsArray = array_intersect_key($row, $this->getPrimaryKeyDescr());
+			$data = array_intersect_key($row, $this->getDataColumnsDescr());
+			$instances[] = new $instanceName($this, $idsArray, $data);
 		}
 		return $instances;
 	}

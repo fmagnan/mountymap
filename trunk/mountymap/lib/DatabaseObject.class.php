@@ -10,16 +10,24 @@ class DatabaseObject extends BaseObject {
 	function DatabaseObject($factory, $idArray, $data = false) {
 		$this->db = DatabaseConnector::getInstance();
 		$this->factory = $factory;
-		if(is_array($idArray) && count(array_diff(array_keys($idArray), $this->getPrimaryKeyList())) == 0) {
+		if($this->isKeyInInputData($idArray)) {
 			$this->idArray = $idArray;
-			if(is_array($data)) {
-				$this->data = $data;
+			if($this->isDataEnoughToInstanciateObject($data)) {
+				$this->data = array_merge($idArray, $data);
 			} else {
 				$this->fetchData();
 			}
 		} else {
 			$this->addError('Impossible de créer l\'objet de type : '.get_class($this));
 		}
+	}
+	
+	function isKeyInInputData($idArray) {
+		return is_array($idArray) && (0 == count(array_diff_key($this->getPrimaryKeyDescr(), $idArray)));
+	}
+	
+	function isDataEnoughToInstanciateObject($data) {
+		return is_array($data) && (0 == count(array_diff_key($this->getDataColumnsDescr(), $data)));
 	}
 	
 	function concatenateFields($keys, $separator) {
@@ -53,6 +61,7 @@ class DatabaseObject extends BaseObject {
 		foreach($this->idArray AS $key => $value) {
 			$where .= ' AND `'.$key.'`='.$factory->getValueByType($value, $primary_key_datatypes[$key]);
 		}
+		
 		return $where;
 	}
 	
