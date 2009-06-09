@@ -40,5 +40,15 @@ class TrollIdentityFactory extends DatabaseObjectFactory {
 		return 'troll';
 	}
 	
+	function getTrollsFromGuild($id_guild, $limit=false) {
+		$query = '	SELECT `position`.`id`, `position`.`mise_a_jour`, `position`.`position_x`, `position`.`position_y`, `position`.`position_n`, 
+					`identity`.`nom`, `identity`.`race`, `identity`.`niveau`, `identity`.`id_guilde`, `identity`.`nombre_mouches`
+					FROM `troll_position` AS `position`, `troll_identity` AS `identity`
+					WHERE `position`.`id`=`identity`.`id` AND `identity`.`id_guilde`='.intval($id_guild);
+		if ($limit) {
+			$query .= ' LIMIT ' . $limit;
+		}
+		return $this->getInstancesWithQuery($query);
+	}
 }
 ?>

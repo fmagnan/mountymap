@@ -178,7 +178,7 @@ abstract class DatabaseObjectFactory extends BaseObject {
 		$multipleData = $this->db->executeRequeteAvecDonneesDeRetourMultiples($query);
 		foreach($multipleData as $row) {
 			$idsArray = array_intersect_key($row, $this->getPrimaryKeyDescr());
-			$data = array_intersect_key($row, $this->getDataColumnsDescr());
+			$data = array_diff_key($row, $this->getPrimaryKeyDescr());
 			$instances[] = new $instanceName($this, $idsArray, $data);
 		}
 		return $instances;
