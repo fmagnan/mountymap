@@ -47,7 +47,9 @@ class TrollPositionFactory extends LocatedObjectFactory {
 		} else {
 			$race_clause = '';
 		}
-		$query = '	SELECT `position`.`id` FROM `'.$this->getTableName(). '` AS `position`, `troll_identity` as `identity`
+		$query = '	SELECT `position`.`id`, `position`.`mise_a_jour`, `position`.`position_x`, `position`.`position_y`, `position`.`position_n`, 
+						   `identity`.`nom`, `identity`.`race`, `identity`.`niveau`, `identity`.`id_guilde`
+					FROM `'.$this->getTableName(). '` AS `position`, `troll_identity` as `identity`
 					WHERE `position`.`id` = `identity`.`id` AND `identity`.`niveau` BETWEEN '.$min_level . ' AND ' . $max_level.
 					$race_clause .
 					' ORDER BY `identity`.`niveau`';

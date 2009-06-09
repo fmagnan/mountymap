@@ -11,15 +11,7 @@ class Guild extends DatabaseObject {
 	}
 	
 	function getAllTrolls($limit=false) {
-		$trollsWithPosition = array();
-		$trolls = TrollIdentityFactory::getInstance()->getInstancesFromArray(array('id_guilde' => $this->getId()), $limit);
-		foreach($trolls as $troll) {
-			$position = TrollPositionFactory::getInstance()->getInstanceFromArray(array('id' => $troll->getId()));
-			if (is_object($position) && !$position->isError()) {
-				$trollsWithPosition[] = $position;
-			}
-		}
-		return $trollsWithPosition;
+		return TrollIdentityFactory::getInstance()->getTrollsFromGuild($this->getId(), $limit);
 	}
 	
 }
