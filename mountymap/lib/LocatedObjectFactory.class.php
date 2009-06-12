@@ -19,7 +19,7 @@ abstract class LocatedObjectFactory extends DatabaseObjectFactory {
 					WHERE (`position_x` BETWEEN '.intval($start_x). ' AND ' .intval($end_x). ') 
 					AND (`position_y` BETWEEN '.intval($start_y). ' AND ' .intval($end_y). ')
 					AND (`position_n` BETWEEN ' . intval($end_n). ' AND ' .intval($start_n) . ')';
-		return $this->db->executeRequeteAvecDonneesDeRetourMultiples($query);
+		return getDb()->executeRequeteAvecDonneesDeRetourMultiples($query);
 	}
 }
 ?>

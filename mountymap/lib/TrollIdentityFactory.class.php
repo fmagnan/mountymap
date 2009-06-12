@@ -40,11 +40,12 @@ class TrollIdentityFactory extends DatabaseObjectFactory {
 		return 'troll';
 	}
 	
-	function getTrollsFromGuild($id_guild, $limit=false) {
-		$query = '	SELECT `position`.`id`, `position`.`mise_a_jour`, `position`.`position_x`, `position`.`position_y`, `position`.`position_n`, 
-					`identity`.`nom`, `identity`.`race`, `identity`.`niveau`, `identity`.`id_guilde`, `identity`.`nombre_mouches`
+	function getTrollsFromGuild($id_guild, $reference, $limit=false) {
+		$selectDistanceClause = $this->getSelectDistanceClause($reference);
+		$query = '	SELECT `position`.`id`, `position`.`mise_a_jour`, `position_x`, `position_y`, `position_n`, 
+					`nom`, `race`, `niveau`, `id_guilde`, `nombre_mouches`'. $selectDistanceClause . '
 					FROM `troll_position` AS `position`, `troll_identity` AS `identity`
-					WHERE `position`.`id`=`identity`.`id` AND `identity`.`id_guilde`='.intval($id_guild);
+					WHERE `position`.`id`=`identity`.`id` AND `identity`.`id_guilde`='.intval($id_guild).' ORDER BY `distance`';
 		if ($limit) {
 			$query .= ' LIMIT ' . $limit;
 		}

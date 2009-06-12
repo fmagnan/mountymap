@@ -5,10 +5,9 @@ require_once 'DatabaseConnector.class.php';
 
 class DatabaseObject extends BaseObject {
 	var $idArray = array();
-	var $data, $factory, $db;
+	var $data, $factory;
 	
 	function DatabaseObject($factory, $idArray, $data = false) {
-		$this->db = DatabaseConnector::getInstance();
 		$this->factory = $factory;
 		if($this->isKeyInInputData($idArray)) {
 			$this->idArray = $idArray;
@@ -46,7 +45,7 @@ class DatabaseObject extends BaseObject {
 			trigger_error('Suppression d\'un élément non existant', E_USER_ERROR);
 			return false;
 		}
-		if($this->db->executeRequeteSansDonneesDeRetour($this->getFactory()->getDeleteQuery($this->getIdWhere()))) {
+		if(getDb()->executeRequeteSansDonneesDeRetour($this->getFactory()->getDeleteQuery($this->getIdWhere()))) {
 			$this->data = array();
 			return true;
 		} else {
@@ -79,7 +78,7 @@ class DatabaseObject extends BaseObject {
 	
 	function fetchData() {
 		$query = $this->getSelectQueryWithWhereClause($this->getIdWhere());
-		$assoc = $this->db->executeRequeteAvecDonneeDeRetourUnique($query);
+		$assoc = getDb()->executeRequeteAvecDonneeDeRetourUnique($query);
 		if ($assoc) {
 			$this->data = $assoc;
 		} else {
@@ -169,7 +168,7 @@ class DatabaseObject extends BaseObject {
 			$updatedData = $this->filterOnUpdate($updatedData);
 		}
 		if(!empty($updatedData)) {
-			if($this->db->executeRequeteSansDonneesDeRetour($factory->getUpdateQuery($updatedData, $this->getIdWhere()))) {
+			if(getDb()->executeRequeteSansDonneesDeRetour($factory->getUpdateQuery($updatedData, $this->getIdWhere()))) {
 				$this->fetchData();
 				return true;
 			} else {

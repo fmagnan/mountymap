@@ -5,12 +5,7 @@ require_once 'DatabaseConnector.class.php';
 
 abstract class DatabaseObjectFactory extends BaseObject {
 	
-	var $db;
 	private static $instance;
-	
-	function DatabaseObjectFactory() {
-		$this->db = DatabaseConnector::getInstance();
-	}
 	
 	function create($data) {
 		$this->resetErrors();
@@ -31,7 +26,7 @@ abstract class DatabaseObjectFactory extends BaseObject {
 			}
 		}
 
-		if($this->db->executeRequeteSansDonneesDeRetour($this->getInsertQuery($data))) {
+		if(getDb()->executeRequeteSansDonneesDeRetour($this->getInsertQuery($data))) {
 			if($autoIncrement) {
 				return array($keyName => mysql_insert_id());
 			} else {
@@ -101,7 +96,7 @@ abstract class DatabaseObjectFactory extends BaseObject {
 	}
 	
 	function getInstanceFromArray($data) {
-		$this->db->connectToDB();
+		getDb()->connectToDB();
 		$primaryKeyList = $this->getPrimaryKeyList();
 		$dataColumnsList = $this->getDataColumnsList();
 		$allDataDescr = array_merge($primaryKeyList, $dataColumnsList);
@@ -114,7 +109,7 @@ abstract class DatabaseObjectFactory extends BaseObject {
 				return new $instanceName($this, $idsArray, $data);
 			}
 		}
-		$this->db->disconnectFromDB();
+		getDb()->disconnectFromDB();
 		trigger_error('Impossible d\'instancier l\'objet avec '.get_class($this).'::getInstanceFromArray()');
 		return false;
 	}
@@ -145,7 +140,7 @@ abstract class DatabaseObjectFactory extends BaseObject {
 	}
 	
 	function getInstanceWithQuery($query, $dataName='') {
-		$uniqueResult = $this->db->executeRequeteAvecDonneeDeRetourUnique($query, $dataName);
+		$uniqueResult = getDb()->executeRequeteAvecDonneeDeRetourUnique($query, $dataName);
 		return is_array($uniqueResult) ? $this->getInstanceFromArray($uniqueResult) : false;
 	}
 	
@@ -153,29 +148,32 @@ abstract class DatabaseObjectFactory extends BaseObject {
 		return $this->getInstancesWithQuery($this->getSelectQuery($orderBy, $sort));
 	}
 	
-	function getInstancesFromArray($array, $limit=false) {
+	function getInstancesFromArray($array, $reference=false, $limit=false) {
 		$whereClause = '';
 		foreach($array as $key => $value) {
 			$columnsDescr = $this->getAllColumnsDescr();
 			if (array_key_exists($key, $columnsDescr)) {
-				$whereClause .= ' AND `'.$key.'` = ' . $this->getValueByType($value, $columnsDescr[$key]);	
+				$whereClause .= ' AND `'.$key.'` = ' . $this->getValueByType($value, $columnsDescr[$key]);
+				if (is_array($reference)) {
+					$whereClause .= ' ORDER BY `distance`';
+				}
 			}
 		}
 		if (is_numeric($limit)) {
 			$whereClause .= ' LIMIT '.$limit;
 		}
-		return $this->getInstancesWithWhereClause($whereClause);
+		return $this->getInstancesWithWhereClause($whereClause, $reference);
 	}
 	
-	function getInstancesWithWhereClause($whereClause='') {
-		$query = $this->getSelectQuery().' '.$whereClause;
+	function getInstancesWithWhereClause($whereClause='', $reference=false) {
+		$query = $this->getSelectQuery('', '', $reference).' '.$whereClause;
 		return $this->getInstancesWithQuery($query);
 	}
 	
 	function getInstancesWithQuery($query) {
 		$instanceName = $this->getInstanceClassName();
 		$instances = array();
-		$multipleData = $this->db->executeRequeteAvecDonneesDeRetourMultiples($query);
+		$multipleData = getDb()->executeRequeteAvecDonneesDeRetourMultiples($query);
 		foreach($multipleData as $row) {
 			$idsArray = array_intersect_key($row, $this->getPrimaryKeyDescr());
 			$data = array_diff_key($row, $this->getPrimaryKeyDescr());
@@ -190,26 +188,35 @@ abstract class DatabaseObjectFactory extends BaseObject {
 		return array_keys($this->getPrimaryKeyDescr());
 	}
 	
-	function getSelectQuery($orderBy='', $sort='') {
-		return $this->getSelectQueryWithWhereClause('1', $orderBy, $sort);
+	function getSelectQuery($orderBy='', $sort='', $reference) {
+		return $this->getSelectQueryWithWhereClause('1', $orderBy, $sort, $reference);
 	}
 	
-	function getSelectQueryWithWhereClause($whereClause, $orderBy='', $sort='') {
+	function getSelectDistanceClause($reference) {
+		$selectDistanceClause = '';
+		if (is_array($reference)) {
+			$ref_x = array_key_exists('position_x', $reference) ? intval($reference['position_x']) : 0;
+			$ref_y = array_key_exists('position_y', $reference) ? intval($reference['position_y']) : 0;
+			$ref_n = array_key_exists('position_n', $reference) ? intval($reference['position_n']) : 0;
+			$selectDistanceClause = ', greatest(ABS(`position_x` - '.$ref_x.'), ABS(`position_y` - '.$ref_y.'), ABS(`position_n` - '.$ref_n.')) AS `distance` ';
+		}
+		return $selectDistanceClause;
+	}
+	
+	function getSelectQueryWithWhereClause($whereClause, $orderBy='', $sort='', $reference=false) {
 		$fieldsToRetrieve = implode(',', array_map('add_backquotes', $this->getAllColumnsList()));
+		$fieldsToRetrieve .= $this->getSelectDistanceClause($reference);
 		if ($orderBy == '') {
 			$keyFields = $this->getPrimaryKeyList(); 
 			$orderBy = add_backquotes($keyFields[0]);
 		}
-		if ($sort != '') {
-			$orderClause = " ORDER BY " . $orderBy . " " . $sort;
-		} else {
-			$orderClause = '';
-		}
-		return "SELECT ".$fieldsToRetrieve." FROM `".$this->getTableName()."` WHERE " . $whereClause . $orderClause;
+		
+		$orderClause = ($sort != '') ? ' ORDER BY ' . $orderBy . ' ' . $sort : '';
+		return 'SELECT '.$fieldsToRetrieve.' FROM `'.$this->getTableName().'` WHERE ' . $whereClause . $orderClause;
 	}
 	
 	function deleteWithWhereClause($whereClause) {
-		return $this->db->executeRequeteSansDonneesDeRetour($this->getDeleteQuery($whereClause));
+		return getDb()->executeRequeteSansDonneesDeRetour($this->getDeleteQuery($whereClause));
 	}
 	
 	abstract function getTableName();
@@ -220,7 +227,7 @@ abstract class DatabaseObjectFactory extends BaseObject {
 	
 	function getValueByType($value, $type) {
 		if ($type == 'string') {
-			return '\'' . mysql_real_escape_string($value, $this->db->getLink()) . '\'';
+			return '\'' . mysql_real_escape_string($value, getDb()->getLink()) . '\'';
 		} elseif ($type == 'int') {
 			return intval($value);
 		} else {
@@ -266,7 +273,7 @@ abstract class DatabaseObjectFactory extends BaseObject {
 		$this->deleteInArea($extraData);
 		foreach($multipleData as $data) {
 			$data['mise_a_jour'] = 'NOW()';
-			$this->db->executeRequeteSansDonneesDeRetour($this->getInsertQuery($data));
+			getDb()->executeRequeteSansDonneesDeRetour($this->getInsertQuery($data));
 		}
 	}
 }
