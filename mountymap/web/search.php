@@ -18,6 +18,8 @@
 	
 	$smarty = instantiateSmartyTemplate(dirname(__FILE__));
 	
+	$reference = array('position_x' => 0, 'position_y' => 0, 'position_n' => 0);
+	
 	if (array_key_exists('id', $_REQUEST)) {
 		$id = intval($_REQUEST['id']);
 		$smarty->assign('id', $id);
@@ -27,7 +29,7 @@
 			$instance = $factory->getInstanceFromArray(array('id' => $id));
 			if (!$instance->isError()) {
 				if ($factory->getTableName() == 'guilde') {
-					$instances = $instance->getAllTrolls(MAXIMUM_SEARCH_RESULTS);
+					$instances = $instance->getAllTrolls($reference, MAXIMUM_SEARCH_RESULTS);
 				} else {
 					$smarty->assign('unique_instance', $instance);
 				}
@@ -45,7 +47,7 @@
 		$selected_type = array_key_exists($type, $_POST) ? $_POST[$type] : '';
 		if ($selected_type != '') {
 			$table_headers = $factory->getSearchTableHeaders();
-			$instances = ($type == 'monster_family') ? $factory->getInstancesByFamily($selected_type, MAXIMUM_SEARCH_RESULTS) : $factory->getInstancesByGroupByField($selected_type, MAXIMUM_SEARCH_RESULTS);
+			$instances = ($type == 'monster_family') ? $factory->getInstancesByFamily($selected_type, $reference, MAXIMUM_SEARCH_RESULTS) : $factory->getInstancesByGroupByField($selected_type, $reference, MAXIMUM_SEARCH_RESULTS);
 		}
 	}
 	
@@ -61,14 +63,14 @@
 	if(array_key_exists('search_by_troll', $_POST)) {
 		$trollFactory = TrollPositionFactory::getInstance();
 		$table_headers = $trollFactory->getSearchTableHeaders();
-		$instances = $trollFactory->getInstancesBetweenLevels($troll_min_level, $troll_max_level, $troll_race, MAXIMUM_SEARCH_RESULTS);
+		$instances = $trollFactory->getInstancesBetweenLevels($troll_min_level, $troll_max_level, $troll_race, $reference, MAXIMUM_SEARCH_RESULTS);
 	}
 	
 	if (array_key_exists('monster_min_level', $_POST) && is_numeric($_POST['monster_min_level']) ||
 		array_key_exists('monster_max_level', $_POST) && is_numeric($_POST['monster_max_level'])) {
 		$monsterFactory = MonsterFactory::getInstance();
 		$table_headers = $monsterFactory->getSearchTableHeaders();
-		$instances = $monsterFactory->getInstancesBetweenLevels($_POST['monster_min_level'], $_POST['monster_max_level'], MAXIMUM_SEARCH_RESULTS);
+		$instances = $monsterFactory->getInstancesBetweenLevels($_POST['monster_min_level'], $_POST['monster_max_level'], $reference, MAXIMUM_SEARCH_RESULTS);
 	}
 	
 	if (isset($instances) && is_array($instances)) {
