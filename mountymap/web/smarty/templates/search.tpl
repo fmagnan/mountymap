@@ -11,6 +11,7 @@
 	});
 	{/literal}
 </script>
+<div>Position de référence : 0 / 0 / 0</div>
 <div id="search_forms">
 	<form id="search_by_id" method="post" action="search.php">
 		<fieldset>
