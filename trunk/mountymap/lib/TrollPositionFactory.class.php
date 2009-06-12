@@ -38,21 +38,21 @@ class TrollPositionFactory extends LocatedObjectFactory {
 		return 'troll';
 	}
 	
-	function getInstancesBetweenLevels($minLevel, $maxLevel, $race, $limit=false) {
+	function getInstancesBetweenLevels($minLevel, $maxLevel, $race, $reference, $limit=false) {
 		$min_level = is_numeric($minLevel) ? intval($minLevel) : 1;
 		$max_level = is_numeric($maxLevel) ? intval($maxLevel) : 80;
 		if ($race) {
 			$troll_races = unserialize(TROLLS_RACES);
-			$race_clause = ' AND `identity`.`race`=\''.mysql_real_escape_string($troll_races[$race-1], $this->db->getLink()).'\'';
+			$race_clause = ' AND `identity`.`race`=\''.mysql_real_escape_string($troll_races[$race-1], getDb()->getLink()).'\'';
 		} else {
 			$race_clause = '';
 		}
-		$query = '	SELECT `position`.`id`, `position`.`mise_a_jour`, `position`.`position_x`, `position`.`position_y`, `position`.`position_n`, 
-						   `identity`.`nom`, `identity`.`race`, `identity`.`niveau`, `identity`.`id_guilde`
+		$query = '	SELECT `position`.`id`, `position`.`mise_a_jour`, `position_x`, `position_y`, `position_n`, `nom`, `race`, `niveau`, `id_guilde`
+					'.$this->getSelectDistanceClause($reference).'
 					FROM `'.$this->getTableName(). '` AS `position`, `troll_identity` as `identity`
 					WHERE `position`.`id` = `identity`.`id` AND `identity`.`niveau` BETWEEN '.$min_level . ' AND ' . $max_level.
 					$race_clause .
-					' ORDER BY `identity`.`niveau`';
+					' ORDER BY `distance`';
 		if (is_numeric($limit)) {
 			$query .= ' LIMIT ' . $limit;
 		}
@@ -70,18 +70,18 @@ class TrollPositionFactory extends LocatedObjectFactory {
 					AND (`position`.`position_y` BETWEEN '.intval($start_y). ' AND ' .intval($end_y). ')
 					AND (`position`.`position_n` BETWEEN ' . intval($end_n). ' AND ' .intval($start_n) . ')
 					AND `position`.`id`=`identity`.`id`';
-		$trolls = $this->db->executeRequeteAvecDonneesDeRetourMultiples($query);
+		$trolls = getDb()->executeRequeteAvecDonneesDeRetourMultiples($query);
 		foreach ($trolls as $key => $troll) {
 			$diplomacy_query = 'SELECT `diplomacy`.`side` FROM `diplomacy`
 				WHERE `diplomacy`.`target_type`=\'T\' AND `diplomacy`.`target_id`='.$troll['id'].' AND `diplomacy`.`id`='.$diplomacy_id;
-			$side = $this->db->executeRequeteAvecDonneeDeRetourUnique($diplomacy_query, 'side');
+			$side = getDb()->executeRequeteAvecDonneeDeRetourUnique($diplomacy_query, 'side');
 			if ($side) {
 				$trolls[$key]['side'] = $side;
 			} else {
 				$diplomacy_query = 'SELECT `diplomacy`.`side` FROM `diplomacy`, `troll_identity`
 					WHERE `diplomacy`.`target_type`=\'G\' AND `diplomacy`.`id`='.$diplomacy_id.'
 					AND `diplomacy`.`target_id`=`troll_identity`.`id_guilde` AND `troll_identity`.`id`='.$troll['id'];
-				$side = $this->db->executeRequeteAvecDonneeDeRetourUnique($diplomacy_query, 'side');
+				$side = getDb()->executeRequeteAvecDonneeDeRetourUnique($diplomacy_query, 'side');
 				if ($side) {
 					$trolls[$key]['side'] = $side;
 				}
@@ -93,7 +93,7 @@ class TrollPositionFactory extends LocatedObjectFactory {
 	function getSearchTableHeaders() {
 		return array(
 			'Id' => 'getId', 'Nom' => 'getSimpleIdentity', 'Race' => 'getRace', 'Niveau' => 'getLevel', 'Guilde' => 'getGuildLinks',
-			'X' => 'getPositionX', 'Y' => 'getPositionY', 'N' => 'getPositionN', 'Date' => 'getUpdate', 'Actions' => 'getLinkToMap'
+			'X' => 'getPositionX', 'Y' => 'getPositionY', 'N' => 'getPositionN', 'Distance' => 'getDistance', 'Date' => 'getUpdate', 'Actions' => 'getLinkToMap'
 		);
 	}
 	

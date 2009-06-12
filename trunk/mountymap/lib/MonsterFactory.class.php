@@ -45,28 +45,28 @@ class MonsterFactory extends NonPermanentDatabaseObjectFactory {
 		$query = 'SELECT `famille` AS `key`,
 			CONCAT(`famille`, \' (\', COUNT(`id`), \')\') AS `value`
 			FROM ' . $this->getTableName() . ' GROUP BY `famille` ORDER BY `famille`';
-		return $this->db->executeRequeteAvecDonneesDeRetourMultiples($query);
+		return getDb()->executeRequeteAvecDonneesDeRetourMultiples($query);
 	}
 	
-	function getInstancesByFamily($family, $limit=false) {
-		return $this->getInstancesFromArray(array('famille' => $family), $limit);
+	function getInstancesByFamily($family, $reference, $limit=false) {
+		return $this->getInstancesFromArray(array('famille' => $family), $reference, $limit);
 	}
 	
 	function getSearchTableHeaders() {
 		return array(
-			'Id' => 'getId', 'Nom' => 'getFullName', 'Niveau' => 'getLevel',
-			'X' => 'getPositionX', 'Y' => 'getPositionY', 'N' => 'getPositionN', 'Date' => 'getUpdate', 'Actions' => 'getLinkToMap'
+			'Id' => 'getId', 'Nom' => 'getFullName', 'Niveau' => 'getLevel', 'X' => 'getPositionX',
+			'Y' => 'getPositionY', 'N' => 'getPositionN', 'Distance' => 'getDistance', 'Date' => 'getUpdate', 'Actions' => 'getLinkToMap'
 		);
 	}
 	
-	function getInstancesBetweenLevels($minLevel, $maxLevel, $limit=false) {
+	function getInstancesBetweenLevels($minLevel, $maxLevel, $reference, $limit=false) {
 		$min_level = is_numeric($minLevel) ? intval($minLevel) : 1;
 		$max_level = is_numeric($maxLevel) ? intval($maxLevel) : 80;
-		$where_clause = ' AND `niveau` BETWEEN '.$min_level . ' AND ' . $max_level. ' ORDER BY `niveau`';
+		$where_clause = ' AND `niveau` BETWEEN '.$min_level . ' AND ' . $max_level. ' ORDER BY `distance`';
 		if (is_numeric($limit)) {
 			$where_clause .= ' LIMIT ' . $limit;
 		}
-		return $this->getInstancesWithWhereClause($where_clause);
+		return $this->getInstancesWithQuery($this->getSelectQuery('', '', $reference) . $where_clause);
 	}
 	
 }

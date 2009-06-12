@@ -22,6 +22,10 @@ abstract class LocatedObject extends DatabaseObject {
 		return $this->getData('position_n');
 	}
 	
+	function getDistance() {
+		return $this->getData('distance');
+	}
+	
 	function getFormattedPosition() {
 		$formattedPosition = '<strong>X = ' .$this->getPositionX().' | Y = '.$this->getPositionY();
 		$formattedPosition .= ' | N = '.$this->getPositionN() .'</strong>';

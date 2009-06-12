@@ -39,17 +39,17 @@ abstract class NonPermanentDatabaseObjectFactory extends LocatedObjectFactory {
 		$query = 'SELECT `'.$field.'` AS `key`,
 			CONCAT(`'.$field.'`, \' (\', COUNT(`id`), \')\') AS `value`
 			FROM ' . $this->getTableName() . ' GROUP BY `'.$field.'` ORDER BY `'.$field.'`';
-		return $this->db->executeRequeteAvecDonneesDeRetourMultiples($query);
+		return getDb()->executeRequeteAvecDonneesDeRetourMultiples($query);
 	}
 	
-	function getInstancesByGroupByField($name, $limit=false) {
-		return $this->getInstancesFromArray(array($this->getGroupByField() => $name), $limit);
+	function getInstancesByGroupByField($name, $reference, $limit=false) {
+		return $this->getInstancesFromArray(array($this->getGroupByField() => $name), $reference, $limit);
 	}
 	
 	function getSearchTableHeaders() {
 		return array(
 			'Id' => 'getId', 'Nom' => 'getName', 'X' => 'getPositionX', 'Y' => 'getPositionY',
-			'N' => 'getPositionN', 'Date' => 'getUpdate', 'Actions' => 'getLinkToMap'
+			'N' => 'getPositionN', 'Distance' => 'getDistance', 'Date' => 'getUpdate', 'Actions' => 'getLinkToMap'
 		);
 	}
 	

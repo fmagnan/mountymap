@@ -10,8 +10,8 @@ class Guild extends DatabaseObject {
 		return HtmlTool::getGuildLink($this->getId(), $this->getName());
 	}
 	
-	function getAllTrolls($limit=false) {
-		return TrollIdentityFactory::getInstance()->getTrollsFromGuild($this->getId(), $limit);
+	function getAllTrolls($reference, $limit=false) {
+		return TrollIdentityFactory::getInstance()->getTrollsFromGuild($this->getId(), $reference, $limit);
 	}
 	
 }

@@ -180,4 +180,8 @@ function generateNewPasswordAndSendItTo($user, $email) {
 	return mail($email, $subject, $message, getMailHeaders());
 }
 
+function getDb() {
+	return DatabaseConnector::getInstance();
+}
+
 ?>
