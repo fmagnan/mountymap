@@ -108,5 +108,8 @@ CREATE TABLE IF NOT EXISTS `user` (
   `is_active` int(1) NOT NULL default '0',
   `is_admin` int(1) NOT NULL default '0',
   `diplomacy_id` int(11) NOT NULL default '1',
+  `position_x` int(11) NOT NULL,
+  `position_y` int(11) NOT NULL,
+  `position_n` int(11) NOT NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
