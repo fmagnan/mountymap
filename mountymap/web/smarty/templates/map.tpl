@@ -54,8 +54,6 @@
 		{/section}
 	</table>
 	
-	<div class="map-cell-content">&nbsp;</div>
-	
 	<script type="text/javascript" src="/js/jquery/jquery.qtip.js"></script>
 	<script type="text/javascript">
 		{literal}
@@ -63,9 +61,9 @@
 				$('td.cell').each(function() {
 					$(this).qtip({
 						content: $(this).children('.tooltip'),
-						position: { type: 'static', container: $('div.map-cell-content') },
+						show: { solo: true },
      					hide: { when: { event: 'unfocus' } },
-     					style: { 'width': '500px', border: { width: 2 } }
+     					style: { 'z-index': '10', 'width': '500px' }
 					});
 				});
 			});
