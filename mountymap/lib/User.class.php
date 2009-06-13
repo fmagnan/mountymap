@@ -26,6 +26,18 @@ class User extends DatabaseObject {
 		return $this->getData('diplomacy_id');
 	}
 	
+	function getPositionX() {
+		return $this->getData('position_x');
+	}
+	
+	function getPositionY() {
+		return $this->getData('position_y');
+	}
+
+	function getPositionN() {
+		return $this->getData('position_n');
+	}
+	
 	function getDiplomacyGuild() {
 		return GuildFactory::getInstance()->getInstanceFromArray(array('id' => $this->getDiplomacyId()));
 	}

@@ -86,5 +86,11 @@ class HtmlTool {
 	public static function getPostParameter($parameter) {
 		return array_key_exists($parameter, $_POST) ? $_POST[$parameter] : false;
 	}
+	
+	public static function getNumericPostParameter($parameter, $smarty, $defaultValue = 0) {
+		$value = array_key_exists($parameter, $_POST) && is_numeric($_POST[$parameter]) ? intval($_POST[$parameter]) : $defaultValue;
+		$smarty->assign($parameter, $value);
+		return $value;
+	}
 }
 ?>
