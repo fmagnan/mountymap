@@ -56,6 +56,7 @@ class HtmlTool {
 		} else {
 			$cellInfo = '['.$item['id'].'] '. $item['nom'];
 		}
+		$cellInfo .= ' [' . $item['mise_a_jour'] . ']';
 		return $cellInfo;
 	}
 	
