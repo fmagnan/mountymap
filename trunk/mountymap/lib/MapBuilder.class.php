@@ -55,11 +55,15 @@ class MapBuilder {
 				}
 			}
 			
-			$class = ('Place' == $factory_name) ? $class='lieu' : '';
-			
 			$this->cells[$position][$level][] = HtmlTool::getCellInfo($factory_name, $item);
 			$this->cells[$position][$type] = true;
-			$this->cells[$position]['class'] = $class;
+			
+			if (!array_key_exists('classes', $this->cells[$position])) {
+				$this->cells[$position]['classes'] = array('cell');	
+			}
+			if (!in_array($factory_name, $this->cells[$position]['classes'])) {
+				$this->cells[$position]['classes'][] = $factory_name;
+			}
 		}
 	}
 	
@@ -83,6 +87,8 @@ class MapBuilder {
 							$cellInfo .= $line . '<br/>';
 						}
 					}
+				} elseif(is_array($info)) {
+					$cell[$level] = implode(' ', $info);
 				} else {
 					$cell[$level] = $info;
 				}
