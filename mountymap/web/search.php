@@ -17,8 +17,8 @@
 	}
 	
 	$smarty = instantiateSmartyTemplate(dirname(__FILE__));
-	
-	$reference = array('position_x' => 0, 'position_y' => 0, 'position_n' => 0);
+	$user = getLoggedInUser();
+	$reference = array('position_x' => $user->getPositionX(), 'position_y' => $user->getPositionY(), 'position_n' => $user->getPositionN());
 	
 	if (array_key_exists('id', $_REQUEST)) {
 		$id = intval($_REQUEST['id']);
@@ -79,6 +79,9 @@
 	if (isset($table_headers)) {
 		$smarty->assign('table_headers', $table_headers);
 	}
+	$smarty->assign('position_x_reference', $user->getPositionX());
+	$smarty->assign('position_y_reference', $user->getPositionY());
+	$smarty->assign('position_n_reference', $user->getPositionN());
 	setDebugTrace($smarty);
 	setErrorTrace($smarty);
 	$smarty->display('search.tpl');
