@@ -25,5 +25,5 @@
 	{/section}
 	</tbody>
 </table>
-<div><a href="update_view.php">Mettre à jour la vue la plus ancienne</a> [Attention, 1 seul appel au script public de la vue n'est autorisé pour chacun des membres du table ci-dessus]</div>
+<p><a href="update_view.php">Mettre à jour la vue la plus ancienne</a> [Attention, 1 seul appel au script public de la vue n'est autorisé pour chacun des membres du table ci-dessus]</p>
 {include file='footer.tpl'}
