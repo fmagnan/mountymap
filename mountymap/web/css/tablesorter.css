@@ -1,12 +1,13 @@
 /* tables */
 table.tablesorter {
 	font-family:arial;
-	background-color: #CDCDCD;
 	margin:auto;
 	margin-top:20px;
+	margin-left:10px;
 	font-size: 9pt;
 	text-align: left;
 	border-collapse:collapse;
+	border:2px solid #B29393;
 }
 table.tablesorter thead tr th, table.tablesorter tfoot tr th {
 	background-color: #E0D8C1;
@@ -23,7 +24,6 @@ table.tablesorter thead tr .header {
 table.tablesorter tbody td {
 	color: #3D3D3D;
 	padding: 4px;
-	background-color: #FFF;
 	vertical-align: top;
 	border:1px solid #B29393;
 }

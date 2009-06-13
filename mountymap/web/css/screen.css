@@ -12,6 +12,19 @@ img {
 	border:none;
 }
 
+fieldset, legend, input, select {
+	border:1px solid #462244;
+	color: #462244;
+}
+	
+fieldset {
+	margin-bottom:15px;
+}
+
+legend, input, select {
+	background-color:#E0D8C1;
+}
+
 table#map {
 	border-collapse:collapse;
 }
@@ -97,19 +110,7 @@ table#map td.lieu {
 	color:red;
 }
 
-fieldset, legend {
-	background-color:#E0D8C1;
-	border:1px solid #462244;
-}
-	
-fieldset {
-	margin-bottom:15px;
-}
 
-legend {
-	font-weight:bold;
-	color: #462244;
-}
 
 fieldset#coordonnees input[type="text"] {
 	width:30px;
@@ -139,4 +140,19 @@ fieldset#coordonnees input[type="text"] {
 
 #navigator #right {
 	margin-left:8px;
+}
+
+ul#menu {
+	list-style-image:none;
+}
+
+ul#menu li {
+	display:inline;
+}
+
+ul#menu li a {
+	border: 1px solid #462244;
+	padding:3px;
+	background-color:#E0D8C1;
+	text-decoration:none;
 }
