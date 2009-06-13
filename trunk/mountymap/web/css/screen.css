@@ -95,8 +95,32 @@ table#map td img {
 	display:none;
 }
 
-table#map td.lieu {
+table#map td.Place {
 	background-color:#AE88AE;
+}
+
+table#map td.Monster, table#map td.TrollPosition, table#map td.Treasure, table#map td.Mushroom {
+	background-repeat:no-repeat;
+}
+
+table#map td.Monster {
+	background-image:url(/images/ico_monstre_16.png);
+	background-position:top right;
+}
+
+table#map td.TrollPosition {
+	background-image:url(/images/ico_troll_16.png);
+	background-position:top left;
+}
+
+table#map td.Treasure {
+	background-image:url(/images/ico_tresor_16.png);
+	background-position:bottom left;
+}
+
+table#map td.Mushroom {
+	background-image:url(/images/ico_champignon_16.png);
+	background-position:bottom right;
 }
 
 .ami, .ami a, .ennemi, .ennemi a {
@@ -109,8 +133,6 @@ table#map td.lieu {
 .ennemi, .ennemi a {
 	color:red;
 }
-
-
 
 fieldset#coordonnees input[type="text"] {
 	width:30px;
@@ -155,4 +177,10 @@ ul#menu li a {
 	padding:3px;
 	background-color:#E0D8C1;
 	text-decoration:none;
+}
+
+div.map-cell-content {
+	float:left;
+	margin-left:10px;
+	padding:5px;
 }

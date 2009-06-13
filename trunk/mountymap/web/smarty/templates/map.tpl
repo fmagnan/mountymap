@@ -43,28 +43,30 @@
 			{assign var=cell value=$map[$num_cell]}
 			
 			{if $cell}
-				{assign var=cell_class value='cell'}
-				{assign var=extra_class value=$cell.class}
+				{assign var=cell_class value=$cell.classes}
 			{else}
 				{assign var=cell_class value=''}
-				{assign var=extra_class value=''}
 			{/if}
 			
 			{if ($num_cell mod $row_size) eq 0}<tr>{/if}
-			<td class="{$cell_class} {$extra_class}">{if $cell}<div class="tooltip">{$cell.content}</div>{/if}{if $cell.trolls }<img src="/images/ico_troll_16.png" alt="troll" />{/if}{if $cell.monsters }<img src="/images/ico_monstre_16.png" alt="monstre" />{/if}{if $cell.treasures }<img src="/images/ico_tresor_16.png" alt="tresor" />{/if}{if $cell.mushrooms }<img src="/images/ico_champignon_16.png" alt="champignon" />{/if}</td>
+			<td class="{$cell_class}">{if $cell}<div class="tooltip">{$cell.content}</div>{/if}</td>
 			{if ($num_cell mod $row_size) eq ($row_size - 1)}</tr>{/if}
 		{/section}
 	</table>
+	
+	<div class="map-cell-content">&nbsp;</div>
 	
 	<script type="text/javascript" src="/js/jquery/jquery.qtip.js"></script>
 	<script type="text/javascript">
 		{literal}
 			$(document).ready(function() {
 				$('td.cell').each(function() {
-					$(this).qtip({ content: $(this).children('.tooltip'),
-     					show: { solo: true },
-     					hide: { delay: 400, fixed: true	},
-     					style: { padding: '5px 15px', width: '500px' } });
+					$(this).qtip({
+						content: $(this).children('.tooltip'),
+						position: { type: 'static', container: $('div.map-cell-content') },
+     					hide: { when: { event: 'unfocus' } },
+     					style: { 'width': '500px', border: { width: 2 } }
+					});
 				});
 			});
 		{/literal}
