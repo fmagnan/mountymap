@@ -334,12 +334,12 @@ $unprotected_scripts = array(
 );
 
 $menu_items = array(
-	'/map.php' => array('title' => 'La carte', 'admin' => false),
-	'/members.php' => array('title' => 'Liste des membres', 'admin' => false),
-	'/search.php' => array('title' => 'Lancer une recherche', 'admin' => false),
-	'/preferences.php' => array('title' => 'Préférences', 'admin' => false),
-	'/users.php' => array('title' => 'Gérer les utilisateurs', 'admin' => true),
-	'/logout.php' => array('title' => 'Déconnexion', 'admin' => false),
+	'/search.php' => array('title' => 'recherche', 'admin' => false),
+	'/members.php' => array('title' => 'membres', 'admin' => false),
+	'/preferences.php' => array('title' => 'options', 'admin' => false),
+	'/map.php' => array('title' => 'carte', 'admin' => false),
+	'/users.php' => array('title' => 'utilisateurs', 'admin' => true),
+	'/logout.php' => array('title' => 'quitter', 'admin' => false),
 );
 define('MENU_ITEMS', serialize($menu_items));
 
