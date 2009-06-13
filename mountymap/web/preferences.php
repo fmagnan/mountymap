@@ -18,7 +18,7 @@
 	} 
 	
 	$all_guilds = GuildFactory::getInstance()->getInstancesWithWhereClause(' ORDER BY `nom`');
-	$smarty->assign('diplomacy_options', HtmlTool::getHTMLSelect('diplomacy', $all_guilds));
+	$smarty->assign('diplomacy_options', HtmlTool::getHTMLSelect('diplomacy', $all_guilds, $user->getDiplomacyId()));
 	setDebugTrace($smarty);
 	setErrorTrace($smarty);
 	$smarty->display('preferences.tpl');
