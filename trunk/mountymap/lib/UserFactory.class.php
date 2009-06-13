@@ -23,6 +23,9 @@ class UserFactory extends DatabaseObjectFactory {
 			'is_active' => 'int',
 			'is_admin' => 'int',
 			'diplomacy_id' => 'int',
+			'position_x' => 'int',
+			'position_y' => 'int',
+			'position_n' => 'int',
 		);
 	}
 	
