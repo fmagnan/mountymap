@@ -59,11 +59,7 @@ table#map td {
 	padding:0;
 	vertical-align:top;
 	background-color:#E0DDD9;
-}
-
-table#map td img {
-	float:left;
-	margin:0;
+	z-index:5;
 }
 
 #debug {
@@ -177,10 +173,4 @@ ul#menu li a {
 	padding:3px;
 	background-color:#E0D8C1;
 	text-decoration:none;
-}
-
-div.map-cell-content {
-	float:left;
-	margin-left:10px;
-	padding:5px;
 }
