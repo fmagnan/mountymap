@@ -9,11 +9,12 @@ table.tablesorter {
 	border-collapse:collapse;
 }
 table.tablesorter thead tr th, table.tablesorter tfoot tr th {
-	background-color: #e6EEEE;
-	border: 2px solid #CDCDCD;
+	background-color: #E0D8C1;
+	border: 2px solid #B29393;
 	font-size: 9pt;
 	padding: 2px;
 	vertical-align:bottom;
+	color: #462244;
 }
 table.tablesorter thead tr .header {
 	background-repeat: no-repeat;
@@ -24,10 +25,10 @@ table.tablesorter tbody td {
 	padding: 4px;
 	background-color: #FFF;
 	vertical-align: top;
-	border:1px solid #CDCDCD;
+	border:1px solid #B29393;
 }
 table.tablesorter tbody tr.odd td, div.odd {
-	background-color:#F0F0F6;
+	background-color:#E0D8C1;
 }
 table.tablesorter thead tr .headerSortUp {
 	background-image: url(../images/asc.gif);

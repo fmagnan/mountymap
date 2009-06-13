@@ -1,7 +1,11 @@
 @CHARSET "UTF-8";
 
 body {
-	background-repeat:repeat;
+	background-color:#F0EEE9;
+}
+
+a {
+	color:#462244;
 }
 
 img {
@@ -92,18 +96,27 @@ table#map td.lieu {
 .ennemi, .ennemi a {
 	color:red;
 }
+
+fieldset, legend {
+	background-color:#E0D8C1;
+	border:1px solid #462244;
+}
 	
+fieldset {
+	margin-bottom:15px;
+}
+
+legend {
+	font-weight:bold;
+	color: #462244;
+}
+
 fieldset#coordonnees input[type="text"] {
 	width:30px;
 }
 
 #flash-player {
 	margin:auto;
-}
-
-legend {
-	border-width:1px;
-	border-style:solid;
 }
 
 #navigator {
