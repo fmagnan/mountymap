@@ -188,7 +188,7 @@ abstract class DatabaseObjectFactory extends BaseObject {
 		return array_keys($this->getPrimaryKeyDescr());
 	}
 	
-	function getSelectQuery($orderBy='', $sort='', $reference) {
+	function getSelectQuery($orderBy='', $sort='', $reference=false) {
 		return $this->getSelectQueryWithWhereClause('1', $orderBy, $sort, $reference);
 	}
 	
